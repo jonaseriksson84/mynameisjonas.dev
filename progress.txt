@@ -8,3 +8,16 @@
 - Updated .gitignore with .wrangler/ and .dev.vars
 - Build and dev server verified working
 - Status: COMPLETE
+
+## TASK-002: Feature — Global styles with Tailwind v4 theme
+- Created src/styles/global.css with @import 'tailwindcss'
+- Added @theme block with all 10 color variables (accent, bg, surface, text, text-muted for light/dark)
+- Added base styles for html (scroll-behavior) and body (bg/color with transitions)
+- Added html.dark body styles for dark mode
+- Added view transition CSS (::view-transition-old/new with 0.4s duration)
+- Added 4 keyframe animations: fade-in, fade-out, fade-in-up, scale-in
+- Added utility classes: .animate-fade-in-up, .animate-scale-in
+- Added reduced motion media query to disable all animations
+- Added stagger delay utilities .delay-0 through .delay-8 (75ms intervals)
+- Build verified passing
+- Status: COMPLETE

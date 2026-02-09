@@ -49,7 +49,7 @@
         "All animations and utility classes are present",
         "Reduced motion support is implemented"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-003",
