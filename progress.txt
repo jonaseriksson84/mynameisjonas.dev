@@ -128,3 +128,16 @@
 - Card layout, hover effects, and styling preserved unchanged
 - Build verified passing
 - Status: COMPLETE
+
+## TASK-011: Improvement — Improve CV header and contact info styling
+- CvHeader: Increased heading to text-4xl, split name into font-light "Jonas" + font-bold "Eriksson" for visual personality
+- CvHeader: Added subtle accent underline bar (w-12 h-0.5 bg-accent rounded-full) between name and role
+- CvContact: Made compact horizontal layout with inline-flex items and · dot separators
+- CvContact: Reduced icon size from w-4 h-4 to w-3.5 h-3.5 for tighter fit
+- CvContact: Shortened address to just "Stockholm" to fit single line on desktop
+- CvContact: Uses flex-wrap with small gap-y-1 for graceful mobile wrapping
+- CV page: Merged header and contact into single animation block (space-y-3) so they feel like one unit
+- CV page: Re-sequenced stagger delays (0-4) after merging header/contact
+- Dark mode works correctly for both components
+- Build verified passing
+- Status: COMPLETE
