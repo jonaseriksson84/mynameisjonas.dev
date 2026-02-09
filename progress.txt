@@ -83,3 +83,12 @@
 - Dark mode support for cards and all text elements
 - Build verified passing
 - Status: COMPLETE
+
+## TASK-008: Feature — Blog setup with Content Collections
+- Created src/content/config.ts with blog collection using glob loader and Zod schema (title, description, date, tags, draft)
+- Created src/content/blog/.gitkeep to keep empty directory in git
+- Created src/pages/blog/index.astro with empty state handling ("No posts yet. Check back soon!"), draft filtering, date sorting
+- Created src/pages/blog/[...slug].astro with getStaticPaths, post rendering, prose styling, back link, tag pills
+- Blog nav link confirmed commented out in Header.astro with "Uncomment when blog posts are ready" comment
+- Build verified passing — blog index renders empty state at /blog
+- Status: COMPLETE

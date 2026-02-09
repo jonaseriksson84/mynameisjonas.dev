@@ -204,7 +204,7 @@
         "Blog link is hidden from navigation",
         "Build succeeds with the blog setup"
       ],
-      "passes": false
+      "passes": true
     }
   ],
   "summary": {
