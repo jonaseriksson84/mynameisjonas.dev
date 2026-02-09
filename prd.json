@@ -300,7 +300,7 @@
         "Tech tags display correctly on each card",
         "Page renders without errors"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-013",

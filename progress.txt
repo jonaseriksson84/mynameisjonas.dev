@@ -116,3 +116,15 @@
 - Both collapsible sections have chevron rotation animation (duration-200, rotate-90 on open)
 - Build verified passing
 - Status: COMPLETE
+
+## TASK-012: Improvement — Update projects page content
+- Replaced onelink and mynameisjonas.dev project entries with two new projects
+- Added 3D Earth: Interactive 3D globe visualization — tech: Three.js, TypeScript, Cloudflare Workers
+  - URL: https://3d-earth.je-projects.workers.dev/
+  - GitHub: https://github.com/jonaseriksson84/3d-earth
+- Added ChromaCross: Daily word puzzle game — tech: TypeScript, React, Cloudflare Workers
+  - URL: https://chromacross.app/
+  - GitHub: https://github.com/jonaseriksson84/chromacross
+- Card layout, hover effects, and styling preserved unchanged
+- Build verified passing
+- Status: COMPLETE
