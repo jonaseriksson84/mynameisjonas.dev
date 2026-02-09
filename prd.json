@@ -151,7 +151,7 @@
         "Portrait image is copied to public/jonas.jpg",
         "File compiles without type errors"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-007",

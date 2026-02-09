@@ -30,3 +30,15 @@
 - Updated src/pages/index.astro to use BaseLayout
 - Build verified passing
 - Status: COMPLETE
+
+## TASK-006: Feature — CV data migration
+- Created src/data/cv.ts with full TypeScript interfaces (Job, Education, TechCategory, ContactInfo)
+- Migrated all 5 jobs from cv-astro Experience.astro with exact data
+- Migrated both education entries from cv-astro Education.astro
+- Migrated all 5 tech stack categories from cv-astro TechStack.astro
+- Added contactInfo with email, phone, address, website
+- Added aboutText with both bio paragraphs
+- Implemented getGroupedJobs() helper — correctly groups HiQ jobs (2) and Capgemini jobs (1)
+- Copied portrait image from cv-astro/public/jonas2.jpg to public/jonas.jpg
+- TypeScript compiles without errors, build passes
+- Status: COMPLETE
