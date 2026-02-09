@@ -68,3 +68,18 @@
 - Full dark mode support across all components
 - Build verified passing
 - Status: COMPLETE
+
+## TASK-005: Feature — Projects page
+- Created src/pages/projects.astro with BaseLayout (title: 'Projects — Jonas Eriksson')
+- Section heading with consistent section title style (uppercase, tracking-wider, orange dot)
+- Hardcoded projects array with 2 projects: onelink and mynameisjonas.dev
+- Each project has title, description, tech array, url, and github link
+- Responsive grid: 1 col mobile, 2 col sm+ (grid-cols-1 sm:grid-cols-2)
+- Project cards with surface bg, rounded-xl, p-6, border-transparent
+- Hover effect: translateY(-2px), border-accent, shadow-lg via scoped CSS
+- Tech tag pills matching CV style (rounded-full, bordered, small text)
+- Optional GitHub/URL links at bottom of each card
+- Stagger animations on cards (animate-fade-in-up with incrementing delays)
+- Dark mode support for cards and all text elements
+- Build verified passing
+- Status: COMPLETE

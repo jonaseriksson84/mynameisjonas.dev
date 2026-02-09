@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projects = [
+  {
+    title: 'onelink',
+    description: 'Personal link-in-bio page built with Astro and Tailwind CSS',
+    tech: ['Astro', 'Tailwind CSS', 'Cloudflare Workers'],
+    url: 'https://onelink.mynameisjonas.dev',
+    github: 'https://github.com/mynameisjonas/onelink',
+  },
+  {
+    title: 'mynameisjonas.dev',
+    description: 'This personal website, built from scratch',
+    tech: ['Astro', 'Tailwind CSS', 'Cloudflare Workers'],
+    url: 'https://mynameisjonas.dev',
+    github: 'https://github.com/mynameisjonas/mynameisjonas.dev',
+  },
+];
+---
+
+<BaseLayout title="Projects — Jonas Eriksson">
+  <h1 class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-8 animate-fade-in-up delay-0">
+    <span class="text-accent">●</span> Projects
+  </h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    {projects.map((project, i) => (
+      <div
+        class:list={[
+          'project-card bg-surface-light dark:bg-surface-dark rounded-xl p-6 border border-transparent',
+          'animate-fade-in-up',
+          `delay-${i + 1}`,
+        ]}
+      >
+        <h2 class="text-lg font-semibold text-text-light dark:text-text-dark">
+          {project.title}
+        </h2>
+        <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-2">
+          {project.description}
+        </p>
+        <div class="flex flex-wrap gap-1.5 mt-4">
+          {project.tech.map((t) => (
+            <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-bg-light dark:bg-bg-dark border border-text-muted-light/20 dark:border-text-muted-dark/20 text-text-muted-light dark:text-text-muted-dark">
+              {t}
+            </span>
+          ))}
+        </div>
+        {(project.url || project.github) && (
+          <div class="flex gap-3 mt-4">
+            {project.url && (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+              >
+                Visit
+              </a>
+            )}
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+              >
+                GitHub
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .project-card {
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+</style>

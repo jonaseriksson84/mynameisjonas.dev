@@ -126,7 +126,7 @@
         "Responsive layout works on different screen sizes",
         "Dark mode support works"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-006",
