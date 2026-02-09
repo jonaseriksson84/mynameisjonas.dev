@@ -205,13 +205,134 @@
         "Build succeeds with the blog setup"
       ],
       "passes": true
+    },
+    {
+      "id": "TASK-009",
+      "category": "Improvement",
+      "priority": "high",
+      "description": "Fix light mode styling issues",
+      "details": "Fix several light mode visual problems:\n\n1. Header: The sticky header background is a washed-out grey that looks terrible in light mode. Give it a clean, solid light background (e.g. bg-white/95 or bg-[var(--color-bg-light)]/95) with backdrop-blur so it feels crisp, not muddy grey. Ensure the border/separator at the bottom is subtle.\n\n2. Project cards: Cards currently appear black in light mode, clashing badly. They should use --color-surface-light (#ffffff) as their background in light mode, with a subtle border (e.g. border-stone-200). Dark mode should remain --color-surface-dark.\n\n3. CV pills/tags: The buzzword pills and tech stack tag pills appear black in light mode. They should use a light, neutral background in light mode (e.g. bg-stone-100 border-stone-200 text-stone-700) and switch to dark surface colors in dark mode (e.g. bg-stone-800 border-stone-700 text-stone-300).\n\nAll fixes should ensure the light mode palette feels warm and clean (stone tones), consistent with the --color-bg-light (#fafaf9) background.",
+      "stepsToVerify": [
+        "Header background is clean white/light in light mode, not washed-out grey",
+        "Project cards have white/light surface background in light mode",
+        "Project cards have subtle border visible in light mode",
+        "CV buzzword pills have light background in light mode, not black",
+        "CV tech stack tag pills have light background in light mode, not black",
+        "All elements still look correct in dark mode",
+        "Light mode overall feels cohesive and warm"
+      ],
+      "acceptanceCriteria": [
+        "Header looks clean and readable in light mode",
+        "Project cards are clearly visible against the page background in light mode",
+        "All pill/tag elements are legible with appropriate contrast in both modes",
+        "No black/dark elements clashing with the light background"
+      ],
+      "passes": true
+    },
+    {
+      "id": "TASK-010",
+      "category": "Improvement",
+      "priority": "high",
+      "description": "CV layout: experience front and center, collapsible about & tech stack",
+      "details": "Reorganize the CV page so that work experience is the primary focus:\n\n1. Reorder CV sections on the page: CvHeader → CvContact → CvExperience → CvAbout → CvTechStack → CvEducation. Experience moves up to be immediately after the header/contact info.\n\n2. Make CvAbout collapsible: Wrap the about section content in a <details>/<summary> element (or equivalent disclosure widget). The summary should show the section title ('About') and the content (bio paragraphs) should be hidden by default, expandable on click. Style the summary to match the existing section title style (uppercase, tracking-wider, orange dot) with a subtle expand/collapse indicator (chevron or +/-).\n\n3. Make CvTechStack collapsible and more compact: Same <details>/<summary> pattern as About. The summary shows 'Tech Stack' section title. When expanded, display the categories in a more compact layout — e.g. a denser grid or inline format where category titles and their items flow more tightly rather than each category taking a full block. Consider showing all items as a continuous flow of pills grouped by category label, or a 2-column grid of categories.\n\n4. Both collapsible sections should animate open/close smoothly if possible (CSS grid trick or similar). The expand/collapse indicator should rotate or change on toggle.",
+      "stepsToVerify": [
+        "CV page section order is: Header, Contact, Experience, About, Tech Stack, Education",
+        "Experience section appears immediately after contact info",
+        "About section is wrapped in a collapsible disclosure widget",
+        "About section is collapsed by default",
+        "Clicking About summary expands to show bio paragraphs",
+        "Tech Stack section is wrapped in a collapsible disclosure widget",
+        "Tech Stack section is collapsed by default",
+        "Tech Stack content is more compact than before when expanded",
+        "Collapse/expand indicators are visible and functional",
+        "Dark mode works correctly for collapsible sections"
+      ],
+      "acceptanceCriteria": [
+        "Experience is the most prominent section on the CV page",
+        "About and Tech Stack are collapsible and collapsed by default",
+        "Collapsible sections use consistent styling with the rest of the CV",
+        "Tech Stack is visually more compact when expanded"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-011",
+      "category": "Improvement",
+      "priority": "medium",
+      "description": "Improve CV header and contact info styling",
+      "details": "Two improvements to the top of the CV page:\n\n1. CvHeader: Make the heading more visually appealing. Instead of a plain 'Jonas Eriksson' text, give it more personality — e.g. larger type with the name on its own line, a subtle accent underline or gradient, or the first name in regular weight and last name in bold (or vice versa). The title/role below should complement it. Keep it professional but not boring.\n\n2. CvContact: Make the contact info fit on a single line on desktop. Currently it may stack vertically taking too much space. On desktop (sm+ or md+), lay out email, phone, location, and website horizontally in a single row with subtle separators (e.g. · or | or just spacing). Icons should be small and inline. On mobile it can wrap to 2 lines or stack. The goal is to keep it compact so it doesn't push the experience section down.",
+      "stepsToVerify": [
+        "CV header name has more visual personality than plain text",
+        "Header styling is professional and polished",
+        "Contact info displays on a single horizontal line on desktop",
+        "Contact info items are separated by subtle dividers or spacing",
+        "Contact info wraps gracefully on mobile",
+        "Contact section is compact and doesn't push content down",
+        "Dark mode works correctly for both components"
+      ],
+      "acceptanceCriteria": [
+        "CV header looks visually appealing and not plain",
+        "Contact info fits on one line at desktop breakpoint",
+        "Both components maintain readability and professionalism",
+        "Responsive behavior works well on mobile"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-012",
+      "category": "Improvement",
+      "priority": "medium",
+      "description": "Update projects page content",
+      "details": "Replace the current project entries with these two projects. Remove onelink and mynameisjonas.dev entries.\n\n1. 3D Earth:\n- Title: '3D Earth'\n- Description: 'Interactive 3D globe visualization with real-time controls for time, clouds, atmosphere, and celestial bodies. Rotate, zoom, and explore Earth with dynamic geographic markers.'\n- URL: https://3d-earth.je-projects.workers.dev/\n- GitHub: https://github.com/jonaseriksson84/3d-earth\n- Tech tags: ['Three.js', 'TypeScript', 'Cloudflare Workers']\n\n2. ChromaCross:\n- Title: 'ChromaCross'\n- Description: 'A daily word puzzle game where players guess letters to reveal two intersecting words. Each letter is represented by a distinct color, with a limit of eight wrong guesses.'\n- URL: https://chromacross.app/\n- GitHub: https://github.com/jonaseriksson84/chromacross\n- Tech tags: ['TypeScript', 'React', 'Cloudflare Workers']\n\nKeep the same card layout, hover effects, and styling from the existing projects page.",
+      "stepsToVerify": [
+        "Projects page shows 3D Earth card with correct title and description",
+        "Projects page shows ChromaCross card with correct title and description",
+        "3D Earth card links to correct URL and GitHub",
+        "ChromaCross card links to correct URL and GitHub",
+        "Tech tags are correct for each project",
+        "Old onelink and mynameisjonas.dev entries are removed",
+        "Card hover effects and styling still work",
+        "Page accessible at /projects"
+      ],
+      "acceptanceCriteria": [
+        "Only 3D Earth and ChromaCross are shown as projects",
+        "All URLs and GitHub links are correct and clickable",
+        "Tech tags display correctly on each card",
+        "Page renders without errors"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-013",
+      "category": "Testing",
+      "priority": "medium",
+      "description": "Add comprehensive test suite using Vitest",
+      "details": "Set up a comprehensive test suite for the project using Vitest.\n\n1. Install and configure:\n- Install vitest and any needed utilities (e.g. @testing-library/dom, happy-dom or jsdom for DOM testing)\n- Add vitest config (either in vite.config.ts or vitest.config.ts) with appropriate environment (happy-dom)\n- Add test scripts to package.json: \"test\" (pnpm vitest run), \"test:watch\" (pnpm vitest)\n\n2. Unit tests for data layer:\n- Test src/data/cv.ts: verify all exported data is present and correctly typed\n- Test getGroupedJobs() returns correct grouping (non-consultant jobs as single arrays, HiQ jobs grouped together, Capgemini jobs grouped together)\n- Test that contactInfo, aboutText, jobs, education, techStack all have expected lengths and key fields\n\n3. Component smoke tests:\n- Test that each Astro component can be imported without errors\n- Test that CV data is correctly referenced by components (data integrity checks)\n\n4. Content Collections tests:\n- Test that the blog collection schema validates correctly (valid frontmatter passes, invalid fails)\n- Test draft filtering logic\n\n5. Build validation:\n- Test that `pnpm build` completes successfully (integration test)\n- Verify all expected routes are generated: /, /projects, /cv, /blog\n\n6. Theme/dark mode tests:\n- Test localStorage theme persistence logic\n- Test that theme initialization script correctly reads preferences",
+      "stepsToVerify": [
+        "vitest is installed as a devDependency",
+        "vitest config exists with happy-dom or jsdom environment",
+        "package.json has test and test:watch scripts using pnpm",
+        "CV data unit tests exist and pass",
+        "getGroupedJobs() test verifies correct grouping",
+        "Blog schema validation tests exist",
+        "pnpm test runs all tests successfully",
+        "No test failures"
+      ],
+      "acceptanceCriteria": [
+        "Vitest is configured and runs without errors",
+        "CV data layer has thorough unit test coverage",
+        "getGroupedJobs() grouping logic is tested",
+        "Blog collection schema validation is tested",
+        "All tests pass with pnpm test"
+      ],
+      "passes": false
     }
   ],
   "summary": {
-    "totalRequirements": 8,
+    "totalRequirements": 13,
     "byPriority": {
-      "high": 6,
-      "medium": 2,
+      "high": 8,
+      "medium": 5,
       "low": 0
     }
   }

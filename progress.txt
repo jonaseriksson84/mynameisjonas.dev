@@ -92,3 +92,13 @@
 - Blog nav link confirmed commented out in Header.astro with "Uncomment when blog posts are ready" comment
 - Build verified passing — blog index renders empty state at /blog
 - Status: COMPLETE
+
+## TASK-009: Improvement — Fix light mode styling issues
+- Header: Changed from bg-surface-light/80 to bg-white/90 with backdrop-blur-md for crisp light background; softened border to border-stone-200/60
+- Project cards: Changed from bg-surface-light with border-transparent to bg-white with border-stone-200 for visible card edges in light mode; dark mode keeps border-transparent
+- Project card tech tags: Changed from bg-bg-light with muted border to bg-stone-100 border-stone-200 text-stone-700 for proper light mode contrast; dark mode uses bg-stone-800 border-stone-700 text-stone-300
+- CV buzzword pills (CvExperience): Same pill fix as projects — bg-stone-100/border-stone-200/text-stone-700 light, bg-stone-800/border-stone-700/text-stone-300 dark
+- CV tech stack tag pills (CvTechStack): Same pill fix — consistent stone-tone styling across all pill elements
+- All elements verified correct in dark mode (no regressions)
+- Build verified passing
+- Status: COMPLETE
