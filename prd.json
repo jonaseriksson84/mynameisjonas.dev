@@ -76,7 +76,7 @@
         "Footer displays with social links",
         "Blog link is commented out in navigation"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-004",

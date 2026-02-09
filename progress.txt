@@ -21,3 +21,12 @@
 - Added stagger delay utilities .delay-0 through .delay-8 (75ms intervals)
 - Build verified passing
 - Status: COMPLETE
+
+## TASK-003: Feature — Base layout and shared components (Header, Footer, ThemeToggle)
+- Created src/layouts/BaseLayout.astro with HTML shell, meta tags, theme flash prevention script (inline), global CSS import
+- Created src/components/ThemeToggle.astro with sun/moon SVG icons, CSS visibility toggling via :global(html.dark), View Transitions API with fallback, hover/active transforms
+- Created src/components/Header.astro with sticky nav, backdrop-blur, site title link, nav links (About, Projects, CV), blog link commented out with explanation comment, active link highlighting via Astro.url.pathname, ThemeToggle integration, dark mode support
+- Created src/components/Footer.astro with copyright (dynamic year), social links (GitHub, LinkedIn, Email) with SVG icons, muted text with hover accent color, dark mode support
+- Updated src/pages/index.astro to use BaseLayout
+- Build verified passing
+- Status: COMPLETE
