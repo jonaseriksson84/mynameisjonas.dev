@@ -1,0 +1,16 @@
+---
+import { aboutText } from '../../data/cv';
+---
+
+<section>
+  <h2 class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-4">
+    <span class="text-accent">●</span> About
+  </h2>
+  <div class="space-y-3">
+    {aboutText.map((paragraph) => (
+      <p class="text-base text-text-muted-light dark:text-text-muted-dark text-pretty">
+        {paragraph}
+      </p>
+    ))}
+  </div>
+</section>

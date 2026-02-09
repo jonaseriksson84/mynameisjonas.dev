@@ -1,0 +1,23 @@
+---
+import { education } from '../../data/cv';
+---
+
+<section>
+  <h2 class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-4">
+    <span class="text-accent">●</span> Education
+  </h2>
+  <div class="space-y-4">
+    {education.map((entry) => (
+      <div>
+        <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+          <h3 class="font-semibold text-text-light dark:text-text-dark">{entry.degree}</h3>
+          <span class="text-sm text-text-muted-light dark:text-text-muted-dark whitespace-nowrap">{entry.period}</span>
+        </div>
+        <p class="text-accent text-sm mt-0.5">{entry.institution}</p>
+        {entry.details.map((detail) => (
+          <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1">{detail}</p>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>

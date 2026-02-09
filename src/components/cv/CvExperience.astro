@@ -1,0 +1,70 @@
+---
+import { getGroupedJobs } from '../../data/cv';
+
+const groupedJobs = getGroupedJobs();
+---
+
+<section>
+  <h2 class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-4">
+    <span class="text-accent">●</span> Experience
+  </h2>
+  <div class="space-y-6">
+    {groupedJobs.map((group) => {
+      const isConsultancy = group[0].consultancy;
+      return isConsultancy ? (
+        <div class="border border-dashed border-accent/30 rounded-lg p-4 relative">
+          <span class="absolute -top-2.5 left-4 px-2 py-0.5 text-xs font-medium rounded-full bg-accent text-white">
+            via {group[0].consultancy}
+          </span>
+          <div class="space-y-5 mt-2">
+            {group.map((job) => (
+              <div>
+                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                  <h3 class="font-semibold text-text-light dark:text-text-dark">
+                    {job.title} <span class="text-accent">@</span> <span class="text-accent">{job.company}</span>
+                  </h3>
+                  <span class="text-sm text-text-muted-light dark:text-text-muted-dark whitespace-nowrap">{job.period}</span>
+                </div>
+                <ul class="mt-2 space-y-1 text-sm text-text-muted-light dark:text-text-muted-dark list-disc list-inside">
+                  {job.achievements.map((achievement) => (
+                    <li>{achievement}</li>
+                  ))}
+                </ul>
+                <div class="flex flex-wrap gap-1.5 mt-2">
+                  {job.buzzwords.map((bw) => (
+                    <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-surface-light dark:bg-surface-dark border border-text-muted-light/20 dark:border-text-muted-dark/20 text-text-muted-light dark:text-text-muted-dark">
+                      {bw}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        group.map((job) => (
+          <div>
+            <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+              <h3 class="font-semibold text-text-light dark:text-text-dark">
+                {job.title} <span class="text-accent">@</span> <span class="text-accent">{job.company}</span>
+              </h3>
+              <span class="text-sm text-text-muted-light dark:text-text-muted-dark whitespace-nowrap">{job.period}</span>
+            </div>
+            <ul class="mt-2 space-y-1 text-sm text-text-muted-light dark:text-text-muted-dark list-disc list-inside">
+              {job.achievements.map((achievement) => (
+                <li>{achievement}</li>
+              ))}
+            </ul>
+            <div class="flex flex-wrap gap-1.5 mt-2">
+              {job.buzzwords.map((bw) => (
+                <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-surface-light dark:bg-surface-dark border border-text-muted-light/20 dark:border-text-muted-dark/20 text-text-muted-light dark:text-text-muted-dark">
+                  {bw}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))
+      );
+    })}
+  </div>
+</section>

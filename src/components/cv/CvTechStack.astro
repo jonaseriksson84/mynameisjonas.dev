@@ -1,0 +1,23 @@
+---
+import { techStack } from '../../data/cv';
+---
+
+<section>
+  <h2 class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-4">
+    <span class="text-accent">●</span> Tech Stack
+  </h2>
+  <div class="space-y-3">
+    {techStack.map((category) => (
+      <div>
+        <h3 class="font-semibold text-sm text-text-light dark:text-text-dark mb-1.5">{category.title}</h3>
+        <div class="flex flex-wrap gap-1.5">
+          {category.items.map((item) => (
+            <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-surface-light dark:bg-surface-dark border border-text-muted-light/20 dark:border-text-muted-dark/20 text-text-muted-light dark:text-text-muted-dark">
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

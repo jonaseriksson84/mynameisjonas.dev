@@ -180,7 +180,7 @@
         "Dark mode support works for all components",
         "Stagger animations work across sections"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-008",

@@ -54,3 +54,17 @@
 - Centered layout with proper spacing
 - Build verified passing
 - Status: COMPLETE
+
+## TASK-007: Feature — CV page and components
+- Created src/pages/cv.astro composing all 6 CV sub-components with BaseLayout
+- Created src/components/cv/CvHeader.astro with portrait (rounded-full, w-24 h-24, border-2 border-accent), name, and title
+- Created src/components/cv/CvContact.astro with email, phone, address, website — inline SVG icons in accent color
+- Created src/components/cv/CvAbout.astro with section title style (uppercase, tracking-wider, orange dot) and bio paragraphs from cv.ts
+- Created src/components/cv/CvTechStack.astro with 5 categories, each with tag pills (rounded-full, bordered, small text)
+- Created src/components/cv/CvExperience.astro with getGroupedJobs() — consultancy groups in dashed border containers with orange pill label, individual jobs with title @ company, period, achievements, buzzword pills
+- Created src/components/cv/CvEducation.astro with degree, period, institution in accent color, details
+- All sections use consistent section title styling (text-sm font-semibold uppercase tracking-wider text-muted + orange dot)
+- Stagger animations on all sections (animate-fade-in-up with delay-0 through delay-5)
+- Full dark mode support across all components
+- Build verified passing
+- Status: COMPLETE
