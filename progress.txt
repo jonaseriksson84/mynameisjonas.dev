@@ -1,0 +1,10 @@
+# mynameisjonas.dev — Progress Log
+
+## TASK-001: Setup — Install dependencies and configure project
+- Installed tailwindcss@^4, @tailwindcss/vite@^4, @astrojs/cloudflare
+- Updated astro.config.mjs with Tailwind vite plugin and Cloudflare adapter
+- Created wrangler.toml with [assets] directory = "./dist"
+- Updated package.json: name=mynameisjonas-dev, added deploy script
+- Updated .gitignore with .wrangler/ and .dev.vars
+- Build and dev server verified working
+- Status: COMPLETE

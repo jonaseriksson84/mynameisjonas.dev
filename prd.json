@@ -1,0 +1,218 @@
+{
+  "projectName": "mynameisjonas.dev",
+  "version": "1.0.0",
+  "createdAt": "2026-02-09",
+  "repository": "",
+  "requirements": [
+    {
+      "id": "TASK-001",
+      "category": "Setup",
+      "priority": "high",
+      "description": "Install dependencies and configure project",
+      "details": "Install tailwindcss@^4, @tailwindcss/vite@^4, and @astrojs/cloudflare. Update astro.config.mjs to use the Tailwind v4 vite plugin and Cloudflare adapter (use `adapter: cloudflare()`, NOT `cloudflare({ mode: 'advanced' })`). Create wrangler.toml with `[assets] directory = \"./dist\"` (NOT `[site] bucket`). Update package.json: set name to `mynameisjonas-dev`, add deploy script `pnpm build && wrangler deploy`. Update .gitignore to include `.wrangler/` and `.dev.vars`.",
+      "stepsToVerify": [
+        "pnpm install succeeds without errors",
+        "astro.config.mjs imports @tailwindcss/vite and @astrojs/cloudflare",
+        "astro.config.mjs has vite.plugins with tailwindcss() and adapter: cloudflare()",
+        "wrangler.toml exists with [assets] directory = \"./dist\"",
+        "package.json has name and deploy script",
+        ".gitignore includes .wrangler/ and .dev.vars",
+        "pnpm dev starts without errors"
+      ],
+      "acceptanceCriteria": [
+        "tailwindcss@^4, @tailwindcss/vite@^4, @astrojs/cloudflare are in dependencies/devDependencies",
+        "astro.config.mjs uses cloudflare() adapter (not advanced mode)",
+        "wrangler.toml uses [assets] directory (not [site] bucket)",
+        "Dev server starts successfully"
+      ],
+      "passes": true
+    },
+    {
+      "id": "TASK-002",
+      "category": "Feature",
+      "priority": "high",
+      "description": "Global styles with Tailwind v4 theme",
+      "details": "Create src/styles/global.css with Tailwind v4 @theme block containing the full color palette from onelink. Include:\n\n@theme variables:\n- --color-accent: #f97316\n- --color-accent-hover: #ea580c\n- --color-bg-light: #fafaf9\n- --color-bg-dark: #0c0a09\n- --color-surface-light: #ffffff\n- --color-surface-dark: #1c1917\n- --color-text-light: #1c1917\n- --color-text-dark: #fafaf9\n- --color-text-muted-light: #78716c\n- --color-text-muted-dark: #a8a29e\n\nBase styles:\n- html { scroll-behavior: smooth }\n- body with bg/color from light vars, transition 0.3s ease\n- html.dark body with dark vars\n\nView transition CSS:\n- ::view-transition-old/new(root) with 0.4s duration\n- fade-out/fade-in animation names\n\nKeyframe animations:\n- fade-in (opacity 0→1, 0.5s ease-out)\n- fade-out (opacity 1→0, 0.5s ease-out)\n- fade-in-up (opacity 0 + translateY(20px) → opacity 1 + translateY(0), 0.5s ease-out)\n- scale-in (opacity 0 + scale(0.9) → opacity 1 + scale(1), 0.5s ease-out)\n\nUtility classes:\n- .animate-fade-in-up { animation: fade-in-up 0.5s ease-out both }\n- .animate-scale-in { animation: scale-in 0.5s ease-out both }\n\nReduced motion:\n- @media (prefers-reduced-motion: reduce) disables all animations and view transitions\n\nStagger delay utilities:\n- .delay-0 through .delay-8 (75ms intervals: 0ms, 75ms, 150ms, 225ms, 300ms, 375ms, 450ms, 525ms, 600ms)",
+      "stepsToVerify": [
+        "src/styles/global.css exists",
+        "File starts with @import 'tailwindcss'",
+        "@theme block contains all 10 color variables",
+        "All 4 keyframe animations are defined",
+        "Utility classes .animate-fade-in-up and .animate-scale-in exist",
+        "Reduced motion media query disables animations",
+        "Stagger delay classes .delay-0 through .delay-8 exist",
+        "View transition CSS is defined"
+      ],
+      "acceptanceCriteria": [
+        "Global CSS compiles without errors in dev server",
+        "Color palette matches onelink exactly",
+        "All animations and utility classes are present",
+        "Reduced motion support is implemented"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-003",
+      "category": "Feature",
+      "priority": "high",
+      "description": "Base layout and shared components (Header, Footer, ThemeToggle)",
+      "details": "Create four files:\n\n1. src/layouts/BaseLayout.astro:\n- Props: title (string), description (string, default 'Jonas Eriksson — Fullstack Engineer')\n- HTML shell with charset, viewport, description meta, favicon, generator meta\n- Import src/styles/global.css\n- Inline <script is:inline> in head for theme flash prevention: read localStorage 'theme', fallback to prefers-color-scheme, add 'dark' class if dark\n- Body with min-h-screen antialiased classes\n- Compose: Header + <main class=\"max-w-3xl mx-auto px-4 py-8\"><slot /></main> + Footer\n\n2. src/components/Header.astro:\n- Sticky top-0 nav bar with z-40, backdrop-blur, bg-surface with opacity\n- Site title 'jonas eriksson' linking to / (font-semibold, hover accent color)\n- Nav links: About (/), Projects (/projects), CV (/cv)\n- Blog link commented out with HTML comment <!-- <a href=\"/blog\">Blog</a> -->\n- Active link highlighting using Astro.url.pathname (accent color + font-semibold for active)\n- ThemeToggle component in nav\n- Dark mode: surface-dark bg with opacity\n- max-w-3xl mx-auto inner container matching main content width\n\n3. src/components/Footer.astro:\n- Centered footer with border-top, padding\n- Copyright line: © {currentYear} Jonas Eriksson\n- Social links row: GitHub (github.com/mynameisjonas), LinkedIn (linkedin.com/in/jonaseriksson84), Email (jonaseriksson84@gmail.com)\n- Links use muted text color, hover to accent\n- Dark mode support\n\n4. src/components/ThemeToggle.astro:\n- Button with aria-label 'Toggle dark mode'\n- Sun SVG icon (shown in dark mode) and Moon SVG icon (shown in light mode)\n- CSS: toggle visibility of icons via :global(html.dark) selectors\n- Hover: scale(1.1), accent color. Active: scale(0.95)\n- Script: click handler toggles 'dark' class on documentElement, saves to localStorage\n- Uses View Transitions API (document.startViewTransition) when available, fallback to direct toggle\n- Transition: 0.2s ease on bg, color, transform",
+      "stepsToVerify": [
+        "src/layouts/BaseLayout.astro exists with proper HTML structure",
+        "Theme flash prevention script is inline in head",
+        "src/components/Header.astro exists with sticky nav",
+        "Header has nav links: About, Projects, CV (blog commented out)",
+        "Active link highlighting works based on current path",
+        "src/components/Footer.astro exists with copyright and social links",
+        "src/components/ThemeToggle.astro exists with sun/moon toggle",
+        "ThemeToggle uses View Transitions API with fallback",
+        "pnpm dev shows header, footer, and theme toggle on page"
+      ],
+      "acceptanceCriteria": [
+        "All four files compile without errors",
+        "Theme toggle switches between light and dark mode",
+        "Theme persists on page reload (no flash of wrong theme)",
+        "Navigation links are visible and highlight correctly",
+        "Footer displays with social links",
+        "Blog link is commented out in navigation"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-004",
+      "category": "Feature",
+      "priority": "high",
+      "description": "About Me page (home / index)",
+      "details": "Replace src/pages/index.astro with a landing page using BaseLayout:\n\n- Use BaseLayout with title 'Jonas Eriksson — Fullstack Engineer'\n- Portrait image (jonas.jpg) with rounded-full, border-4 border-accent, w-32 h-32, object-cover, animate-scale-in\n- Heading: 'Hi, I'm Jonas' (text-4xl font-bold, animate-fade-in-up delay-1)\n- Subtitle: 'Fullstack Engineer & Tech Lead' (text-lg text-muted, animate-fade-in-up delay-2)\n- Bio text (2 paragraphs from cv-astro):\n  - 'Fullstack web developer with 13+ years of professional experience, specializing in frontend development and JavaScript/TypeScript. Extensive experience with backend and API development in Go, Python, Java, and Node.js.'\n  - 'Strong team player with proven leadership experience, equally comfortable driving projects independently. Quick to adapt to new technologies and environments while maintaining focus on delivering high-quality results.'\n  - Both with animate-fade-in-up delay-3\n- CTA buttons row (animate-fade-in-up delay-4):\n  - 'View CV' → /cv (accent bg, white text, hover darker)\n  - 'See Projects' → /projects (outline style, accent border, hover fill)\n- Dark mode support for all elements\n- Centered layout with proper spacing",
+      "stepsToVerify": [
+        "src/pages/index.astro uses BaseLayout",
+        "Portrait image displays with accent border and rounded",
+        "Heading and subtitle are visible",
+        "Bio paragraphs match cv-astro content",
+        "CTA buttons link to /cv and /projects",
+        "Animations play on page load with stagger delays",
+        "Dark mode renders correctly",
+        "Page accessible at /"
+      ],
+      "acceptanceCriteria": [
+        "Home page renders without errors at /",
+        "Portrait, heading, bio, and CTA buttons are all visible",
+        "Animations work with correct stagger timing",
+        "CTA buttons navigate to correct pages",
+        "Dark mode support works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-005",
+      "category": "Feature",
+      "priority": "medium",
+      "description": "Projects page",
+      "details": "Create src/pages/projects.astro with a projects showcase using BaseLayout:\n\n- Use BaseLayout with title 'Projects — Jonas Eriksson'\n- Page heading: 'Projects' with section title style (text-sm font-semibold uppercase tracking-wider text-muted with orange dot before it)\n- Hardcoded project data array with objects: { title, description, tech (string[]), url?, github? }\n- Initial projects (can be placeholders):\n  1. onelink — 'Personal link-in-bio page built with Astro and Tailwind CSS' — tech: ['Astro', 'Tailwind CSS', 'Cloudflare Workers']\n  2. mynameisjonas.dev — 'This personal website, built from scratch' — tech: ['Astro', 'Tailwind CSS', 'Cloudflare Workers']\n- Project cards grid (responsive: 1 col mobile, 2 col sm+):\n  - Each card: surface bg, rounded-xl, p-6, border border-transparent\n  - Hover: translateY(-2px), border-accent, shadow-lg enhancement\n  - Transition: 0.2s ease on transform, border-color, box-shadow\n  - Title (text-lg font-semibold), description (text-sm text-muted), tech tags row (small pills similar to CV buzzwords)\n  - Optional GitHub/URL links at bottom\n- Stagger animations on cards (animate-fade-in-up with incrementing delays)\n- Dark mode: surface-dark bg for cards",
+      "stepsToVerify": [
+        "src/pages/projects.astro exists",
+        "Page uses BaseLayout with correct title",
+        "Project cards render with title, description, and tech tags",
+        "Hover effect: translateY(-2px), orange border, shadow",
+        "Responsive grid: 1 col mobile, 2 col sm+",
+        "Stagger animations work on cards",
+        "Dark mode renders correctly",
+        "Page accessible at /projects"
+      ],
+      "acceptanceCriteria": [
+        "Projects page renders without errors at /projects",
+        "Cards display with proper hover effects",
+        "Tech tag pills are visible",
+        "Responsive layout works on different screen sizes",
+        "Dark mode support works"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-006",
+      "category": "Feature",
+      "priority": "high",
+      "description": "CV data migration",
+      "details": "Create src/data/cv.ts extracting all CV data from ../cv-astro into a single typed file. Also copy the portrait image.\n\nTypeScript interfaces:\n- Job: { title: string, company: string, period: string, achievements: string[], consultancy?: string, buzzwords: string[] }\n- Education: { degree: string, institution: string, period: string, details: string[] }\n- TechCategory: { title: string, items: string[] }\n- ContactInfo: { email: string, phone: string, address: { name: string, street: string, city: string }, website: string }\n\nExported data:\n- contactInfo: ContactInfo = { email: 'jonaseriksson84@gmail.com', phone: '0704200175', address: { name: 'Jonas Eriksson', street: 'Ljusstöparbacken 22', city: '117 65 Stockholm' }, website: 'mynameisjonas.dev' }\n- aboutText: string[] = [\n    'Fullstack web developer with 13+ years of professional experience, specializing in frontend development and JavaScript/TypeScript. Extensive experience with backend and API development in Go, Python, Java, and Node.js.',\n    'Strong team player with proven leadership experience, equally comfortable driving projects independently. Quick to adapt to new technologies and environments while maintaining focus on delivering high-quality results.'\n  ]\n- jobs: Job[] = [all 5 jobs from cv-astro Experience.astro]\n- education: Education[] = [both entries from cv-astro Education.astro]\n- techStack: TechCategory[] = [all 5 categories from cv-astro TechStack.astro]\n\nExported helper:\n- getGroupedJobs(): Job[][] — groups jobs by consultancy (non-consultant jobs as single-item arrays, consultant jobs with same consultancy grouped together), same logic as cv-astro Experience.astro reduce()\n\nCopy portrait:\n- cp ../cv-astro/public/jonas2.jpg public/jonas.jpg",
+      "stepsToVerify": [
+        "src/data/cv.ts exists with all interfaces and data",
+        "All 5 jobs match cv-astro Experience.astro data exactly",
+        "Both education entries match cv-astro Education.astro data exactly",
+        "All 5 tech categories match cv-astro TechStack.astro data exactly",
+        "Contact info matches cv-astro Contact.astro data",
+        "About text matches cv-astro AboutMe.astro paragraphs",
+        "getGroupedJobs() correctly groups consultant jobs",
+        "public/jonas.jpg exists (copied from cv-astro)",
+        "TypeScript compiles without errors"
+      ],
+      "acceptanceCriteria": [
+        "All CV data is accurately migrated with correct TypeScript types",
+        "getGroupedJobs() produces correct grouping (HiQ jobs grouped, Capgemini jobs grouped)",
+        "Portrait image is copied to public/jonas.jpg",
+        "File compiles without type errors"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-007",
+      "category": "Feature",
+      "priority": "high",
+      "description": "CV page and components",
+      "details": "Create the CV page and all CV sub-components. All components import data from src/data/cv.ts.\n\n1. src/pages/cv.astro:\n- Use BaseLayout with title 'CV — Jonas Eriksson'\n- Single-column max-w-3xl layout (already provided by BaseLayout)\n- Compose sub-components in order: CvHeader, CvContact, CvAbout, CvTechStack, CvExperience, CvEducation\n- Each section wrapped with animate-fade-in-up and stagger delays\n\n2. src/components/cv/CvHeader.astro:\n- Portrait (jonas.jpg): rounded-full, w-24 h-24, border-2 border-accent, object-cover\n- Name: 'Jonas Eriksson' (text-3xl font-bold)\n- Title: 'Fullstack Engineer & Tech Lead' (text-lg text-muted)\n- Centered or left-aligned layout\n\n3. src/components/cv/CvContact.astro:\n- Import contactInfo from cv.ts\n- Display email, phone, address, website with inline SVG icons (mail, phone, map-pin, globe)\n- Icons in accent color\n- Compact horizontal or vertical list\n- Dark mode support\n\n4. src/components/cv/CvAbout.astro:\n- Import aboutText from cv.ts\n- Section title: 'About' with section title style (text-sm font-semibold uppercase tracking-wider text-muted + orange dot)\n- Render each paragraph with text-base text-muted-foreground, text-pretty\n\n5. src/components/cv/CvTechStack.astro:\n- Import techStack from cv.ts\n- Section title: 'Tech Stack' with section title style\n- For each category: category title (font-semibold text-sm) + tag pills row\n- Tag pills: inline-block px-2 py-0.5 text-xs rounded-full bg-surface border, dark mode support\n\n6. src/components/cv/CvExperience.astro:\n- Import jobs and getGroupedJobs from cv.ts\n- Section title: 'Experience' with section title style\n- Use getGroupedJobs() for rendering\n- Consultancy groups: bordered container (border-dashed border-accent/30) with orange pill label 'via {consultancy}' positioned at top\n- Each job: title + company (company in accent color with @ symbol), period on right/below, achievements as bullet list, buzzword pills row\n- Dark mode support for all elements\n\n7. src/components/cv/CvEducation.astro:\n- Import education from cv.ts\n- Section title: 'Education' with section title style\n- Each entry: degree (font-semibold), period (right-aligned or below), institution in accent color, details text\n- Dark mode support",
+      "stepsToVerify": [
+        "src/pages/cv.astro exists and composes all CV components",
+        "All 6 CV sub-components exist in src/components/cv/",
+        "CvHeader shows portrait, name, and title",
+        "CvContact shows all 4 contact items with icons",
+        "CvAbout shows bio paragraphs with section title",
+        "CvTechStack shows all 5 categories with tag pills",
+        "CvExperience shows all 5 jobs with consultancy grouping",
+        "CvEducation shows both education entries",
+        "All sections use consistent section title styling",
+        "Dark mode renders correctly for all components",
+        "Page accessible at /cv"
+      ],
+      "acceptanceCriteria": [
+        "CV page renders without errors at /cv",
+        "All CV data from cv.ts is displayed accurately",
+        "Consultancy grouping works correctly (HiQ groups 2 jobs, Capgemini groups 1 job)",
+        "Section title styling is consistent (uppercase, tracking-wider, orange dot)",
+        "Dark mode support works for all components",
+        "Stagger animations work across sections"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-008",
+      "category": "Feature",
+      "priority": "medium",
+      "description": "Blog setup with Content Collections",
+      "details": "Set up Astro Content Collections for a blog that is hidden from navigation until posts are ready.\n\n1. src/content/config.ts:\n- Import { defineCollection, z } from 'astro:content'\n- Import { glob } from 'astro/loaders'\n- Define blog collection with glob loader: { loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }) }\n- Schema: z.object({ title: z.string(), description: z.string(), date: z.coerce.date(), tags: z.array(z.string()).default([]), draft: z.boolean().default(false) })\n- Export collections = { blog }\n\n2. src/content/blog/.gitkeep:\n- Empty file to keep the directory in git\n\n3. src/pages/blog/index.astro:\n- Use BaseLayout with title 'Blog — Jonas Eriksson'\n- Import { getCollection } from 'astro:content'\n- Get blog posts, filter out drafts, sort by date descending\n- If no posts: show empty state message ('No posts yet. Check back soon!')\n- If posts exist: render list with title, date, description, link to post\n- Section title style consistent with other pages\n\n4. src/pages/blog/[...slug].astro:\n- Use BaseLayout\n- getStaticPaths() that fetches blog collection and maps to slug/entry pairs\n- Render post with { Content } = await entry.render()\n- Prose styling: max-w-none prose dark:prose-invert for content\n- Post header: title (text-3xl font-bold), date formatted, tags as pills\n- Back link to /blog\n\n5. Blog nav link:\n- Confirm blog link remains commented out in Header.astro (done in TASK-003)\n- Add a comment in Header.astro explaining: 'Uncomment when blog posts are ready'",
+      "stepsToVerify": [
+        "src/content/config.ts exists with blog collection definition",
+        "src/content/blog/.gitkeep exists",
+        "src/pages/blog/index.astro exists with empty state handling",
+        "src/pages/blog/[...slug].astro exists with getStaticPaths",
+        "Blog listing page shows empty state at /blog",
+        "Blog nav link is commented out in Header.astro",
+        "pnpm build succeeds with blog setup"
+      ],
+      "acceptanceCriteria": [
+        "Content collection schema compiles without errors",
+        "Blog index renders empty state at /blog",
+        "Blog post template is ready for future posts",
+        "Blog link is hidden from navigation",
+        "Build succeeds with the blog setup"
+      ],
+      "passes": false
+    }
+  ],
+  "summary": {
+    "totalRequirements": 8,
+    "byPriority": {
+      "high": 6,
+      "medium": 2,
+      "low": 0
+    }
+  }
+}

@@ -13,6 +13,10 @@ yarn-error.log*
 pnpm-debug.log*
 
 
+# cloudflare
+.wrangler/
+.dev.vars
+
 # environment variables
 .env
 .env.production

@@ -1,0 +1,5 @@
+name = "mynameisjonas-dev"
+compatibility_date = "2026-02-09"
+
+[assets]
+directory = "./dist"
