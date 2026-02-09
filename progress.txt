@@ -141,3 +141,34 @@
 - Dark mode works correctly for both components
 - Build verified passing
 - Status: COMPLETE
+
+## TASK-013: Testing — Add comprehensive test suite using Vitest
+- Installed vitest@4 and happy-dom as dev dependencies
+- Created vitest.config.ts with happy-dom environment
+- Added test and test:watch scripts to package.json (using pnpm)
+- Created tests/cv-data.test.ts (23 tests):
+  - contactInfo: validates all fields (email, phone, address, website)
+  - aboutText: validates 2 paragraphs with expected content
+  - jobs: validates 5 jobs, required fields, consultant vs direct jobs
+  - education: validates 2 entries with correct institutions
+  - techStack: validates 5 categories with expected titles and items
+  - getGroupedJobs(): validates 4 groups — Embark (1), Reason (1), HiQ (2), Capgemini (1), correct order
+- Created tests/blog-schema.test.ts (9 tests):
+  - Valid frontmatter with all fields accepted
+  - Minimal frontmatter (defaults applied for tags and draft)
+  - Date coercion from string to Date object
+  - Rejects missing title, description, or date
+  - Rejects invalid tag types
+  - Validates draft: true and default false
+- Created tests/build.test.ts (2 tests):
+  - Build completes successfully (pnpm build)
+  - All expected routes generated: /, /projects, /cv, /blog
+- Created tests/theme.test.ts (6 tests):
+  - Theme init: adds dark class when localStorage is 'dark'
+  - Theme init: no dark class when localStorage is 'light'
+  - Theme init: defaults to light when no preference
+  - Theme toggle: toggles to dark and persists
+  - Theme toggle: toggles back to light and persists
+  - Theme round-trip: toggle + simulated reload preserves state
+- All 40 tests pass, build verified passing
+- Status: COMPLETE

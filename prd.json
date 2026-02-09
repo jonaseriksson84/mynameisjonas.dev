@@ -325,7 +325,7 @@
         "Blog collection schema validation is tested",
         "All tests pass with pnpm test"
       ],
-      "passes": false
+      "passes": true
     }
   ],
   "summary": {

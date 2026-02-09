@@ -7,7 +7,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "pnpm build && wrangler deploy"
+    "deploy": "pnpm build && wrangler deploy",
+    "test": "pnpm vitest run",
+    "test:watch": "pnpm vitest"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
@@ -21,5 +23,9 @@
       "sharp",
       "workerd"
     ]
+  },
+  "devDependencies": {
+    "happy-dom": "^20.5.5",
+    "vitest": "^4.0.18"
   }
 }
