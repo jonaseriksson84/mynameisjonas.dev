@@ -42,3 +42,15 @@
 - Copied portrait image from cv-astro/public/jonas2.jpg to public/jonas.jpg
 - TypeScript compiles without errors, build passes
 - Status: COMPLETE
+
+## TASK-004: Feature — About Me page (home / index)
+- Replaced placeholder index.astro with full landing page using BaseLayout
+- Portrait image (jonas.jpg) with rounded-full, border-4 border-accent, w-32 h-32, animate-scale-in
+- Heading: "Hi, I'm Jonas" with text-4xl font-bold, animate-fade-in-up delay-1
+- Subtitle: "Fullstack Engineer & Tech Lead" with text-lg text-muted, animate-fade-in-up delay-2
+- Bio text imported from cv.ts aboutText, 2 paragraphs with animate-fade-in-up delay-3
+- CTA buttons: "View CV" (accent bg, white text) and "See Projects" (outline style) with animate-fade-in-up delay-4
+- Dark mode support for all text elements
+- Centered layout with proper spacing
+- Build verified passing
+- Status: COMPLETE

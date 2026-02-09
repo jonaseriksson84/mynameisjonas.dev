@@ -1,8 +1,45 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { aboutText } from '../data/cv';
 ---
 
 <BaseLayout title="Jonas Eriksson — Fullstack Engineer">
-  <h1 class="text-2xl font-bold">Welcome</h1>
-  <p class="mt-2 text-text-muted-light dark:text-text-muted-dark">Site under construction.</p>
+  <div class="flex flex-col items-center text-center">
+    <img
+      src="/jonas.jpg"
+      alt="Jonas Eriksson"
+      class="rounded-full border-4 border-accent w-32 h-32 object-cover animate-scale-in"
+    />
+
+    <h1 class="text-4xl font-bold mt-6 animate-fade-in-up delay-1">
+      Hi, I'm Jonas
+    </h1>
+
+    <p class="text-lg text-text-muted-light dark:text-text-muted-dark mt-2 animate-fade-in-up delay-2">
+      Fullstack Engineer & Tech Lead
+    </p>
+
+    <div class="mt-6 space-y-4 max-w-2xl animate-fade-in-up delay-3">
+      {aboutText.map((paragraph) => (
+        <p class="text-base text-text-muted-light dark:text-text-muted-dark text-pretty">
+          {paragraph}
+        </p>
+      ))}
+    </div>
+
+    <div class="flex gap-4 mt-8 animate-fade-in-up delay-4">
+      <a
+        href="/cv"
+        class="px-6 py-2.5 rounded-lg bg-accent text-white font-medium hover:bg-accent-hover transition-colors duration-200"
+      >
+        View CV
+      </a>
+      <a
+        href="/projects"
+        class="px-6 py-2.5 rounded-lg border-2 border-accent text-accent font-medium hover:bg-accent hover:text-white transition-colors duration-200"
+      >
+        See Projects
+      </a>
+    </div>
+  </div>
 </BaseLayout>

@@ -101,7 +101,7 @@
         "CTA buttons navigate to correct pages",
         "Dark mode support works"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-005",
