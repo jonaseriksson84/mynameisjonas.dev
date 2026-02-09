@@ -253,7 +253,7 @@
         "Collapsible sections use consistent styling with the rest of the CV",
         "Tech Stack is visually more compact when expanded"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-011",

@@ -102,3 +102,17 @@
 - All elements verified correct in dark mode (no regressions)
 - Build verified passing
 - Status: COMPLETE
+
+## TASK-010: Improvement — CV layout: experience front and center, collapsible about & tech stack
+- Reordered CV page sections: CvHeader → CvContact → CvExperience → CvAbout → CvTechStack → CvEducation
+- Experience now appears immediately after header/contact, as the primary focus of the CV
+- Made CvAbout collapsible using <details>/<summary> — collapsed by default
+  - Summary shows section title with chevron indicator that rotates on open
+  - Hidden default marker, custom styling with hover state
+- Made CvTechStack collapsible using <details>/<summary> — collapsed by default
+  - Same disclosure pattern as About section for consistency
+  - More compact layout: 2-column grid (sm+) with inline category labels followed by pills
+  - Category title displayed as inline label with colon, followed by tag pills in a flowing row
+- Both collapsible sections have chevron rotation animation (duration-200, rotate-90 on open)
+- Build verified passing
+- Status: COMPLETE
