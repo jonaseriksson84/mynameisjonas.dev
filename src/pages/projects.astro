@@ -1,87 +1,105 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 const projects = [
   {
-    title: '3D Earth',
-    description: 'Interactive 3D globe visualization with real-time controls for time, clouds, atmosphere, and celestial bodies. Rotate, zoom, and explore Earth with dynamic geographic markers.',
-    tech: ['Three.js', 'TypeScript', 'Cloudflare Workers'],
-    url: 'https://3d-earth.je-projects.workers.dev/',
-    github: 'https://github.com/jonaseriksson84/3d-earth',
+    title: "3D Earth",
+    description:
+      "Interactive 3D globe visualization with real-time controls for time, clouds, atmosphere, and celestial bodies. Rotate, zoom, and explore Earth with dynamic geographic markers.",
+    tech: ["Three.js", "TypeScript", "Cloudflare Workers"],
+    url: "https://3d-earth.je-projects.workers.dev/",
+    github: "https://github.com/jonaseriksson84/3d-earth",
   },
   {
-    title: 'ChromaCross',
-    description: 'A daily word puzzle game where players guess letters to reveal two intersecting words. Each letter is represented by a distinct color, with a limit of eight wrong guesses.',
-    tech: ['TypeScript', 'React', 'Cloudflare Workers'],
-    url: 'https://chromacross.app/',
-    github: 'https://github.com/jonaseriksson84/chromacross',
+    title: "ChromaCross",
+    description:
+      "A daily word puzzle game where players guess letters to reveal two intersecting words. Each letter is represented by a distinct color, with a limit of eight wrong guesses.",
+    tech: ["TypeScript", "React", "Cloudflare Workers"],
+    url: "https://chromacross.app/",
+    github: "https://github.com/jonaseriksson84/chromacross",
+  },
+  {
+    title: "ralph-cli",
+    description:
+      "Re-usable scaffolding for the Ralph Wiggum technique that lets you build software while you sleep",
+    tech: ["TypeScript", "AI"],
+    github: "https://github.com/jonaseriksson84/ralph-cli",
   },
 ];
 ---
 
 <BaseLayout title="Projects — Jonas Eriksson">
-  <h1 class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-8 animate-fade-in-up delay-0">
+  <h1
+    class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-8 animate-fade-in-up delay-0"
+  >
     <span class="text-accent">●</span> Projects
   </h1>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-    {projects.map((project, i) => (
-      <div
-        class:list={[
-          'project-card bg-white dark:bg-surface-dark rounded-xl p-6 border border-stone-200 dark:border-transparent',
-          'animate-fade-in-up',
-          `delay-${i + 1}`,
-        ]}
-      >
-        <h2 class="text-lg font-semibold text-text-light dark:text-text-dark">
-          {project.title}
-        </h2>
-        <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-2">
-          {project.description}
-        </p>
-        <div class="flex flex-wrap gap-1.5 mt-4">
-          {project.tech.map((t) => (
-            <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300">
-              {t}
-            </span>
-          ))}
-        </div>
-        {(project.url || project.github) && (
-          <div class="flex gap-3 mt-4">
-            {project.url && (
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
-              >
-                Visit
-              </a>
-            )}
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
-              >
-                GitHub
-              </a>
-            )}
+    {
+      projects.map((project, i) => (
+        <div
+          class:list={[
+            "project-card bg-white dark:bg-surface-dark rounded-xl p-6 border border-stone-200 dark:border-transparent",
+            "animate-fade-in-up",
+            `delay-${i + 1}`,
+          ]}
+        >
+          <h2 class="text-lg font-semibold text-text-light dark:text-text-dark">
+            {project.title}
+          </h2>
+          <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-2">
+            {project.description}
+          </p>
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            {project.tech.map((t) => (
+              <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300">
+                {t}
+              </span>
+            ))}
           </div>
-        )}
-      </div>
-    ))}
+          {(project.url || project.github) && (
+            <div class="flex gap-3 mt-4">
+              {project.url && (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+                >
+                  Visit
+                </a>
+              )}
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+                >
+                  GitHub
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      ))
+    }
   </div>
 </BaseLayout>
 
 <style>
   .project-card {
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
   .project-card:hover {
     transform: translateY(-2px);
     border-color: var(--color-accent);
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
 </style>

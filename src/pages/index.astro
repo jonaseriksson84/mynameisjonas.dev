@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { aboutText } from '../data/cv';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { aboutText } from "../data/cv";
 ---
 
 <BaseLayout title="Jonas Eriksson — Fullstack Engineer">
@@ -15,16 +15,52 @@ import { aboutText } from '../data/cv';
       Hi, I'm Jonas
     </h1>
 
-    <p class="text-lg text-text-muted-light dark:text-text-muted-dark mt-2 animate-fade-in-up delay-2">
+    <p
+      class="text-lg text-text-muted-light dark:text-text-muted-dark mt-2 animate-fade-in-up delay-2"
+    >
       Fullstack Engineer & Tech Lead
     </p>
 
     <div class="mt-6 space-y-4 max-w-2xl animate-fade-in-up delay-3">
-      {aboutText.map((paragraph) => (
-        <p class="text-base text-text-muted-light dark:text-text-muted-dark text-pretty">
-          {paragraph}
-        </p>
-      ))}
+      <p
+        class="text-base text-text-muted-light dark:text-text-muted-dark text-pretty"
+      >
+        I work as a fullstack engineer, tech lead and manager at <a
+          rel="noopener noreferrer"
+          class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+          href="https://www.embark-studios.com"
+          target="_blank">Embark Studios</a
+        >. You might have heard about our games <a
+          rel="noopener noreferrer"
+          class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+          href="https://www.arcraiders.com"
+          target="_blank">ARC Raiders</a
+        > and <a
+          href="https://www.reachthefinals.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+          >THE FINALS</a
+        >.
+      </p>
+      <p
+        class="text-base text-text-muted-light dark:text-text-muted-dark text-pretty"
+      >
+        This is my personal space where I post random thoughts, link some of my <a
+          href="/projects">projects</a
+        > and so on.
+      </p>
+      <p
+        class="text-base text-text-muted-light dark:text-text-muted-dark text-pretty"
+      >
+        Check out my <a
+          href="https://github.com/jonaseriksson84"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+          >GitHub</a
+        >!
+      </p>
     </div>
 
     <div class="flex gap-4 mt-8 animate-fade-in-up delay-4">
