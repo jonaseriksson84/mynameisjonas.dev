@@ -428,7 +428,7 @@
         "Layout remains compact — not too much added whitespace",
         "Styling is consistent with the rest of the CV page"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-019",

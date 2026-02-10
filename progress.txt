@@ -224,3 +224,14 @@
 - Dark mode uses bg-surface-dark/80 with border-stone-800 (no regressions)
 - Marking as complete (was fixed but not marked as passing)
 - Status: COMPLETE
+
+## TASK-018: Improvement — Add visual dividers to About/Tech Stack sections
+- CvTechStack: Replaced 2-column grid with single-column list using `divide-y divide-stone-200/80 dark:divide-stone-700/50`
+- Each tech category now separated by a subtle horizontal rule for clear visual distinction
+- Categories retain compact layout with inline category label + flowing pills
+- CvAbout: Added `border-t border-stone-200/80 dark:border-stone-700/50` with `pt-2` to content area
+- Creates visual separation between the summary trigger and the expanded bio content
+- Dividers work correctly in both light and dark modes (stone-200/80 light, stone-700/50 dark)
+- Layout remains compact — dividers add visual clarity without significant extra whitespace
+- All 40 tests pass, build verified passing
+- Status: COMPLETE
