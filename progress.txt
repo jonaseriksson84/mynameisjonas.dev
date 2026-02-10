@@ -191,3 +191,13 @@
 - Changed 'jonas eriksson' to 'Jonas Eriksson' in Header.astro site title link
 - All 40 tests pass, build verified passing
 - Status: COMPLETE
+
+## TASK-016: Bugfix — Fix light mode text contrast
+- Root cause: --color-text-muted-light was #78716c (stone-500), giving only ~4.2:1 contrast ratio against #fafaf9 background
+- Fix: Changed --color-text-muted-light to #57534e (stone-600), improving contrast to ~6.3:1 (above WCAG AA 4.5:1)
+- Single-line change in src/styles/global.css @theme block
+- Affects all muted/body text site-wide: bio paragraphs, job achievements, descriptions, secondary text, timestamps
+- All pages (home, projects, CV, blog) now have clearly readable text in light mode
+- Dark mode text styling completely unaffected (--color-text-muted-dark unchanged)
+- All 40 tests pass, build verified passing
+- Status: COMPLETE

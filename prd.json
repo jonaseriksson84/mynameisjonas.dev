@@ -387,7 +387,7 @@
         "No text is difficult to read due to transparency or low contrast",
         "Dark mode text remains unchanged"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-017",
