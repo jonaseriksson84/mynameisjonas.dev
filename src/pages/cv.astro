@@ -1,11 +1,11 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CvHeader from '../components/cv/CvHeader.astro';
-import CvContact from '../components/cv/CvContact.astro';
-import CvAbout from '../components/cv/CvAbout.astro';
-import CvTechStack from '../components/cv/CvTechStack.astro';
-import CvExperience from '../components/cv/CvExperience.astro';
-import CvEducation from '../components/cv/CvEducation.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CvHeader from "../components/cv/CvHeader.astro";
+import CvContact from "../components/cv/CvContact.astro";
+import CvAbout from "../components/cv/CvAbout.astro";
+import CvTechStack from "../components/cv/CvTechStack.astro";
+import CvExperience from "../components/cv/CvExperience.astro";
+import CvEducation from "../components/cv/CvEducation.astro";
 ---
 
 <BaseLayout title="CV — Jonas Eriksson">
@@ -14,14 +14,14 @@ import CvEducation from '../components/cv/CvEducation.astro';
       <CvHeader />
       <CvContact />
     </div>
-    <div class="animate-fade-in-up delay-1">
-      <CvExperience />
-    </div>
     <div class="animate-fade-in-up delay-2">
       <CvAbout />
     </div>
     <div class="animate-fade-in-up delay-3">
       <CvTechStack />
+    </div>
+    <div class="animate-fade-in-up delay-1">
+      <CvExperience />
     </div>
     <div class="animate-fade-in-up delay-4">
       <CvEducation />
