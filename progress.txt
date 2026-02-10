@@ -172,3 +172,17 @@
   - Theme round-trip: toggle + simulated reload preserves state
 - All 40 tests pass, build verified passing
 - Status: COMPLETE
+
+## TASK-015: Bugfix — Fix light mode headings visibility
+- Root cause: Tailwind v4's `dark:` variant defaulted to `@media(prefers-color-scheme:dark)`, but site uses class-based dark mode (`html.dark` toggle)
+- When OS dark mode was active, ALL `dark:` utilities activated regardless of the theme toggle, causing white headings on light backgrounds
+- Fix: Added `@custom-variant dark (&:where(.dark, .dark *));` to src/styles/global.css
+- This single line change tells Tailwind v4 to use class-based dark mode instead of media query-based
+- All `dark:` utilities now only activate when `.dark` class is present on the html element
+- Also fixes dark mode for ALL elements site-wide (not just headings) — bg, text, border, etc.
+- Verified: `prefers-color-scheme` no longer appears in compiled CSS output
+- Verified: dark selectors now use `:where(.dark, .dark *)` pattern
+- All h1/h2/h3 elements use appropriate dark text colors in light mode
+- Dark mode still works correctly via class toggle
+- All 40 tests pass, build verified passing
+- Status: COMPLETE

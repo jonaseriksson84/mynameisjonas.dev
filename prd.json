@@ -327,13 +327,154 @@
       ],
       "passes": true
     }
+    ,
+    {
+      "id": "TASK-014",
+      "category": "Bugfix",
+      "priority": "high",
+      "description": "Fix light mode pill/tag styling",
+      "details": "The pills/tags (tech stack items, buzzwords, etc.) on the CV page and elsewhere are pitch black with white text in light mode, which looks harsh and out of place. Replace with a light, subtle style that fits the light theme: white or very light background (e.g. bg-white or bg-stone-50) with a grayish border/outline (e.g. border-stone-300) and dark text (e.g. text-stone-700). Keep the dark mode pill styling as-is.",
+      "stepsToVerify": [
+        "Pills/tags on CV page have light background in light mode, not black",
+        "Pills/tags have visible grayish border/outline in light mode",
+        "Text inside pills is readable with good contrast in light mode",
+        "Dark mode pill styling is unchanged",
+        "Pills on projects page tech tags also use the corrected styling"
+      ],
+      "acceptanceCriteria": [
+        "All pill/tag elements use a white/light bg with subtle gray outline in light mode",
+        "Pills blend naturally with the light theme",
+        "Dark mode remains unaffected"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-015",
+      "category": "Bugfix",
+      "priority": "high",
+      "description": "Fix light mode headings visibility",
+      "details": "Headings on the CV page (and potentially other pages) appear white in light mode, making them invisible against the light background. Ensure all headings (section titles, name, etc.) use a dark text color in light mode (e.g. text-stone-900 or var(--color-text-light)). They should only be white/light in dark mode.",
+      "stepsToVerify": [
+        "CV page section headings are clearly visible in light mode",
+        "CV header name is visible in light mode",
+        "All h1/h2/h3 elements have appropriate dark text in light mode",
+        "Headings remain light/white in dark mode",
+        "Check all pages (home, projects, CV) for heading visibility"
+      ],
+      "acceptanceCriteria": [
+        "All headings are clearly readable against the light background",
+        "No white-on-white text anywhere in light mode",
+        "Dark mode heading colors remain correct"
+      ],
+      "passes": true
+    },
+    {
+      "id": "TASK-016",
+      "category": "Bugfix",
+      "priority": "high",
+      "description": "Fix light mode text contrast",
+      "details": "Body text and general content text in light mode is far too transparent/faded, making it difficult or impossible to read. Increase the opacity and ensure proper contrast ratios. Text should use solid, readable colors in light mode — e.g. text-stone-800 for body text, text-stone-600 for muted/secondary text. Review all text across all pages and fix any instances of poor contrast in light mode.",
+      "stepsToVerify": [
+        "Body text on all pages is clearly readable in light mode",
+        "Muted/secondary text has adequate contrast in light mode",
+        "Bio paragraphs on home and CV pages are easy to read",
+        "Job descriptions and achievements on CV are legible",
+        "No text appears faded or washed out in light mode",
+        "Dark mode text styling remains unaffected"
+      ],
+      "acceptanceCriteria": [
+        "All text meets reasonable contrast ratios in light mode",
+        "No text is difficult to read due to transparency or low contrast",
+        "Dark mode text remains unchanged"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-017",
+      "category": "Bugfix",
+      "priority": "high",
+      "description": "Fix light mode project card backgrounds",
+      "details": "Project cards on the /projects page have black/dark backgrounds in light mode, clashing badly with the light page background. Apply the same approach as the pill fix: cards should have a white or very light surface background (e.g. bg-white or bg-stone-50) with a subtle grayish border (e.g. border-stone-200) in light mode. Keep the dark mode card styling (dark surface bg) as-is.",
+      "stepsToVerify": [
+        "Project cards have white/light background in light mode",
+        "Project cards have a subtle border visible in light mode",
+        "Card text (title, description) is clearly readable in light mode",
+        "Card hover effects still work correctly in light mode",
+        "Dark mode card styling is unchanged"
+      ],
+      "acceptanceCriteria": [
+        "Project cards blend naturally with the light theme",
+        "Cards are clearly distinguishable but not harsh against the light background",
+        "Dark mode card appearance is unaffected"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-018",
+      "category": "Improvement",
+      "priority": "medium",
+      "description": "Add visual dividers to About/Tech Stack sections",
+      "details": "The About and Tech Stack sections (which sit above Experience on the CV page) look too cluttered with no visual separation between the different tech categories and subsections. Add natural dividers or spacing between the different sections within About/Tech Stack to create visual breathing room, while keeping the overall layout compact. Options include subtle horizontal rules, increased spacing between categories, or light separator lines between tech category groups. The goal is clarity without wasting vertical space.",
+      "stepsToVerify": [
+        "Tech stack categories have visible separation between them",
+        "About section content has clear visual structure",
+        "Dividers/spacing feel natural and not excessive",
+        "Overall section remains compact despite added separation",
+        "Dividers work in both light and dark mode"
+      ],
+      "acceptanceCriteria": [
+        "Tech stack categories are visually distinct from each other",
+        "The About/Tech Stack area no longer feels cluttered",
+        "Layout remains compact — not too much added whitespace",
+        "Styling is consistent with the rest of the CV page"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-019",
+      "category": "Bugfix",
+      "priority": "high",
+      "description": "Fix Header light mode styling",
+      "details": "The <Header> component looks terrible in light mode — it appears as flat gray with no visual appeal, unlike the polished dark mode version. Restyle the header for light mode so it looks intentionally designed: use colors that work well against the light background (e.g. clean white/light bg with subtle shadow or border, accent-colored nav links or hover states, proper contrast for the site title and nav items). It should feel as polished in light mode as it does in dark mode.",
+      "stepsToVerify": [
+        "Header has a clean, intentional look in light mode",
+        "Site title is clearly visible and styled in light mode",
+        "Nav links are readable with good contrast in light mode",
+        "Active nav link highlighting works in light mode",
+        "Hover states on nav links look polished in light mode",
+        "Theme toggle button is visible and styled in light mode",
+        "Header still looks great in dark mode (no regressions)"
+      ],
+      "acceptanceCriteria": [
+        "Header looks polished and intentional in light mode",
+        "All header elements have proper contrast and styling",
+        "Light mode header quality matches dark mode quality",
+        "No dark mode regressions"
+      ],
+      "passes": false
+    },
+    {
+      "id": "TASK-020",
+      "category": "Bugfix",
+      "priority": "low",
+      "description": "Capitalize Header site title",
+      "details": "Change the site title text in the <Header> component from 'jonas eriksson' (lowercase) to 'Jonas Eriksson' (properly capitalized).",
+      "stepsToVerify": [
+        "Header displays 'Jonas Eriksson' not 'jonas eriksson'",
+        "Capitalization is correct on all pages"
+      ],
+      "acceptanceCriteria": [
+        "Site title in header reads 'Jonas Eriksson' with proper capitalization"
+      ],
+      "passes": false
+    }
   ],
   "summary": {
-    "totalRequirements": 13,
+    "totalRequirements": 20,
     "byPriority": {
-      "high": 8,
-      "medium": 5,
-      "low": 0
+      "high": 13,
+      "medium": 6,
+      "low": 1
     }
   }
 }
