@@ -346,7 +346,7 @@
         "Pills blend naturally with the light theme",
         "Dark mode remains unaffected"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-015",
@@ -407,7 +407,7 @@
         "Cards are clearly distinguishable but not harsh against the light background",
         "Dark mode card appearance is unaffected"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-018",
@@ -451,7 +451,7 @@
         "Light mode header quality matches dark mode quality",
         "No dark mode regressions"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "id": "TASK-020",

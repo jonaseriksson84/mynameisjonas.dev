@@ -201,3 +201,26 @@
 - Dark mode text styling completely unaffected (--color-text-muted-dark unchanged)
 - All 40 tests pass, build verified passing
 - Status: COMPLETE
+
+## TASK-014: Bugfix — Fix light mode pill/tag styling
+- Updated pill/tag elements across all 3 files: CvTechStack.astro, CvExperience.astro, projects.astro
+- Changed light mode background from bg-stone-100 to bg-white for cleaner appearance
+- Changed light mode border from border-stone-200 to border-stone-300 for more visible outline
+- Kept text-stone-700 in light mode (good contrast)
+- Dark mode styling unchanged (bg-stone-800, border-stone-700, text-stone-300)
+- Pills now blend naturally with the light theme using white bg with subtle gray outline
+- All 40 tests pass, build verified passing
+- Status: COMPLETE
+
+## TASK-017: Bugfix — Fix light mode project card backgrounds
+- Already fixed in TASK-009: cards use bg-white dark:bg-surface-dark with border-stone-200
+- Verified: cards have white background with subtle border in light mode, dark surface in dark mode
+- Marking as complete (was fixed but not marked as passing)
+- Status: COMPLETE
+
+## TASK-019: Bugfix — Fix Header light mode styling
+- Already fixed in TASK-009: header uses bg-white/90 with backdrop-blur-md and border-stone-200/60
+- Verified: header looks clean and polished in light mode with proper contrast for all elements
+- Dark mode uses bg-surface-dark/80 with border-stone-800 (no regressions)
+- Marking as complete (was fixed but not marked as passing)
+- Status: COMPLETE
