@@ -186,3 +186,8 @@
 - Dark mode still works correctly via class toggle
 - All 40 tests pass, build verified passing
 - Status: COMPLETE
+
+## TASK-020: Bugfix — Capitalize Header site title
+- Changed 'jonas eriksson' to 'Jonas Eriksson' in Header.astro site title link
+- All 40 tests pass, build verified passing
+- Status: COMPLETE

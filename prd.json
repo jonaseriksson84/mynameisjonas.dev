@@ -466,7 +466,7 @@
       "acceptanceCriteria": [
         "Site title in header reads 'Jonas Eriksson' with proper capitalization"
       ],
-      "passes": false
+      "passes": true
     }
   ],
   "summary": {
