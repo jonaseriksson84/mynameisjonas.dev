@@ -1,20 +1,14 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+import { isNavLinkActive } from "../lib/navigation";
 
 const pathname = Astro.url.pathname;
 
 const navLinks = [
-  { label: 'About', href: '/' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'CV', href: '/cv' },
+  { label: "About", href: "/" },
+  { label: "Projects", href: "/projects" },
+  { label: "CV", href: "/cv" },
 ];
-
-function isActive(href: string): boolean {
-  if (href === '/') {
-    return pathname === '/' || pathname === '';
-  }
-  return pathname.startsWith(href);
-}
 ---
 
 <nav class="sticky top-0 z-40 backdrop-blur-md bg-white/90 dark:bg-surface-dark/80 border-b border-stone-200/60 dark:border-stone-800">
@@ -28,7 +22,7 @@ function isActive(href: string): boolean {
           href={link.href}
           class:list={[
             'text-sm transition-colors',
-            isActive(link.href)
+            isNavLinkActive(pathname, link.href)
               ? 'text-accent font-semibold'
               : 'text-text-muted-light dark:text-text-muted-dark hover:text-accent',
           ]}

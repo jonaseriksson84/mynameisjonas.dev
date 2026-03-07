@@ -63,11 +63,12 @@
 </style>
 
 <script>
+  import { toggleTheme } from "../lib/theme";
+
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
     const toggle = () => {
-      document.documentElement.classList.toggle('dark');
-      const isDark = document.documentElement.classList.contains('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      const theme = toggleTheme(document.documentElement);
+      localStorage.setItem("theme", theme);
     };
 
     if (document.startViewTransition) {

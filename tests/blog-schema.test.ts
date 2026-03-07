@@ -1,14 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { z } from "astro/zod";
-
-// Recreate the blog schema to test validation logic independently
-const blogSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  date: z.coerce.date(),
-  tags: z.array(z.string()).default([]),
-  draft: z.boolean().default(false),
-});
+import { blogSchema } from "../src/content/schema";
 
 describe("blog schema validation", () => {
   it("accepts valid frontmatter with all fields", () => {

@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
+import { initTheme, resolveInitialTheme, toggleTheme } from "../src/lib/theme";
 
 describe("theme initialization logic", () => {
   beforeEach(() => {
@@ -6,34 +7,33 @@ describe("theme initialization logic", () => {
     localStorage.clear();
   });
 
-  function applyThemeInit() {
-    // Replicate the inline theme flash prevention script from BaseLayout.astro
-    const theme = localStorage.getItem("theme");
-    if (
-      theme === "dark" ||
-      (!theme &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-    }
-  }
-
   it("adds dark class when localStorage theme is 'dark'", () => {
     localStorage.setItem("theme", "dark");
-    applyThemeInit();
+    initTheme(document.documentElement, localStorage.getItem("theme"), false);
     expect(document.documentElement.classList.contains("dark")).toBe(true);
   });
 
   it("does not add dark class when localStorage theme is 'light'", () => {
     localStorage.setItem("theme", "light");
-    applyThemeInit();
+    initTheme(document.documentElement, localStorage.getItem("theme"), true);
     expect(document.documentElement.classList.contains("dark")).toBe(false);
   });
 
   it("does not add dark class when no preference and prefers-color-scheme is light", () => {
-    // happy-dom defaults matchMedia to not match
-    applyThemeInit();
+    initTheme(document.documentElement, localStorage.getItem("theme"), false);
     expect(document.documentElement.classList.contains("dark")).toBe(false);
+  });
+
+  it("adds dark class when no preference and prefers-color-scheme is dark", () => {
+    initTheme(document.documentElement, localStorage.getItem("theme"), true);
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+  });
+
+  it("resolves initial theme deterministically", () => {
+    expect(resolveInitialTheme("dark", false)).toBe("dark");
+    expect(resolveInitialTheme("light", true)).toBe("light");
+    expect(resolveInitialTheme(null, true)).toBe("dark");
+    expect(resolveInitialTheme(null, false)).toBe("light");
   });
 });
 
@@ -43,36 +43,30 @@ describe("theme toggle logic", () => {
     localStorage.clear();
   });
 
-  function toggleTheme() {
-    // Replicate the toggle logic from ThemeToggle.astro
-    const isDark = document.documentElement.classList.toggle("dark");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-  }
-
   it("toggles to dark mode and persists", () => {
-    toggleTheme();
+    const theme = toggleTheme(document.documentElement);
+    localStorage.setItem("theme", theme);
     expect(document.documentElement.classList.contains("dark")).toBe(true);
     expect(localStorage.getItem("theme")).toBe("dark");
   });
 
   it("toggles back to light mode and persists", () => {
     document.documentElement.classList.add("dark");
-    toggleTheme();
+    const theme = toggleTheme(document.documentElement);
+    localStorage.setItem("theme", theme);
     expect(document.documentElement.classList.contains("dark")).toBe(false);
     expect(localStorage.getItem("theme")).toBe("light");
   });
 
   it("round-trips through toggle and init", () => {
     // Toggle to dark
-    toggleTheme();
+    const nextTheme = toggleTheme(document.documentElement);
+    localStorage.setItem("theme", nextTheme);
     expect(localStorage.getItem("theme")).toBe("dark");
 
     // Simulate page reload: remove class, re-run init
     document.documentElement.classList.remove("dark");
-    const theme = localStorage.getItem("theme");
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    }
+    initTheme(document.documentElement, localStorage.getItem("theme"), false);
     expect(document.documentElement.classList.contains("dark")).toBe(true);
   });
 });

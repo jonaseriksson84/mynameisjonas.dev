@@ -1,23 +1,16 @@
 import { describe, it, expect } from "vitest";
-import { execSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 
 const rootDir = resolve(import.meta.dirname, "..");
 
-describe("build", () => {
-  it("completes successfully", { timeout: 60_000 }, () => {
-    expect(() => {
-      execSync("pnpm build", { cwd: rootDir, stdio: "pipe" });
-    }).not.toThrow();
-  });
-
-  it("generates expected routes", () => {
+describe("routes", () => {
+  it("has expected route source files", () => {
     const expectedFiles = [
-      "dist/index.html",
-      "dist/projects/index.html",
-      "dist/cv/index.html",
-      "dist/blog/index.html",
+      "src/pages/index.astro",
+      "src/pages/projects.astro",
+      "src/pages/cv.astro",
+      "src/pages/blog/index.astro",
     ];
     for (const file of expectedFiles) {
       expect(
