@@ -20,11 +20,18 @@ const { title, description = 'Jonas Eriksson — Fullstack Engineer' } = Astro.p
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <script>
-      import { initTheme } from "../lib/theme";
-      const theme = localStorage.getItem("theme");
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      initTheme(document.documentElement, theme, prefersDark);
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const storedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const theme = storedTheme === "dark" || (storedTheme !== "light" && prefersDark)
+          ? "dark"
+          : "light";
+
+        root.classList.toggle("dark", theme === "dark");
+        root.style.colorScheme = theme;
+      })();
     </script>
   </head>
   <body class="min-h-screen antialiased">

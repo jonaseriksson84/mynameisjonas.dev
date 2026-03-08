@@ -17,11 +17,22 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--color-bg-light);
+  color: var(--color-text-light);
+  color-scheme: light;
+}
+
+html.dark {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-dark);
+  color-scheme: dark;
 }
 
 body {
   background-color: var(--color-bg-light);
   color: var(--color-text-light);
+  min-height: 100vh;
+  min-height: 100dvh;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -36,6 +47,10 @@ html.dark body {
 
 ::view-transition-new(root) {
   animation: fade-in 0.4s ease-out;
+}
+
+::view-transition {
+  background-color: inherit;
 }
 
 @keyframes fade-in {

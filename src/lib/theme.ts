@@ -1,5 +1,13 @@
 export type ThemeMode = "light" | "dark";
 
+function applyTheme(root: Element, theme: ThemeMode): ThemeMode {
+  root.classList.toggle("dark", theme === "dark");
+  if (root instanceof HTMLElement) {
+    root.style.colorScheme = theme;
+  }
+  return theme;
+}
+
 export function resolveInitialTheme(
   storedTheme: string | null,
   prefersDark: boolean
@@ -19,11 +27,10 @@ export function initTheme(
   prefersDark: boolean
 ): ThemeMode {
   const theme = resolveInitialTheme(storedTheme, prefersDark);
-  root.classList.toggle("dark", theme === "dark");
-  return theme;
+  return applyTheme(root, theme);
 }
 
 export function toggleTheme(root: Element): ThemeMode {
-  const isDark = root.classList.toggle("dark");
-  return isDark ? "dark" : "light";
+  const theme = root.classList.contains("dark") ? "light" : "dark";
+  return applyTheme(root, theme);
 }
