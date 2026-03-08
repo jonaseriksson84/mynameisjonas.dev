@@ -11,19 +11,20 @@ const navLinks = [
 ];
 ---
 
-<nav class="sticky top-0 z-40 backdrop-blur-md bg-white/90 dark:bg-surface-dark/80 border-b border-stone-200/60 dark:border-stone-800">
+<nav class="sticky top-0 z-40 border-b border-stone-200/60 bg-white/90 backdrop-blur-md dark:border-stone-800 dark:bg-surface-dark/80">
   <div class="max-w-3xl mx-auto px-4 flex items-center justify-between h-14">
-    <a href="/" class="font-semibold text-base hover:text-accent transition-colors">
+    <a href="/" class="font-semibold text-base hover:text-accent transition-colors duration-200">
       Jonas Eriksson
     </a>
     <div class="flex items-center gap-6">
       {navLinks.map((link) => (
         <a
           href={link.href}
+          aria-current={isNavLinkActive(pathname, link.href) ? "page" : undefined}
           class:list={[
-            'text-sm transition-colors',
+            'relative inline-flex items-center text-sm transition-[color,transform] duration-200 ease-[var(--ease-soft-spring)] hover:-translate-y-px motion-reduce:transform-none before:absolute before:left-0 before:right-0 before:-bottom-[0.35rem] before:h-[2px] before:origin-center before:scale-x-[0.35] before:bg-accent before:opacity-0 before:transition-[transform,opacity] before:duration-200 before:ease-[var(--ease-soft-spring)] hover:before:scale-x-100 hover:before:opacity-100 focus-visible:before:scale-x-100 focus-visible:before:opacity-100',
             isNavLinkActive(pathname, link.href)
-              ? 'text-accent font-semibold'
+              ? 'text-accent font-semibold before:scale-x-100 before:opacity-100'
               : 'text-text-muted-light dark:text-text-muted-dark hover:text-accent',
           ]}
         >

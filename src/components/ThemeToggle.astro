@@ -2,9 +2,13 @@
 
 ---
 
-<button id="theme-toggle" aria-label="Toggle dark mode" class="theme-toggle">
+<button
+  id="theme-toggle"
+  aria-label="Toggle dark mode"
+  class="relative inline-grid h-10 w-10 place-items-center rounded-lg bg-transparent p-0 text-text-light transition-[background-color,color,transform] duration-200 ease-[var(--ease-soft-spring)] hover:-translate-y-px hover:bg-[rgb(249_115_22_/_0.08)] hover:text-accent active:scale-[0.94] motion-reduce:transform-none dark:text-text-dark"
+>
   <!-- Sun icon (shown in dark mode) -->
-  <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <svg class="col-start-1 row-start-1 opacity-0 transition-[opacity,transform,color] duration-200 ease-[var(--ease-soft-spring)] scale-[0.8] -rotate-12 dark:scale-100 dark:rotate-0 dark:opacity-100" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="5"></circle>
     <line x1="12" y1="1" x2="12" y2="3"></line>
     <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -16,56 +20,21 @@
     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
   </svg>
   <!-- Moon icon (shown in light mode) -->
-  <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <svg class="col-start-1 row-start-1 opacity-100 transition-[opacity,transform,color] duration-200 ease-[var(--ease-soft-spring)] dark:scale-[0.8] dark:rotate-12 dark:opacity-0" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
   </svg>
 </button>
 
-<style>
-  .theme-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    color: var(--color-text-light);
-    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-  }
-
-  :global(html.dark) .theme-toggle {
-    color: var(--color-text-dark);
-  }
-
-  .theme-toggle:hover {
-    color: var(--color-accent);
-    transform: scale(1.1);
-  }
-
-  .theme-toggle:active {
-    transform: scale(0.95);
-  }
-
-  .icon-sun {
-    display: none;
-  }
-
-  .icon-moon {
-    display: block;
-  }
-
-  :global(html.dark) .icon-sun {
-    display: block;
-  }
-
-  :global(html.dark) .icon-moon {
-    display: none;
-  }
-</style>
-
 <script>
   import { toggleTheme } from "../lib/theme";
 
-  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+  document.getElementById('theme-toggle')?.addEventListener('click', (event) => {
+    const button = event.currentTarget;
+    button.classList.remove("animate-[icon-wobble_520ms_var(--ease-soft-spring)]");
+    void button.offsetWidth;
+    button.classList.add("animate-[icon-wobble_520ms_var(--ease-soft-spring)]");
+    window.setTimeout(() => button.classList.remove("animate-[icon-wobble_520ms_var(--ease-soft-spring)]"), 600);
+
     const toggle = () => {
       const theme = toggleTheme(document.documentElement);
       localStorage.setItem("theme", theme);
