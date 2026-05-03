@@ -2,9 +2,33 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const posts = (await getCollection('blog'))
-  .filter((post) => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const allPosts = (await getCollection('blog')).filter((p) => !p.data.draft);
+
+// Separate series posts from standalone posts
+const seriesMap = new Map<string, typeof allPosts>();
+const standalonePosts: typeof allPosts = [];
+
+for (const post of allPosts) {
+  if (post.data.series) {
+    const key = post.data.series;
+    if (!seriesMap.has(key)) seriesMap.set(key, []);
+    seriesMap.get(key)!.push(post);
+  } else {
+    standalonePosts.push(post);
+  }
+}
+
+for (const posts of seriesMap.values()) {
+  posts.sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0));
+}
+
+// Sort standalone posts by date descending
+standalonePosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Series groups, sorted by their first part's date descending
+const seriesGroups = [...seriesMap.values()].sort(
+  (a, b) => b[0].data.date.valueOf() - a[0].data.date.valueOf()
+);
 ---
 
 <BaseLayout title="Blog — Jonas Eriksson">
@@ -12,27 +36,101 @@ const posts = (await getCollection('blog'))
     <span class="text-accent">●</span> Blog
   </h1>
 
-  {posts.length === 0 ? (
+  {allPosts.length === 0 ? (
     <p class="text-text-muted-light dark:text-text-muted-dark animate-fade-in-up delay-1">
       No posts yet. Check back soon!
     </p>
   ) : (
-    <ul class="space-y-8">
-      {posts.map((post, i) => (
-        <li class:list={['animate-fade-in-up', `delay-${i + 1}`]}>
-          <a href={`/blog/${post.id}`} class="group block">
-            <h2 class="text-lg font-semibold text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
-              {post.data.title}
-            </h2>
-            <time class="text-xs text-text-muted-light dark:text-text-muted-dark" datetime={post.data.date.toISOString()}>
-              {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </time>
-            <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1">
-              {post.data.description}
+    <div class="space-y-10">
+
+      {seriesGroups.map((posts, i) => {
+        const first = posts[0];
+        return (
+          <div class:list={['animate-fade-in-up', `delay-${i + 1}`]}>
+            {first.data.cover && (
+              <img
+                src={first.data.cover}
+                alt={first.data.seriesTitle ?? ''}
+                class="w-full h-40 object-cover rounded-lg mb-3 border border-stone-200 dark:border-stone-800"
+              />
+            )}
+            <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-1">
+              Series &middot; {posts.length} parts
             </p>
+            <h2 class="text-lg font-semibold text-text-light dark:text-text-dark">
+              {first.data.seriesTitle}
+            </h2>
+            <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5">
+              <time class="text-xs text-text-muted-light dark:text-text-muted-dark" datetime={first.data.date.toISOString()}>
+                {first.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </time>
+              {first.data.tags.map((tag) => (
+                <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-bg-light dark:bg-bg-dark border border-text-muted-light/20 dark:border-text-muted-dark/20 text-text-muted-light dark:text-text-muted-dark">
+                  {tag}
+                </span>
+              ))}
+            </div>
+            {first.data.seriesDescription && (
+              <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1 mb-3">
+                {first.data.seriesDescription}
+              </p>
+            )}
+            <ol class="space-y-1 border-l border-stone-200 dark:border-stone-800 pl-4 mt-3">
+              {posts.map((post) => (
+                <li>
+                  <a href={`/blog/${post.id}`} class="group flex items-baseline gap-2 py-0.5">
+                    <span class="text-xs text-text-muted-light dark:text-text-muted-dark w-10 shrink-0 tabular-nums">
+                      {String(post.data.part ?? 0).padStart(2, '0')}
+                    </span>
+                    <span class="text-sm text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
+                      {post.data.title.replace(/^Part \d+:\s*/i, '')}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        );
+      })}
+
+      {standalonePosts.map((post, i) => (
+        <li class:list={['animate-fade-in-up', `delay-${i + seriesGroups.length + 1}`, 'list-none']}>
+          <a href={`/blog/${post.id}`} class="group flex gap-4 items-start">
+            {post.data.cover && (
+              <img
+                src={post.data.cover}
+                alt={post.data.book ? post.data.book.title : post.data.title}
+                class="w-14 rounded border border-stone-200 dark:border-stone-800 shrink-0 mt-0.5"
+              />
+            )}
+            <div class="min-w-0">
+              {post.data.book && (
+                <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-1">Book Review</p>
+              )}
+              <h2 class="text-lg font-semibold text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
+                {post.data.book ? post.data.book.title : post.data.title}
+              </h2>
+              {post.data.book && (
+                <p class="text-sm text-text-muted-light dark:text-text-muted-dark">by {post.data.book.author}</p>
+              )}
+              <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5">
+                <time class="text-xs text-text-muted-light dark:text-text-muted-dark" datetime={post.data.date.toISOString()}>
+                  {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </time>
+                {post.data.tags.map((tag) => (
+                  <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-bg-light dark:bg-bg-dark border border-text-muted-light/20 dark:border-text-muted-dark/20 text-text-muted-light dark:text-text-muted-dark">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1">
+                {post.data.description}
+              </p>
+            </div>
           </a>
         </li>
       ))}
-    </ul>
+
+    </div>
   )}
 </BaseLayout>

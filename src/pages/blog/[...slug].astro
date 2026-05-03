@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SeriesNav from '../../components/SeriesNav.astro';
+import BookMeta from '../../components/BookMeta.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -12,6 +14,22 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+const isInSeries = entry.data.series && entry.data.part !== undefined;
+
+let prevPost = null;
+let nextPost = null;
+
+if (isInSeries) {
+  const allPosts = await getCollection('blog');
+  const seriesPosts = allPosts
+    .filter((p) => p.data.series === entry.data.series && !p.data.draft && p.data.part !== undefined)
+    .sort((a, b) => (a.data.part as number) - (b.data.part as number));
+
+  const idx = seriesPosts.findIndex((p) => p.id === entry.id);
+  prevPost = idx > 0 ? seriesPosts[idx - 1] : null;
+  nextPost = idx < seriesPosts.length - 1 ? seriesPosts[idx + 1] : null;
+}
 ---
 
 <BaseLayout title={`${entry.data.title} — Jonas Eriksson`}>
@@ -19,9 +37,17 @@ const { Content } = await render(entry);
     <a href="/blog" class="text-sm text-accent hover:text-accent-hover transition-colors">&larr; Back to blog</a>
 
     <header class="mt-6 mb-8">
+      {entry.data.seriesTitle && (
+        <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-2">
+          {entry.data.seriesTitle}
+        </p>
+      )}
       <h1 class="text-3xl font-bold text-text-light dark:text-text-dark">
         {entry.data.title}
       </h1>
+      {entry.data.book && (
+        <p class="mt-1 text-base text-text-muted-light dark:text-text-muted-dark">by {entry.data.book.author}</p>
+      )}
       <time class="block mt-2 text-sm text-text-muted-light dark:text-text-muted-dark" datetime={entry.data.date.toISOString()}>
         {entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
       </time>
@@ -36,8 +62,187 @@ const { Content } = await render(entry);
       )}
     </header>
 
-    <div class="prose max-w-none dark:prose-invert">
+    {entry.data.cover && !entry.data.book && (
+      <img
+        src={entry.data.cover}
+        alt={entry.data.title}
+        class="w-full rounded-xl mb-8 border border-stone-200 dark:border-stone-800"
+      />
+    )}
+
+    {isInSeries && (
+      <SeriesNav
+        series={entry.data.series as string}
+        seriesTitle={entry.data.seriesTitle as string}
+        currentPart={entry.data.part as number}
+        currentSlug={entry.id}
+      />
+    )}
+
+    {entry.data.book && (
+      <BookMeta {...entry.data.book} />
+    )}
+
+    {entry.data.book?.rating && (
+      <div class="flex items-baseline gap-2 mb-8 -mt-2">
+        <span class="text-accent text-xl tracking-wide">{'★'.repeat(entry.data.book.rating)}{'☆'.repeat(5 - entry.data.book.rating)}</span>
+        <span class="text-sm text-text-muted-light dark:text-text-muted-dark">My rating</span>
+      </div>
+    )}
+
+    <div class="prose max-w-none">
       <Content />
     </div>
+
+    {isInSeries && (prevPost || nextPost) && (
+      <nav class="mt-12 pt-6 border-t border-stone-200 dark:border-stone-800 flex justify-between gap-4">
+        <div class="flex-1">
+          {prevPost && (
+            <a href={`/blog/${prevPost.id}`} class="group flex flex-col gap-0.5">
+              <span class="text-xs text-text-muted-light dark:text-text-muted-dark">&larr; Previous</span>
+              <span class="text-sm font-medium text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
+                {prevPost.data.title}
+              </span>
+            </a>
+          )}
+        </div>
+        <div class="flex-1 text-right">
+          {nextPost && (
+            <a href={`/blog/${nextPost.id}`} class="group flex flex-col gap-0.5 items-end">
+              <span class="text-xs text-text-muted-light dark:text-text-muted-dark">Next &rarr;</span>
+              <span class="text-sm font-medium text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
+                {nextPost.data.title}
+              </span>
+            </a>
+          )}
+        </div>
+      </nav>
+    )}
   </article>
 </BaseLayout>
+
+<script>
+  const COPY_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
+  const CHECK_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 15 4 10"/></svg>`;
+
+  // Wrap intro (everything before first h2) in a styled block
+  const prose = document.querySelector('.prose');
+  const firstH2 = prose?.querySelector('h2');
+  if (prose && firstH2) {
+    const intro = document.createElement('div');
+    intro.className = 'prose-intro';
+    let el = prose.firstElementChild;
+    while (el && el !== firstH2) {
+      const next = el.nextElementSibling;
+      intro.appendChild(el);
+      el = next;
+    }
+    if (intro.children.length > 0) {
+      prose.insertBefore(intro, firstH2);
+    }
+  }
+
+  document.querySelectorAll('article pre').forEach((pre) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'copy-code-wrapper';
+    pre.parentNode!.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+
+    const button = document.createElement('button');
+    button.innerHTML = COPY_ICON;
+    button.setAttribute('aria-label', 'Copy code');
+    button.setAttribute('title', 'Copy');
+    button.className = 'copy-btn';
+    wrapper.appendChild(button);
+
+    button.addEventListener('click', () => {
+      const code = pre.querySelector('code');
+      navigator.clipboard.writeText(code?.innerText ?? '').then(() => {
+        button.innerHTML = CHECK_ICON;
+        setTimeout(() => { button.innerHTML = COPY_ICON; }, 1500);
+      });
+    });
+  });
+</script>
+
+<style is:global>
+  /* Wrapper restores the prose margins that pre would normally own */
+  .copy-code-wrapper {
+    position: relative;
+    margin-top: 1.7143em;
+    margin-bottom: 1.7143em;
+  }
+
+  .copy-code-wrapper pre {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.3rem;
+    border: 1px solid #44403c;
+    background: #1c1917cc;
+    color: #78716c;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+
+  /* ── Intro block ──────────────────────────────────────────────────────── */
+  .prose-intro {
+    background-color: #f5f5f4;
+    border: 1px solid #e7e5e4;
+    border-left: 3px solid var(--color-accent);
+    border-radius: 0.5rem;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 1.0125rem;
+  }
+
+  html.dark .prose-intro {
+    background-color: #1c1917;
+    border-color: #44403c;
+    border-left-color: var(--color-accent);
+  }
+
+  .prose-intro > p:first-child {
+    margin-top: 0;
+  }
+
+  .prose-intro > *:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Checkmark bullets for "By the end" lists in the intro */
+  .prose-intro ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .prose-intro ul li {
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .prose-intro ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-weight: 600;
+    font-size: 0.85em;
+    top: 0.1em;
+  }
+
+  .copy-btn:hover {
+    color: #fafaf9;
+    background: #292524;
+  }
+</style>

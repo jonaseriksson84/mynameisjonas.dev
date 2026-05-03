@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -168,3 +169,135 @@ html.dark body {
 .delay-6 { animation-delay: 450ms; }
 .delay-7 { animation-delay: 525ms; }
 .delay-8 { animation-delay: 600ms; }
+
+/* ── Prose: light mode ─────────────────────────────────────────────────── */
+.prose {
+  --tw-prose-body: var(--color-text-light);
+  --tw-prose-headings: var(--color-text-light);
+  --tw-prose-lead: var(--color-text-muted-light);
+  --tw-prose-links: var(--color-accent);
+  --tw-prose-bold: var(--color-text-light);
+  --tw-prose-counters: var(--color-text-muted-light);
+  --tw-prose-bullets: var(--color-text-muted-light);
+  --tw-prose-hr: #e7e5e4;
+  --tw-prose-quotes: var(--color-text-light);
+  --tw-prose-quote-borders: var(--color-accent);
+  --tw-prose-captions: var(--color-text-muted-light);
+  --tw-prose-code: var(--color-text-light);
+  --tw-prose-pre-code: #e7e5e4;
+  --tw-prose-pre-bg: #1c1917;
+  --tw-prose-th-borders: #d6d3d1;
+  --tw-prose-td-borders: #e7e5e4;
+}
+
+/* ── Prose: dark mode (higher specificity wins over plugin defaults) ─────── */
+html.dark .prose {
+  --tw-prose-body: var(--color-text-dark);
+  --tw-prose-headings: var(--color-text-dark);
+  --tw-prose-lead: var(--color-text-muted-dark);
+  --tw-prose-links: var(--color-accent);
+  --tw-prose-bold: var(--color-text-dark);
+  --tw-prose-counters: var(--color-text-muted-dark);
+  --tw-prose-bullets: var(--color-text-muted-dark);
+  --tw-prose-hr: #44403c;
+  --tw-prose-quotes: var(--color-text-dark);
+  --tw-prose-quote-borders: var(--color-accent);
+  --tw-prose-captions: var(--color-text-muted-dark);
+  --tw-prose-code: var(--color-text-dark);
+  --tw-prose-pre-code: #e7e5e4;
+  --tw-prose-pre-bg: #0c0a09;
+  --tw-prose-th-borders: #57534e;
+  --tw-prose-td-borders: #44403c;
+}
+
+/* ── Inline code: pill style ─────────────────────────────────────────────── */
+.prose :not(pre) > code {
+  background-color: #f5f5f4;
+  border-radius: 0.25rem;
+  padding: 0.1em 0.35em;
+  font-size: 0.875em;
+}
+
+html.dark .prose :not(pre) > code {
+  background-color: #292524;
+  color: #e7e5e4;
+}
+
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+  content: none;
+}
+
+/* ── Details / sidenote blocks ───────────────────────────────────────────── */
+.prose details {
+  background-color: #f5f5f4;
+  border: 1px solid #e7e5e4;
+  border-radius: 0.5rem;
+  padding: 0.875rem 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+html.dark .prose details {
+  background-color: #1c1917;
+  border-color: #44403c;
+}
+
+.prose details[open] {
+  border-left: 3px solid var(--color-accent);
+  padding-left: calc(1rem - 2px);
+}
+
+.prose details summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--color-text-muted-light);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  user-select: none;
+}
+
+html.dark .prose details summary {
+  color: var(--color-text-muted-dark);
+}
+
+.prose details summary::-webkit-details-marker {
+  display: none;
+}
+
+.prose details summary::before {
+  content: '▶';
+  font-size: 0.6em;
+  transition: transform 0.15s ease;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.prose details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.prose details summary:hover {
+  color: var(--color-text-light);
+}
+
+html.dark .prose details summary:hover {
+  color: var(--color-text-dark);
+}
+
+.prose details > *:not(summary) {
+  margin-top: 0.75rem;
+}
+
+/* ── Prose images: screenshot framing ───────────────────────────────────── */
+.prose img {
+  border: 1px solid #e7e5e4;
+  border-radius: 0.5rem;
+  display: block;
+}
+
+html.dark .prose img {
+  border-color: #44403c;
+}

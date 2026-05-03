@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  series: string;
+  seriesTitle: string;
+  currentPart: number;
+  currentSlug: string;
+}
+
+const { series, seriesTitle, currentPart, currentSlug } = Astro.props;
+
+const allPosts = await getCollection('blog');
+const seriesPosts = allPosts
+  .filter((p) => p.data.series === series && !p.data.draft && p.data.part !== undefined)
+  .sort((a, b) => (a.data.part as number) - (b.data.part as number));
+---
+
+<nav class="mb-10 rounded-lg border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/50 p-4">
+  <p class="text-xs font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-3">
+    {seriesTitle}
+  </p>
+  <ol class="space-y-1.5">
+    {seriesPosts.map((post) => {
+      const isCurrent = post.id === currentSlug;
+      return (
+        <li class="flex items-baseline gap-2">
+          <span class="text-xs text-text-muted-light dark:text-text-muted-dark w-4 shrink-0 text-right">
+            {post.data.part}
+          </span>
+          {isCurrent ? (
+            <span class="text-sm font-semibold text-accent">
+              {post.data.title}
+            </span>
+          ) : (
+            <a
+              href={`/blog/${post.id}`}
+              class="text-sm text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors"
+            >
+              {post.data.title}
+            </a>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+</nav>

@@ -1,0 +1,178 @@
+---
+interface Props {
+  title: string;
+  author: string;
+  cover: string;
+  pages?: number;
+  isbn?: string;
+  rating?: number;
+  goodreadsUrl?: string;
+  amazonUrl?: string;
+}
+
+const { title, author, cover, pages, isbn, rating, goodreadsUrl, amazonUrl } = Astro.props;
+
+const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
+---
+
+<div class="book-meta not-prose">
+  <div class="book-meta-inner">
+    <div class="book-cover-wrap">
+      <img src={cover} alt={`Cover of ${title}`} class="book-cover" />
+    </div>
+
+    <div class="book-info">
+      <p class="book-title">{title}</p>
+      <p class="book-author">{author}</p>
+
+      <dl class="book-specs">
+        {pages && (
+          <>
+            <dt>Pages</dt>
+            <dd>{pages}</dd>
+          </>
+        )}
+        {isbn && (
+          <>
+            <dt>ISBN</dt>
+            <dd>{isbn}</dd>
+          </>
+        )}
+      </dl>
+
+      <div class="book-links">
+        {goodreadsUrl && (
+          <a href={goodreadsUrl} target="_blank" rel="noopener noreferrer">
+            Goodreads
+          </a>
+        )}
+        {amazonUrl && (
+          <a href={amazonUrl} target="_blank" rel="noopener noreferrer">
+            Buy on Amazon
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .book-meta {
+    margin-bottom: 2rem;
+  }
+
+  .book-meta-inner {
+    display: flex;
+    gap: 1.25rem;
+    background-color: #f5f5f4;
+    border: 1px solid #e7e5e4;
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+  }
+
+  :global(html.dark) .book-meta-inner {
+    background-color: #1c1917;
+    border-color: #44403c;
+  }
+
+  .book-cover-wrap {
+    flex-shrink: 0;
+  }
+
+  .book-cover {
+    width: 90px;
+    height: auto;
+    display: block;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+  }
+
+  .book-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .book-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #1c1917;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  :global(html.dark) .book-title {
+    color: #fafaf9;
+  }
+
+  .book-author {
+    font-size: 0.8125rem;
+    color: #57534e;
+    margin: 0;
+  }
+
+  :global(html.dark) .book-author {
+    color: #a8a29e;
+  }
+
+  .book-rating {
+    font-size: 0.875rem;
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
+    margin: 0.25rem 0 0;
+  }
+
+  .book-specs {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.75rem;
+    row-gap: 0.125rem;
+    margin: 0.5rem 0 0;
+  }
+
+  .book-specs dt {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #57534e;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  :global(html.dark) .book-specs dt {
+    color: #78716c;
+  }
+
+  .book-specs dd {
+    font-size: 0.75rem;
+    color: #57534e;
+    margin: 0;
+  }
+
+  :global(html.dark) .book-specs dd {
+    color: #a8a29e;
+  }
+
+  .book-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .book-links a {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    text-decoration: none;
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--color-accent);
+    border-radius: 9999px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .book-links a:hover {
+    background-color: var(--color-accent);
+    color: #fff;
+  }
+</style>
