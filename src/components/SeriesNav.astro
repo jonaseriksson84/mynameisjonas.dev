@@ -25,6 +25,11 @@ const seriesOverviewUrl = `/blog/${seriesPosts[0]?.id.split('/')[0]}`;
   >
     {seriesTitle}
   </a>
+  <div class="mb-3 pb-3 border-b border-stone-200 dark:border-stone-800">
+    <a href={seriesOverviewUrl} class="text-xs text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors">
+      Series overview &rarr;
+    </a>
+  </div>
   <ol class="space-y-1.5">
     {seriesPosts.map((post) => {
       const isCurrent = post.id === currentSlug;

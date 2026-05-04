@@ -10,22 +10,6 @@ seriesDescription: "Build a working RSS reader using Gas City's multi-agent orch
 cover: /blog/gas-city/cover-00.png
 ---
 
-This is a seven-part tutorial about building a working web app while learning Gas City. Each part adds something new on top of the last. By the end you have an RSS reader of your own and a mental model for how Gas City fits into a project.
-
-If you have used coding agents in your editor (Claude Code, Cursor, Codex), you already have most of the muscle this tutorial asks for. Gas City sits one level above that: instead of one agent helping you in your editor, you orchestrate several agents from the command line, each with its own role, and watch them deliver a feature together.
-
-## What we are building
-
-A minimalist Hacker-News-style RSS aggregator. It fetches the HN front-page feed, stores items in SQLite, renders them in a simple page, and ships small features along the way (per-source labels, search, a daily LLM-generated digest). The app is written by agents under your direction. The configs you write to direct them are the artifacts you keep.
-
-By the end:
-
-- A small Hono app on Bun, with `bun:sqlite`, `hono/html`, and HTMX.
-- Five agents in your city: a mayor (always-on coordinator), a backend specialist, a DBA specialist, a frontend specialist, and a code reviewer.
-- Three scheduled jobs: a periodic feed fetch, a nightly database prune, and a daily AI-written digest.
-
-The stack is deliberately self-contained: no build step, no bundler, no JSX transpilation, no Tailwind toolchain. Bun runs `.ts` files directly, `bun:sqlite` is built in, `hono/html` is server-rendered, HTMX adds interactivity without leaving the server. Less to configure means less for the agents to get wrong.
-
 ## What you need installed
 
 | Tool | Version used |
