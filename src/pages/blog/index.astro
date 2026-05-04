@@ -57,8 +57,8 @@ const seriesGroups = [...seriesMap.values()].sort(
             <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-1">
               Series &middot; {posts.length} parts
             </p>
-            <h2 class="text-lg font-semibold text-text-light dark:text-text-dark">
-              {first.data.seriesTitle}
+            <h2 class="text-lg font-semibold text-text-light dark:text-text-dark hover:text-accent transition-colors">
+              <a href={`/blog/${first.id.split('/')[0]}`}>{first.data.seriesTitle}</a>
             </h2>
             <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5">
               <time class="text-xs text-text-muted-light dark:text-text-muted-dark" datetime={first.data.date.toISOString()}>

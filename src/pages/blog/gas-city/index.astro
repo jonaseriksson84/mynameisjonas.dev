@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const seriesPosts = allPosts
+  .filter((p) => p.data.series === 'building-with-gas-city' && !p.data.draft)
+  .sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0));
+
+const first = seriesPosts[0];
+const seriesDescription = first?.data.seriesDescription ?? '';
+---
+
+<BaseLayout
+  title="Building with Gas City — Jonas Eriksson"
+  description={seriesDescription}
+  image="/blog/gas-city/cover-00.png"
+  type="article"
+>
+  <article class="animate-fade-in-up delay-0">
+    <a href="/blog" class="text-sm text-accent hover:text-accent-hover transition-colors">&larr; Back to blog</a>
+
+    <img
+      src="/blog/gas-city/cover-00.png"
+      alt="Building with Gas City"
+      class="w-full rounded-xl mt-6 mb-6 border border-stone-200 dark:border-stone-800"
+    />
+
+    <header class="mb-8">
+      <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-2">
+        Series &middot; {seriesPosts.length} parts
+      </p>
+      <h1 class="text-3xl font-bold text-text-light dark:text-text-dark">
+        Building with Gas City
+      </h1>
+      <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2">
+        <time
+          class="text-xs text-text-muted-light dark:text-text-muted-dark"
+          datetime={first?.data.date.toISOString()}
+        >
+          {first?.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+        {first?.data.tags.map((tag) => (
+          <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-bg-light dark:bg-bg-dark border border-text-muted-light/20 dark:border-text-muted-dark/20 text-text-muted-light dark:text-text-muted-dark">
+            {tag}
+          </span>
+        ))}
+      </div>
+    </header>
+
+    <div class="prose max-w-none mb-10">
+      <p>This is a seven-part tutorial about building a working web app while learning Gas City. Each part adds something new on top of the last. By the end you have an RSS reader of your own and a mental model for how Gas City fits into a project.</p>
+      <p>If you have used coding agents in your editor (Claude Code, Cursor, Codex), you already have most of the muscle this tutorial asks for. Gas City sits one level above that: instead of one agent helping you in your editor, you orchestrate several agents from the command line, each with its own role, and watch them deliver a feature together.</p>
+
+      <h2>What we are building</h2>
+      <p>A minimalist Hacker-News-style RSS aggregator. It fetches the HN front-page feed, stores items in SQLite, renders them in a simple page, and ships small features along the way (per-source labels, search, a daily LLM-generated digest). The app is written by agents under your direction. The configs you write to direct them are the artifacts you keep.</p>
+      <ul>
+        <li>A small Hono app on Bun, with <code>bun:sqlite</code>, <code>hono/html</code>, and HTMX.</li>
+        <li>Five agents in your city: a mayor (always-on coordinator), a backend specialist, a DBA specialist, a frontend specialist, and a code reviewer.</li>
+        <li>Three scheduled jobs: a periodic feed fetch, a nightly database prune, and a daily AI-written digest.</li>
+      </ul>
+      <p>The stack is deliberately self-contained: no build step, no bundler, no JSX transpilation, no Tailwind toolchain. Bun runs <code>.ts</code> files directly, <code>bun:sqlite</code> is built in, <code>hono/html</code> is server-rendered, HTMX adds interactivity without leaving the server.</p>
+    </div>
+
+    <ol class="space-y-3 border-l-2 border-accent/30 pl-5">
+      {seriesPosts.map((post) => (
+        <li>
+          <a href={`/blog/${post.id}`} class="group flex items-start gap-3 py-1">
+            <span class="text-xs font-mono text-text-muted-light dark:text-text-muted-dark w-6 shrink-0 tabular-nums mt-1">
+              {String(post.data.part ?? 0).padStart(2, '0')}
+            </span>
+            <div>
+              <span class="text-base font-medium text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
+                {post.data.title.replace(/^Part \d+:\s*/i, '')}
+              </span>
+              <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-0.5">
+                {post.data.description}
+              </p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </article>
+</BaseLayout>
