@@ -1,5 +1,9 @@
 # mynameisjonas.dev
 
+## Common commands
+
+- Deploy: `pnpm run deploy` (not `pnpm deploy` — pnpm intercepts that as a workspace command)
+
 ## Agent skills
 
 ### Issue tracker
