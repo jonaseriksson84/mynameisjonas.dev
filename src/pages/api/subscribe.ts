@@ -1,9 +1,10 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
+import { env } from 'cloudflare:workers';
 
-export const POST: APIRoute = async ({ request, locals }) => {
-  const json = await request.json().catch(() => null);
+export const POST: APIRoute = async ({ request }) => {
+  const json = await request.json().catch(() => null) as Record<string, unknown> | null;
   const email = typeof json?.email === 'string' ? json.email.trim().toLowerCase() : '';
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -13,7 +14,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     });
   }
 
-  const db = locals.runtime.env.DB;
+  const db = env.DB;
 
   await db
     .prepare('INSERT INTO subscribers (email, subscribed_at) VALUES (?, ?) ON CONFLICT (email) DO NOTHING')

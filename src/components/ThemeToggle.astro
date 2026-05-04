@@ -29,7 +29,7 @@
   import { toggleTheme } from "../lib/theme";
 
   document.getElementById('theme-toggle')?.addEventListener('click', (event) => {
-    const button = event.currentTarget;
+    const button = event.currentTarget as HTMLButtonElement;
     button.classList.remove("animate-[icon-wobble_520ms_var(--ease-soft-spring)]");
     void button.offsetWidth;
     button.classList.add("animate-[icon-wobble_520ms_var(--ease-soft-spring)]");
