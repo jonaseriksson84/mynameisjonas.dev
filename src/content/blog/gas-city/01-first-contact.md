@@ -123,7 +123,7 @@ gc mail send mayor \
 
 Claude Code sessions check for new mail only when something triggers a hook. Hooks fire on `SessionStart`, `UserPromptSubmit`, `Stop`, and `PreCompact`. None of those fire on a fully idle session, so mail to an idle agent does not get processed unless something starts a turn.
 
-`--notify` on `gc mail send` (and `gc mail reply`) stamps a follow-up nudge that wakes the recipient as soon as the mail bead is durable. The fixes that made `--notify` reliable were [GH#1370](https://github.com/gastownhall/gascity/issues/1370) and [GH#1404](https://github.com/gastownhall/gascity/pull/1404), both closed.
+`--notify` on `gc mail send` (and `gc mail reply`) stamps a follow-up nudge that wakes the recipient as soon as the mail bead is durable. The fix that made `--notify` reliable was [GH#1404](https://github.com/gastownhall/gascity/pull/1404) (merged), which adopted the original fix from [GH#1370](https://github.com/gastownhall/gascity/pull/1370) (superseded, closed).
 
 If you forget `--notify` and the recipient is idle, recover with `gc session submit mayor "Check your inbox"`. Default intent on `submit` wakes idle sessions and queues for in-turn ones; safe in either case. Avoid `--intent interrupt_now` for everyday use; it interrupts mid-turn work.
 
