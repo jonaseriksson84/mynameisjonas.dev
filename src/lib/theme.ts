@@ -1,5 +1,7 @@
 export type ThemeMode = "light" | "dark";
 
+export const THEME_STORAGE_KEY = "theme";
+
 function applyTheme(root: Element, theme: ThemeMode): ThemeMode {
   root.classList.toggle("dark", theme === "dark");
   if (root instanceof HTMLElement) {
@@ -33,4 +35,8 @@ export function initTheme(
 export function toggleTheme(root: Element): ThemeMode {
   const theme = root.classList.contains("dark") ? "light" : "dark";
   return applyTheme(root, theme);
+}
+
+export function saveTheme(storage: Storage, theme: ThemeMode): void {
+  storage.setItem(THEME_STORAGE_KEY, theme);
 }
