@@ -264,7 +264,7 @@ watch -n 3 bash ../bin/overview.sh
 
 You will see the bead appear in "RIG BEADS - OPEN" the moment the mayor slings it, then the polecat session show up in "SESSIONS" within seconds. A few minutes later, the bead disappears from open (closed by the polecat), a new commit shows up under "RIG COMMITS," and the session goes away as the polecat exits.
 
-The dashboard at `gc dashboard serve` would normally show all of this in a tidier UI. On my v1.0.0 run the dashboard loaded but threw "failed to fetch" errors after a few seconds ([GH#1168](https://github.com/gastownhall/gascity/issues/1168), fixed). YMMV: try `gc dashboard serve` first; if the panels populate cleanly, use it. If not, the overview script is the fallback used throughout the rest of the tutorial.
+The dashboard at `gc dashboard serve` would normally show all of this in a tidier UI. On my v1.0.0 run the dashboard was entirely unresponsive. YMMV: try `gc dashboard serve` first; if the panels populate cleanly, use it. If not, the overview script is the fallback used throughout the rest of the tutorial.
 
 ## Step 9: Read the result
 
