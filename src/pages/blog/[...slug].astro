@@ -32,7 +32,12 @@ if (isInSeries) {
 }
 ---
 
-<BaseLayout title={`${entry.data.title} — Jonas Eriksson`}>
+<BaseLayout
+  title={`${entry.data.title} — Jonas Eriksson`}
+  description={entry.data.description}
+  image={entry.data.cover ?? entry.data.book?.cover}
+  type="article"
+>
   <article class="animate-fade-in-up delay-0">
     <a href="/blog" class="text-sm text-accent hover:text-accent-hover transition-colors">&larr; Back to blog</a>
 
