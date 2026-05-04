@@ -4,7 +4,7 @@ import SeriesNav from '../../components/SeriesNav.astro';
 import BookMeta from '../../components/BookMeta.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import { getCollection, render } from 'astro:content';
-import type { SeriesPost } from '../../content/schema';
+import { getSeries, getSeriesNavigation, getSeriesOverviewUrl } from '../../lib/series';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -21,20 +21,10 @@ const data = entry.data;
 const seriesData = data.type === 'seriesPart' ? data : null;
 const bookData = data.type === 'bookReview' ? data : null;
 
-let prevPost = null;
-let nextPost = null;
-
-if (seriesData) {
-  const allPosts = await getCollection('blog');
-  const seriesPosts = allPosts
-    .filter((p): p is typeof p & { data: SeriesPost } =>
-      p.data.type === 'seriesPart' && p.data.series === seriesData.series && !p.data.draft)
-    .sort((a, b) => a.data.part - b.data.part);
-
-  const idx = seriesPosts.findIndex((p) => p.id === entry.id);
-  prevPost = idx > 0 ? seriesPosts[idx - 1] : null;
-  nextPost = idx < seriesPosts.length - 1 ? seriesPosts[idx + 1] : null;
-}
+const series = seriesData ? await getSeries(seriesData.series) : null;
+const { prev: prevPost, next: nextPost } = series
+  ? getSeriesNavigation(series, entry.id)
+  : { prev: null, next: null };
 ---
 
 <BaseLayout
@@ -47,13 +37,13 @@ if (seriesData) {
     <a href="/blog" class="text-sm text-accent hover:text-accent-hover transition-colors">&larr; Back to blog</a>
 
     <header class="mt-6 mb-8">
-      {seriesData?.seriesTitle && (
+      {seriesData && (
         <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-2">
           <a
-            href={`/blog/${entry.id.split('/')[0]}`}
+            href={getSeriesOverviewUrl(seriesData.series)}
             class="hover:text-accent-hover transition-colors"
           >
-            {seriesData.seriesTitle}
+            {series?.title ?? seriesData.series}
           </a>
         </p>
       )}
@@ -86,12 +76,7 @@ if (seriesData) {
     )}
 
     {seriesData && (
-      <SeriesNav
-        series={seriesData.series}
-        seriesTitle={seriesData.seriesTitle ?? ''}
-        currentPart={seriesData.part}
-        currentSlug={entry.id}
-      />
+      <SeriesNav entry={entry} />
     )}
 
     {bookData && (

@@ -1,38 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
-import type { SeriesPost } from '../../content/schema';
-
-type SeriesEntry = CollectionEntry<'blog'> & { data: SeriesPost };
+import { getAllSeries } from '../../lib/series';
 
 const allPosts = (await getCollection('blog')).filter((p) => !p.data.draft);
-
-// Separate series posts from standalone posts
-const seriesMap = new Map<string, SeriesEntry[]>();
-const standalonePosts: typeof allPosts = [];
-
-for (const post of allPosts) {
-  if (post.data.type === 'seriesPart') {
-    const key = post.data.series;
-    if (!seriesMap.has(key)) seriesMap.set(key, []);
-    seriesMap.get(key)!.push(post as SeriesEntry);
-  } else {
-    standalonePosts.push(post);
-  }
-}
-
-for (const posts of seriesMap.values()) {
-  posts.sort((a, b) => a.data.part - b.data.part);
-}
-
-// Sort standalone posts by date descending
-standalonePosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-
-// Series groups, sorted by their first part's date descending
-const seriesGroups = [...seriesMap.values()].sort(
-  (a, b) => b[0].data.date.valueOf() - a[0].data.date.valueOf()
-);
+const standalonePosts = allPosts
+  .filter((p) => p.data.type !== 'seriesPart')
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const allSeries = await getAllSeries();
+const hasContent = allPosts.length > 0;
 ---
 
 <BaseLayout title="Blog — mynameisjonas">
@@ -40,58 +16,57 @@ const seriesGroups = [...seriesMap.values()].sort(
     <span class="text-accent">●</span> Blog
   </h1>
 
-  {allPosts.length === 0 ? (
+  {!hasContent ? (
     <p class="text-text-muted-light dark:text-text-muted-dark animate-fade-in-up delay-1">
       No posts yet. Check back soon!
     </p>
   ) : (
     <div class="space-y-10">
 
-      {seriesGroups.map((posts, i) => {
-        const first = posts[0];
-        const seriesUrl = `/blog/${first.id.split('/')[0]}`;
+      {allSeries.map((series, i) => {
+        const firstPart = series.parts[0];
         return (
           <div class:list={['animate-fade-in-up', `delay-${i + 1}`]}>
-            {first.data.cover && (
-              <a href={seriesUrl} class="block">
+            {series.cover && (
+              <a href={series.overviewUrl} class="block">
                 <img
-                  src={first.data.cover}
-                  alt={first.data.seriesTitle ?? ''}
+                  src={series.cover}
+                  alt={series.title}
                   class="w-full h-40 object-cover rounded-lg mb-3 border border-stone-200 dark:border-stone-800 transition-opacity hover:opacity-90"
                 />
               </a>
             )}
             <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-1">
-              Series &middot; {posts.length} parts
+              Series &middot; {series.parts.length} parts
             </p>
             <h2 class="text-lg font-semibold text-text-light dark:text-text-dark hover:text-accent transition-colors">
-              <a href={seriesUrl}>{first.data.seriesTitle}</a>
+              <a href={series.overviewUrl}>{series.title}</a>
             </h2>
             <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5">
-              <time class="text-xs text-text-muted-light dark:text-text-muted-dark" datetime={first.data.date.toISOString()}>
-                {first.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              <time class="text-xs text-text-muted-light dark:text-text-muted-dark" datetime={firstPart.data.date.toISOString()}>
+                {firstPart.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
               </time>
-              {first.data.tags.map((tag) => (
+              {firstPart.data.tags.map((tag) => (
                 <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-bg-light dark:bg-bg-dark border border-text-muted-light/20 dark:border-text-muted-dark/20 text-text-muted-light dark:text-text-muted-dark">
                   {tag}
                 </span>
               ))}
             </div>
-            {first.data.seriesDescription && (
+            {series.description && (
               <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1 mb-3">
-                {first.data.seriesDescription}
+                {series.description}
               </p>
             )}
             <ol class="space-y-1 border-l border-stone-200 dark:border-stone-800 pl-4 mt-3">
               <li>
-                <a href={seriesUrl} class="group flex items-baseline gap-2 py-0.5">
+                <a href={series.overviewUrl} class="group flex items-baseline gap-2 py-0.5">
                   <span class="text-xs text-text-muted-light dark:text-text-muted-dark w-10 shrink-0">&rarr;</span>
                   <span class="text-sm font-medium text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
                     Overview
                   </span>
                 </a>
               </li>
-              {posts.map((post) => (
+              {series.parts.map((post) => (
                 <li>
                   <a href={`/blog/${post.id}`} class="group flex items-baseline gap-2 py-0.5">
                     <span class="text-xs text-text-muted-light dark:text-text-muted-dark w-10 shrink-0 tabular-nums">
@@ -109,7 +84,7 @@ const seriesGroups = [...seriesMap.values()].sort(
       })}
 
       {standalonePosts.map((post, i) => (
-        <li class:list={['animate-fade-in-up', `delay-${i + seriesGroups.length + 1}`, 'list-none']}>
+        <li class:list={['animate-fade-in-up', `delay-${i + allSeries.length + 1}`, 'list-none']}>
           <a href={`/blog/${post.id}`} class="group flex gap-4 items-start">
             {post.data.cover && (
               <img

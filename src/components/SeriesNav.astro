@@ -1,59 +1,51 @@
 ---
-import { getCollection } from 'astro:content';
-import type { SeriesPost } from '../content/schema';
+import type { CollectionEntry } from 'astro:content';
+import { getSeries } from '../lib/series';
 
 interface Props {
-  series: string;
-  seriesTitle: string;
-  currentPart: number;
-  currentSlug: string;
+  entry: CollectionEntry<'blog'>;
 }
 
-const { series, seriesTitle, currentPart, currentSlug } = Astro.props;
-
-const allPosts = await getCollection('blog');
-const seriesPosts = allPosts
-  .filter((p): p is typeof p & { data: SeriesPost } =>
-    p.data.type === 'seriesPart' && p.data.series === series && !p.data.draft)
-  .sort((a, b) => a.data.part - b.data.part);
-
-const seriesOverviewUrl = `/blog/${seriesPosts[0]?.id.split('/')[0]}`;
+const { entry } = Astro.props;
+const data = entry.data;
+const series = data.type === 'seriesPart' ? await getSeries(data.series) : null;
 ---
-
-<nav class="mb-10 rounded-lg border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/50 p-4">
-  <a
-    href={seriesOverviewUrl}
-    class="text-xs font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors mb-3 block"
-  >
-    {seriesTitle}
-  </a>
-  <div class="mb-3 pb-3 border-b border-stone-200 dark:border-stone-800">
-    <a href={seriesOverviewUrl} class="text-xs text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors">
-      Series overview &rarr;
+{series && (
+  <nav class="mb-10 rounded-lg border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/50 p-4">
+    <a
+      href={series.overviewUrl}
+      class="text-xs font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors mb-3 block"
+    >
+      {series.title}
     </a>
-  </div>
-  <ol class="space-y-1.5">
-    {seriesPosts.map((post) => {
-      const isCurrent = post.id === currentSlug;
-      return (
-        <li class="flex items-baseline gap-2">
-          <span class="text-xs text-text-muted-light dark:text-text-muted-dark w-4 shrink-0 text-right">
-            {post.data.part}
-          </span>
-          {isCurrent ? (
-            <span class="text-sm font-semibold text-accent">
-              {post.data.title}
+    <div class="mb-3 pb-3 border-b border-stone-200 dark:border-stone-800">
+      <a href={series.overviewUrl} class="text-xs text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors">
+        Series overview &rarr;
+      </a>
+    </div>
+    <ol class="space-y-1.5">
+      {series.parts.map((post) => {
+        const isCurrent = post.id === entry.id;
+        return (
+          <li class="flex items-baseline gap-2">
+            <span class="text-xs text-text-muted-light dark:text-text-muted-dark w-4 shrink-0 text-right">
+              {post.data.part}
             </span>
-          ) : (
-            <a
-              href={`/blog/${post.id}`}
-              class="text-sm text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors"
-            >
-              {post.data.title}
-            </a>
-          )}
-        </li>
-      );
-    })}
-  </ol>
-</nav>
+            {isCurrent ? (
+              <span class="text-sm font-semibold text-accent">
+                {post.data.title}
+              </span>
+            ) : (
+              <a
+                href={`/blog/${post.id}`}
+                class="text-sm text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors"
+              >
+                {post.data.title}
+              </a>
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  </nav>
+)}

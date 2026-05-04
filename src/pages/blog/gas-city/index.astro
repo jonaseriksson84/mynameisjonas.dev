@@ -1,50 +1,46 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
-import type { SeriesPost } from '../../../content/schema';
+import { getSeries } from '../../../lib/series';
 
-type SeriesEntry = CollectionEntry<'blog'> & { data: SeriesPost };
-
-const allPosts = await getCollection('blog');
-const seriesPosts = allPosts
-  .filter((p): p is SeriesEntry =>
-    p.data.type === 'seriesPart' && p.data.series === 'building-with-gas-city' && !p.data.draft)
-  .sort((a, b) => a.data.part - b.data.part);
-
-const first = seriesPosts[0];
+const series = await getSeries('building-with-gas-city');
+if (!series) {
+  throw new Error('Series "building-with-gas-city" not found');
+}
+const firstPart = series.parts[0];
 ---
 
 <BaseLayout
-  title="Building with Gas City — mynameisjonas"
-  description={first?.data.seriesDescription}
-  image="/blog/gas-city/cover-00.png"
+  title={`${series.title} — mynameisjonas`}
+  description={series.description}
+  image={series.cover}
   type="article"
 >
   <article class="animate-fade-in-up delay-0">
     <a href="/blog" class="text-sm text-accent hover:text-accent-hover transition-colors">&larr; Back to blog</a>
 
-    <img
-      src="/blog/gas-city/cover-00.png"
-      alt="Building with Gas City"
-      class="w-full rounded-xl mt-6 mb-6 border border-stone-200 dark:border-stone-800"
-    />
+    {series.cover && (
+      <img
+        src={series.cover}
+        alt={series.title}
+        class="w-full rounded-xl mt-6 mb-6 border border-stone-200 dark:border-stone-800"
+      />
+    )}
 
     <header class="mb-8">
       <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-2">
-        Series &middot; {seriesPosts.length} parts
+        Series &middot; {series.parts.length} parts
       </p>
       <h1 class="text-3xl font-bold text-text-light dark:text-text-dark">
-        Building with Gas City
+        {series.title}
       </h1>
       <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2">
         <time
           class="text-xs text-text-muted-light dark:text-text-muted-dark"
-          datetime={first?.data.date.toISOString()}
+          datetime={firstPart.data.date.toISOString()}
         >
-          {first?.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          {firstPart.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
         </time>
-        {first?.data.tags.map((tag) => (
+        {firstPart.data.tags.map((tag) => (
           <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-bg-light dark:bg-bg-dark border border-text-muted-light/20 dark:border-text-muted-dark/20 text-text-muted-light dark:text-text-muted-dark">
             {tag}
           </span>
@@ -69,7 +65,7 @@ const first = seriesPosts[0];
     </div>
 
     <ol class="mt-10 space-y-3 border-l-2 border-accent/30 pl-5">
-      {seriesPosts.map((post) => (
+      {series.parts.map((post) => (
         <li>
           <a href={`/blog/${post.id}`} class="group flex items-start gap-3 py-1">
             <span class="text-xs font-mono text-text-muted-light dark:text-text-muted-dark w-6 shrink-0 tabular-nums mt-1">
