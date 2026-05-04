@@ -41,7 +41,7 @@ prompt_template = "agents/reviewer/prompt.template.md"
 provider = "codex"
 ```
 
-If you skip the swap, drop that last line; the agent inherits `workspace.provider = "claude"` from `city.toml`. For the swap to work, you need Codex CLI installed and signed in (it uses your existing ChatGPT login). No new auth dance, no API key juggling. Mechanism documented in [GH#821](https://github.com/gastownhall/gascity/issues/821) (closed).
+If you skip the swap, drop that last line; the agent inherits `workspace.provider = "claude"` from `city.toml`. For the swap to work, you need Codex CLI installed and signed in (it uses your existing ChatGPT login). No new auth dance, no API key juggling. Implemented in [GH#821](https://github.com/gastownhall/gascity/issues/821) (merged).
 
 ## Step 2: Write the reviewer prompt
 
