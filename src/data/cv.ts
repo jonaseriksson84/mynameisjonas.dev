@@ -52,7 +52,7 @@ export const jobs: Job[] = [
     company: "Embark Studios",
     period: "June 2022 — present",
     achievements: [
-      "Leading web platform development and a team of 8 fullstack developers",
+      "Leading web platform development and a team of 6 fullstack developers",
       "Building core infrastructure and developer tools using TypeScript, React, Go, and Python",
     ],
     buzzwords: [
