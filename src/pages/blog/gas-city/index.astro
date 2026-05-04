@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { SeriesPost } from '../../../content/schema';
+
+type SeriesEntry = CollectionEntry<'blog'> & { data: SeriesPost };
 
 const allPosts = await getCollection('blog');
 const seriesPosts = allPosts
-  .filter((p) => p.data.series === 'building-with-gas-city' && !p.data.draft)
-  .sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0));
+  .filter((p): p is SeriesEntry =>
+    p.data.type === 'seriesPart' && p.data.series === 'building-with-gas-city' && !p.data.draft)
+  .sort((a, b) => a.data.part - b.data.part);
 
 const first = seriesPosts[0];
 ---
@@ -68,7 +73,7 @@ const first = seriesPosts[0];
         <li>
           <a href={`/blog/${post.id}`} class="group flex items-start gap-3 py-1">
             <span class="text-xs font-mono text-text-muted-light dark:text-text-muted-dark w-6 shrink-0 tabular-nums mt-1">
-              {String(post.data.part ?? 0).padStart(2, '0')}
+              {String(post.data.part).padStart(2, '0')}
             </span>
             <div>
               <span class="text-base font-medium text-text-light dark:text-text-dark group-hover:text-accent transition-colors">

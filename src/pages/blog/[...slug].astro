@@ -4,6 +4,7 @@ import SeriesNav from '../../components/SeriesNav.astro';
 import BookMeta from '../../components/BookMeta.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import { getCollection, render } from 'astro:content';
+import type { SeriesPost } from '../../content/schema';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -16,16 +17,19 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
-const isInSeries = entry.data.series && entry.data.part !== undefined;
+const data = entry.data;
+const seriesData = data.type === 'seriesPart' ? data : null;
+const bookData = data.type === 'bookReview' ? data : null;
 
 let prevPost = null;
 let nextPost = null;
 
-if (isInSeries) {
+if (seriesData) {
   const allPosts = await getCollection('blog');
   const seriesPosts = allPosts
-    .filter((p) => p.data.series === entry.data.series && !p.data.draft && p.data.part !== undefined)
-    .sort((a, b) => (a.data.part as number) - (b.data.part as number));
+    .filter((p): p is typeof p & { data: SeriesPost } =>
+      p.data.type === 'seriesPart' && p.data.series === seriesData.series && !p.data.draft)
+    .sort((a, b) => a.data.part - b.data.part);
 
   const idx = seriesPosts.findIndex((p) => p.id === entry.id);
   prevPost = idx > 0 ? seriesPosts[idx - 1] : null;
@@ -34,37 +38,37 @@ if (isInSeries) {
 ---
 
 <BaseLayout
-  title={entry.data.book ? `Book Review: ${entry.data.book.title} — mynameisjonas` : `${entry.data.title} — mynameisjonas`}
-  description={entry.data.book ? `${entry.data.book.title} by ${entry.data.book.author}. ${entry.data.description}` : entry.data.description}
-  image={entry.data.cover ?? entry.data.book?.cover}
+  title={bookData ? `Book Review: ${bookData.book.title} — mynameisjonas` : `${data.title} — mynameisjonas`}
+  description={bookData ? `${bookData.book.title} by ${bookData.book.author}. ${data.description}` : data.description}
+  image={data.cover ?? bookData?.book.cover}
   type="article"
 >
   <article class="animate-fade-in-up delay-0">
     <a href="/blog" class="text-sm text-accent hover:text-accent-hover transition-colors">&larr; Back to blog</a>
 
     <header class="mt-6 mb-8">
-      {entry.data.seriesTitle && (
+      {seriesData?.seriesTitle && (
         <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-2">
           <a
             href={`/blog/${entry.id.split('/')[0]}`}
             class="hover:text-accent-hover transition-colors"
           >
-            {entry.data.seriesTitle}
+            {seriesData.seriesTitle}
           </a>
         </p>
       )}
       <h1 class="text-3xl font-bold text-text-light dark:text-text-dark">
-        {entry.data.title}
+        {data.title}
       </h1>
-      {entry.data.book && (
-        <p class="mt-1 text-base text-text-muted-light dark:text-text-muted-dark">by {entry.data.book.author}</p>
+      {bookData && (
+        <p class="mt-1 text-base text-text-muted-light dark:text-text-muted-dark">by {bookData.book.author}</p>
       )}
-      <time class="block mt-2 text-sm text-text-muted-light dark:text-text-muted-dark" datetime={entry.data.date.toISOString()}>
-        {entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      <time class="block mt-2 text-sm text-text-muted-light dark:text-text-muted-dark" datetime={data.date.toISOString()}>
+        {data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
       </time>
-      {entry.data.tags.length > 0 && (
+      {data.tags.length > 0 && (
         <div class="flex flex-wrap gap-1.5 mt-3">
-          {entry.data.tags.map((tag) => (
+          {data.tags.map((tag) => (
             <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-bg-light dark:bg-bg-dark border border-text-muted-light/20 dark:border-text-muted-dark/20 text-text-muted-light dark:text-text-muted-dark">
               {tag}
             </span>
@@ -73,30 +77,30 @@ if (isInSeries) {
       )}
     </header>
 
-    {entry.data.cover && !entry.data.book && (
+    {data.cover && !bookData && (
       <img
-        src={entry.data.cover}
-        alt={entry.data.title}
+        src={data.cover}
+        alt={data.title}
         class="w-full rounded-xl mb-8 border border-stone-200 dark:border-stone-800"
       />
     )}
 
-    {isInSeries && (
+    {seriesData && (
       <SeriesNav
-        series={entry.data.series as string}
-        seriesTitle={entry.data.seriesTitle as string}
-        currentPart={entry.data.part as number}
+        series={seriesData.series}
+        seriesTitle={seriesData.seriesTitle ?? ''}
+        currentPart={seriesData.part}
         currentSlug={entry.id}
       />
     )}
 
-    {entry.data.book && (
-      <BookMeta {...entry.data.book} />
+    {bookData && (
+      <BookMeta {...bookData.book} />
     )}
 
-    {entry.data.book?.rating && (
+    {bookData?.book.rating && (
       <div class="flex items-baseline gap-2 mb-8 -mt-2">
-        <span class="text-accent text-xl tracking-wide">{'★'.repeat(entry.data.book.rating)}{'☆'.repeat(5 - entry.data.book.rating)}</span>
+        <span class="text-accent text-xl tracking-wide">{'★'.repeat(bookData.book.rating)}{'☆'.repeat(5 - bookData.book.rating)}</span>
         <span class="text-sm text-text-muted-light dark:text-text-muted-dark">My rating</span>
       </div>
     )}
@@ -105,7 +109,7 @@ if (isInSeries) {
       <Content />
     </div>
 
-    {entry.data.series === 'building-with-gas-city' && (
+    {seriesData?.series === 'building-with-gas-city' && (
       <NewsletterSignup
         heading="Enjoying the series?"
         description="I'll write more about multi-agent development and building with Gas City. No spam, unsubscribe any time."
@@ -116,7 +120,7 @@ if (isInSeries) {
       Have thoughts? <a href="https://x.com/jonaseriksson84" target="_blank" rel="noopener noreferrer" class="text-accent hover:text-accent-hover transition-colors">Find me on X</a> to continue the discussion.
     </p>
 
-    {isInSeries && (prevPost || nextPost) && (
+    {seriesData && (prevPost || nextPost) && (
       <nav class="mt-12 pt-6 border-t border-stone-200 dark:border-stone-800 flex justify-between gap-4">
         <div class="flex-1">
           {prevPost && (

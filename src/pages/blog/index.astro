@@ -1,25 +1,29 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { SeriesPost } from '../../content/schema';
+
+type SeriesEntry = CollectionEntry<'blog'> & { data: SeriesPost };
 
 const allPosts = (await getCollection('blog')).filter((p) => !p.data.draft);
 
 // Separate series posts from standalone posts
-const seriesMap = new Map<string, typeof allPosts>();
+const seriesMap = new Map<string, SeriesEntry[]>();
 const standalonePosts: typeof allPosts = [];
 
 for (const post of allPosts) {
-  if (post.data.series) {
+  if (post.data.type === 'seriesPart') {
     const key = post.data.series;
     if (!seriesMap.has(key)) seriesMap.set(key, []);
-    seriesMap.get(key)!.push(post);
+    seriesMap.get(key)!.push(post as SeriesEntry);
   } else {
     standalonePosts.push(post);
   }
 }
 
 for (const posts of seriesMap.values()) {
-  posts.sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0));
+  posts.sort((a, b) => a.data.part - b.data.part);
 }
 
 // Sort standalone posts by date descending
@@ -45,20 +49,23 @@ const seriesGroups = [...seriesMap.values()].sort(
 
       {seriesGroups.map((posts, i) => {
         const first = posts[0];
+        const seriesUrl = `/blog/${first.id.split('/')[0]}`;
         return (
           <div class:list={['animate-fade-in-up', `delay-${i + 1}`]}>
             {first.data.cover && (
-              <img
-                src={first.data.cover}
-                alt={first.data.seriesTitle ?? ''}
-                class="w-full h-40 object-cover rounded-lg mb-3 border border-stone-200 dark:border-stone-800"
-              />
+              <a href={seriesUrl} class="block">
+                <img
+                  src={first.data.cover}
+                  alt={first.data.seriesTitle ?? ''}
+                  class="w-full h-40 object-cover rounded-lg mb-3 border border-stone-200 dark:border-stone-800 transition-opacity hover:opacity-90"
+                />
+              </a>
             )}
             <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-1">
               Series &middot; {posts.length} parts
             </p>
             <h2 class="text-lg font-semibold text-text-light dark:text-text-dark hover:text-accent transition-colors">
-              <a href={`/blog/${first.id.split('/')[0]}`}>{first.data.seriesTitle}</a>
+              <a href={seriesUrl}>{first.data.seriesTitle}</a>
             </h2>
             <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5">
               <time class="text-xs text-text-muted-light dark:text-text-muted-dark" datetime={first.data.date.toISOString()}>
@@ -76,11 +83,19 @@ const seriesGroups = [...seriesMap.values()].sort(
               </p>
             )}
             <ol class="space-y-1 border-l border-stone-200 dark:border-stone-800 pl-4 mt-3">
+              <li>
+                <a href={seriesUrl} class="group flex items-baseline gap-2 py-0.5">
+                  <span class="text-xs text-text-muted-light dark:text-text-muted-dark w-10 shrink-0">&rarr;</span>
+                  <span class="text-sm font-medium text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
+                    Overview
+                  </span>
+                </a>
+              </li>
               {posts.map((post) => (
                 <li>
                   <a href={`/blog/${post.id}`} class="group flex items-baseline gap-2 py-0.5">
                     <span class="text-xs text-text-muted-light dark:text-text-muted-dark w-10 shrink-0 tabular-nums">
-                      {String(post.data.part ?? 0).padStart(2, '0')}
+                      {String(post.data.part).padStart(2, '0')}
                     </span>
                     <span class="text-sm text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
                       {post.data.title.replace(/^Part \d+:\s*/i, '')}
@@ -99,18 +114,18 @@ const seriesGroups = [...seriesMap.values()].sort(
             {post.data.cover && (
               <img
                 src={post.data.cover}
-                alt={post.data.book ? post.data.book.title : post.data.title}
+                alt={post.data.type === 'bookReview' ? post.data.book.title : post.data.title}
                 class="w-14 rounded border border-stone-200 dark:border-stone-800 shrink-0 mt-0.5"
               />
             )}
             <div class="min-w-0">
-              {post.data.book && (
+              {post.data.type === 'bookReview' && (
                 <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-1">Book Review</p>
               )}
               <h2 class="text-lg font-semibold text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
-                {post.data.book ? post.data.book.title : post.data.title}
+                {post.data.type === 'bookReview' ? post.data.book.title : post.data.title}
               </h2>
-              {post.data.book && (
+              {post.data.type === 'bookReview' && (
                 <p class="text-sm text-text-muted-light dark:text-text-muted-dark">by {post.data.book.author}</p>
               )}
               <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5">

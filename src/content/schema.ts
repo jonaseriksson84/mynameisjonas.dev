@@ -1,6 +1,19 @@
 import { z } from "astro/zod";
 
-export const blogSchema = z.object({
+const bookSchema = z.object({
+  title: z.string(),
+  author: z.string(),
+  cover: z.string(),
+  pages: z.number().optional(),
+  isbn: z.string().optional(),
+  rating: z.number().min(1).max(5).optional(),
+  goodreadsUrl: z.string().url().optional(),
+  amazonUrl: z.string().url().optional(),
+});
+
+export type Book = z.infer<typeof bookSchema>;
+
+const rawBlogSchema = z.object({
   title: z.string(),
   description: z.string(),
   date: z.coerce.date(),
@@ -11,14 +24,43 @@ export const blogSchema = z.object({
   seriesTitle: z.string().optional(),
   seriesDescription: z.string().optional(),
   part: z.number().optional(),
-  book: z.object({
-    title: z.string(),
-    author: z.string(),
-    cover: z.string(),
-    pages: z.number().optional(),
-    isbn: z.string().optional(),
-    rating: z.number().min(1).max(5).optional(),
-    goodreadsUrl: z.string().url().optional(),
-    amazonUrl: z.string().url().optional(),
-  }).optional(),
+  book: bookSchema.optional(),
+});
+
+type BaseFields = Pick<z.infer<typeof rawBlogSchema>, 'title' | 'description' | 'date' | 'tags' | 'draft' | 'cover'>;
+
+export type StandalonePost = BaseFields & { type: 'standalone' };
+
+export type SeriesPost = BaseFields & {
+  type: 'seriesPart';
+  series: string;
+  part: number;
+  seriesTitle?: string;
+  seriesDescription?: string;
+};
+
+export type BookReview = BaseFields & {
+  type: 'bookReview';
+  book: Book;
+};
+
+export type BlogPostData = StandalonePost | SeriesPost | BookReview;
+
+export const blogSchema = rawBlogSchema.transform((data): BlogPostData => {
+  const base: BaseFields = {
+    title: data.title,
+    description: data.description,
+    date: data.date,
+    tags: data.tags,
+    draft: data.draft,
+    cover: data.cover,
+  };
+
+  if (data.book) {
+    return { ...base, type: 'bookReview', book: data.book };
+  }
+  if (data.series !== undefined && data.part !== undefined) {
+    return { ...base, type: 'seriesPart', series: data.series, part: data.part, seriesTitle: data.seriesTitle, seriesDescription: data.seriesDescription };
+  }
+  return { ...base, type: 'standalone' };
 });

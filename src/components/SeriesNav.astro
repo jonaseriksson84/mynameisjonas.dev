@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import type { SeriesPost } from '../content/schema';
 
 interface Props {
   series: string;
@@ -12,8 +13,9 @@ const { series, seriesTitle, currentPart, currentSlug } = Astro.props;
 
 const allPosts = await getCollection('blog');
 const seriesPosts = allPosts
-  .filter((p) => p.data.series === series && !p.data.draft && p.data.part !== undefined)
-  .sort((a, b) => (a.data.part as number) - (b.data.part as number));
+  .filter((p): p is typeof p & { data: SeriesPost } =>
+    p.data.type === 'seriesPart' && p.data.series === series && !p.data.draft)
+  .sort((a, b) => a.data.part - b.data.part);
 
 const seriesOverviewUrl = `/blog/${seriesPosts[0]?.id.split('/')[0]}`;
 ---
