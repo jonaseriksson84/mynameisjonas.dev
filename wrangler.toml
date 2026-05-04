@@ -3,3 +3,8 @@ compatibility_date = "2026-02-09"
 
 [assets]
 directory = "./dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mynameisjonas-subscribers"
+database_id = "e893c613-008a-4c00-b286-742c3536c7f2"

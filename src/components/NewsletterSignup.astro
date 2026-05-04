@@ -1,0 +1,75 @@
+---
+interface Props {
+  heading?: string;
+  description?: string;
+}
+
+const {
+  heading = 'Stay in the loop',
+  description = 'I write about software, leadership, and whatever else is on my mind. No spam, unsubscribe any time.',
+} = Astro.props;
+---
+
+<div class="border border-stone-200 dark:border-stone-800 rounded-lg p-6 my-8">
+  <h2 class="text-lg font-semibold text-stone-900 dark:text-stone-100 mt-0">{heading}</h2>
+  <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1 mb-4">{description}</p>
+
+  <form id="newsletter-form" class="flex flex-col sm:flex-row gap-2">
+    <input
+      type="email"
+      name="email"
+      placeholder="your@email.com"
+      required
+      class="flex-1 px-3 py-2 text-sm rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark focus:outline-none focus:ring-2 focus:ring-accent"
+    />
+    <button
+      type="submit"
+      class="px-4 py-2 text-sm font-medium rounded-md bg-accent text-white hover:opacity-90 transition-opacity whitespace-nowrap"
+    >
+      Subscribe
+    </button>
+  </form>
+
+  <p id="newsletter-message" class="hidden text-sm mt-3"></p>
+</div>
+
+<script>
+  const form = document.getElementById('newsletter-form') as HTMLFormElement;
+  const message = document.getElementById('newsletter-message') as HTMLParagraphElement;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+
+    const button = form.querySelector('button') as HTMLButtonElement;
+    button.disabled = true;
+    button.textContent = 'Subscribing…';
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (res.ok) {
+        form.classList.add('hidden');
+        message.textContent = "You're on the list. Talk soon.";
+        message.classList.remove('hidden', 'text-red-500');
+        message.classList.add('text-text-muted-light', 'dark:text-text-muted-dark');
+      } else {
+        message.textContent = 'Something went wrong. Please try again.';
+        message.classList.remove('hidden');
+        message.classList.add('text-red-500');
+        button.disabled = false;
+        button.textContent = 'Subscribe';
+      }
+    } catch {
+      message.textContent = 'Something went wrong. Please try again.';
+      message.classList.remove('hidden');
+      message.classList.add('text-red-500');
+      button.disabled = false;
+      button.textContent = 'Subscribe';
+    }
+  });
+</script>
