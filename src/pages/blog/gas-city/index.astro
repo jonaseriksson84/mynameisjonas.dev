@@ -8,12 +8,11 @@ const seriesPosts = allPosts
   .sort((a, b) => (a.data.part ?? 0) - (b.data.part ?? 0));
 
 const first = seriesPosts[0];
-const seriesDescription = first?.data.seriesDescription ?? '';
 ---
 
 <BaseLayout
   title="Building with Gas City — Jonas Eriksson"
-  description={seriesDescription}
+  description={first?.data.seriesDescription}
   image="/blog/gas-city/cover-00.png"
   type="article"
 >
@@ -46,21 +45,12 @@ const seriesDescription = first?.data.seriesDescription ?? '';
           </span>
         ))}
       </div>
+      {first?.data.seriesDescription && (
+        <p class="text-base text-text-muted-light dark:text-text-muted-dark mt-4 leading-relaxed">
+          {first.data.seriesDescription}
+        </p>
+      )}
     </header>
-
-    <div class="prose max-w-none mb-10">
-      <p>This is a seven-part tutorial about building a working web app while learning Gas City. Each part adds something new on top of the last. By the end you have an RSS reader of your own and a mental model for how Gas City fits into a project.</p>
-      <p>If you have used coding agents in your editor (Claude Code, Cursor, Codex), you already have most of the muscle this tutorial asks for. Gas City sits one level above that: instead of one agent helping you in your editor, you orchestrate several agents from the command line, each with its own role, and watch them deliver a feature together.</p>
-
-      <h2>What we are building</h2>
-      <p>A minimalist Hacker-News-style RSS aggregator. It fetches the HN front-page feed, stores items in SQLite, renders them in a simple page, and ships small features along the way (per-source labels, search, a daily LLM-generated digest). The app is written by agents under your direction. The configs you write to direct them are the artifacts you keep.</p>
-      <ul>
-        <li>A small Hono app on Bun, with <code>bun:sqlite</code>, <code>hono/html</code>, and HTMX.</li>
-        <li>Five agents in your city: a mayor (always-on coordinator), a backend specialist, a DBA specialist, a frontend specialist, and a code reviewer.</li>
-        <li>Three scheduled jobs: a periodic feed fetch, a nightly database prune, and a daily AI-written digest.</li>
-      </ul>
-      <p>The stack is deliberately self-contained: no build step, no bundler, no JSX transpilation, no Tailwind toolchain. Bun runs <code>.ts</code> files directly, <code>bun:sqlite</code> is built in, <code>hono/html</code> is server-rendered, HTMX adds interactivity without leaving the server.</p>
-    </div>
 
     <ol class="space-y-3 border-l-2 border-accent/30 pl-5">
       {seriesPosts.map((post) => (

@@ -14,12 +14,17 @@ const allPosts = await getCollection('blog');
 const seriesPosts = allPosts
   .filter((p) => p.data.series === series && !p.data.draft && p.data.part !== undefined)
   .sort((a, b) => (a.data.part as number) - (b.data.part as number));
+
+const seriesOverviewUrl = `/blog/${seriesPosts[0]?.id.split('/')[0]}`;
 ---
 
 <nav class="mb-10 rounded-lg border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/50 p-4">
-  <p class="text-xs font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-3">
+  <a
+    href={seriesOverviewUrl}
+    class="text-xs font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors mb-3 block"
+  >
     {seriesTitle}
-  </p>
+  </a>
   <ol class="space-y-1.5">
     {seriesPosts.map((post) => {
       const isCurrent = post.id === currentSlug;

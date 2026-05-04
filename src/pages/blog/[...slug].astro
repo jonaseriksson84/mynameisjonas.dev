@@ -44,7 +44,12 @@ if (isInSeries) {
     <header class="mt-6 mb-8">
       {entry.data.seriesTitle && (
         <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-2">
-          {entry.data.seriesTitle}
+          <a
+            href={`/blog/${entry.id.split('/')[0]}`}
+            class="hover:text-accent-hover transition-colors"
+          >
+            {entry.data.seriesTitle}
+          </a>
         </p>
       )}
       <h1 class="text-3xl font-bold text-text-light dark:text-text-dark">
