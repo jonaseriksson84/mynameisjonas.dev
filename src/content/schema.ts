@@ -25,6 +25,37 @@ const rawBlogSchema = z.object({
   seriesDescription: z.string().optional(),
   part: z.number().optional(),
   book: bookSchema.optional(),
+}).superRefine((data, ctx) => {
+  const hasSeries = data.series !== undefined;
+  const hasPart = data.part !== undefined;
+  if (hasSeries !== hasPart) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'series and part must be both set or both omitted',
+      path: [hasSeries ? 'part' : 'series'],
+    });
+  }
+  if (hasSeries && data.seriesTitle === undefined) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'seriesTitle is required when series is set',
+      path: ['seriesTitle'],
+    });
+  }
+  if (!hasSeries && data.seriesTitle !== undefined) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'seriesTitle is only valid on a series part (set series and part)',
+      path: ['seriesTitle'],
+    });
+  }
+  if (data.book && hasSeries) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'a post cannot be both a book review and a series part',
+      path: ['book'],
+    });
+  }
 });
 
 type BaseFields = Pick<z.infer<typeof rawBlogSchema>, 'title' | 'description' | 'date' | 'tags' | 'draft' | 'cover'>;
@@ -35,7 +66,7 @@ export type SeriesPost = BaseFields & {
   type: 'seriesPart';
   series: string;
   part: number;
-  seriesTitle?: string;
+  seriesTitle: string;
   seriesDescription?: string;
 };
 
@@ -60,7 +91,14 @@ export const blogSchema = rawBlogSchema.transform((data): BlogPostData => {
     return { ...base, type: 'bookReview', book: data.book };
   }
   if (data.series !== undefined && data.part !== undefined) {
-    return { ...base, type: 'seriesPart', series: data.series, part: data.part, seriesTitle: data.seriesTitle, seriesDescription: data.seriesDescription };
+    return {
+      ...base,
+      type: 'seriesPart',
+      series: data.series,
+      part: data.part,
+      seriesTitle: data.seriesTitle!, // guaranteed present by .superRefine()
+      seriesDescription: data.seriesDescription,
+    };
   }
   return { ...base, type: 'standalone' };
 });
