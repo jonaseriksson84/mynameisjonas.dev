@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "dev:cf": "wrangler dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",

@@ -7,7 +7,11 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   site: 'https://mynameisjonas.dev',
   output: 'static',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true,
+    },
+  }),
   vite: {
     plugins: [tailwindcss()],
   },
