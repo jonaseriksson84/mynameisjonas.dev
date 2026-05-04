@@ -3,7 +3,7 @@ title: "Part 5: Scheduled orders and custom formulas"
 description: "Add scheduled orders, write a custom formula that generates a daily AI digest, and think through how this maps to a real deployment."
 date: 2026-05-03
 tags: ["gas-city", "tutorial", "multi-agent"]
-series: "building-with-gas-city"
+series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 5
 cover: /blog/gas-city/cover-05.png

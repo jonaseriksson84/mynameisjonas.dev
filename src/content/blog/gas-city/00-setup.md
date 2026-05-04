@@ -3,7 +3,7 @@ title: "Part 0: Installation and setup"
 description: "Set up your Gas City workspace, install the toolchain, and verify everything is working before building a multi-agent RSS reader."
 date: 2026-05-03
 tags: ["gas-city", "tutorial", "multi-agent"]
-series: "building-with-gas-city"
+series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 0
 seriesDescription: "Build a working RSS reader using Gas City's multi-agent orchestration. Seven parts: from standing up your first agent to scheduled digests and full-text search — with a code reviewer that catches real bugs along the way."

@@ -3,7 +3,7 @@ title: "Part 3: Multi-specialist chains and bead dependencies"
 description: "Register DBA and frontend agents, hand the mayor a real multi-lane feature, and watch a bead dependency chain run hands-off."
 date: 2026-05-03
 tags: ["gas-city", "tutorial", "multi-agent"]
-series: "building-with-gas-city"
+series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 3
 cover: /blog/gas-city/cover-03.png

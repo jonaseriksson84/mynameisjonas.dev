@@ -3,7 +3,7 @@ title: "Part 4: Adding a code reviewer"
 description: "Add a reviewer agent, optionally run it on Codex, wire a mandatory review bead at the end of every feature chain, and watch it catch a real defect."
 date: 2026-05-03
 tags: ["gas-city", "tutorial", "multi-agent"]
-series: "building-with-gas-city"
+series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 4
 cover: /blog/gas-city/cover-04.png

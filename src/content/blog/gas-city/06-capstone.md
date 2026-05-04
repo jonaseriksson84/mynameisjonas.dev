@@ -3,7 +3,7 @@ title: "Part 6: Full-text search, end to end"
 description: "One handoff, no nudges. Watch all four specialists run a full-text search feature from decomposition to reviewer approval."
 date: 2026-05-03
 tags: ["gas-city", "tutorial", "multi-agent"]
-series: "building-with-gas-city"
+series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 6
 cover: /blog/gas-city/cover-06.png

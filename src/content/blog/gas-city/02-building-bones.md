@@ -3,7 +3,7 @@ title: "Part 2: Your first backend agent"
 description: "Register a backend specialist, hand the mayor its first feature, and watch a polecat spawn, work, commit, and drain."
 date: 2026-05-03
 tags: ["gas-city", "tutorial", "multi-agent"]
-series: "building-with-gas-city"
+series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 2
 cover: /blog/gas-city/cover-02.png

@@ -3,7 +3,7 @@ title: "Part 1: Starting the mayor and sending mail"
 description: "Wake the mayor, write its prompt, and exchange your first piece of mail with a live agent."
 date: 2026-05-03
 tags: ["gas-city", "tutorial", "multi-agent"]
-series: "building-with-gas-city"
+series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 1
 cover: /blog/gas-city/cover-01.png

@@ -2,9 +2,9 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getSeries } from '../../../lib/series';
 
-const series = await getSeries('building-with-gas-city');
+const series = await getSeries('gas-city');
 if (!series) {
-  throw new Error('Series "building-with-gas-city" not found');
+  throw new Error('Series "gas-city" not found');
 }
 const firstPart = series.parts[0];
 ---
