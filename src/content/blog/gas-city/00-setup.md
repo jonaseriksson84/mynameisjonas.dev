@@ -55,7 +55,7 @@ A Claude Code subscription covers the full run; the whole tutorial ran on my Ant
 
 Every command output, file path, and config in this tutorial is what happened on my run. Your run will differ in details. Each chapter ends with a **shape check** that lists what should be true, not byte-identical: "the app renders an HN-style list at `/`," "this bead is closed." If your shape matches, you are on track.
 
-When something goes off-script, each chapter has a "When your agent goes off-script" section with the failure modes I observed. The companion repo has a `chapter-N` tag for every chapter; if you ever want to skip ahead from a known-good state, `git checkout chapter-N` recovers it.
+When something goes off-script, each chapter has a "When your agent goes off-script" section with the failure modes I observed. The [companion repo](https://github.com/jonaseriksson84/gas-city-tutorial) has a `chapter-N` tag for every chapter; if you ever want to skip ahead from a known-good state, `git checkout chapter-N` recovers it.
 
 ## Workspace layout
 
@@ -72,7 +72,7 @@ The parent is a git repo. `rss-reader/` is its own git repo (you `git init` it i
 
 Nothing in Gas City requires the rig and city to be colocated. We do it for convenience: opening one editor at the parent gives you both the configs and the app side by side. You can keep them apart if you prefer (rig at `~/code/rss-reader`, city at `~/work/rss-reader-city`); `gc rig add` accepts an absolute path.
 
-For GitHub: two repos is the natural shape. Push `rss-reader/` as the app repo (this is what you would deploy if you ever did). Push the parent repo as the tutorial-companion repo, or keep it private. Single-repo is friction for no gain because `bd`'s auto-export needs `git add` to work inside the rig directory. Submodules work if you want one URL.
+For GitHub: two repos is the natural shape. Push `rss-reader/` as the [app repo](https://github.com/jonaseriksson84/rss-reader) (this is what you would deploy if you ever did). Push the parent repo as the [tutorial-companion repo](https://github.com/jonaseriksson84/gas-city-tutorial), or keep it private. Single-repo is friction for no gain because `bd`'s auto-export needs `git add` to work inside the rig directory. Submodules work if you want one URL.
 
 </details>
 

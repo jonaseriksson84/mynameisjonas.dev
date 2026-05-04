@@ -193,3 +193,5 @@ And the bigger swings:
 - **Use Gas City for non-coding work.** A weekly research roundup, a financial reconciliation, an ops runbook executor. The orchestration shape generalizes.
 
 The point of these seven chapters was not to build an RSS reader. It was to give you a working mental model for "describe a feature, watch the system ship it." You have that now. The next thing you build with Gas City does not need a tutorial.
+
+The finished code is on GitHub: [gas-city-tutorial](https://github.com/jonaseriksson84/gas-city-tutorial) for the city configs and prompts, [rss-reader](https://github.com/jonaseriksson84/rss-reader) for the app.
