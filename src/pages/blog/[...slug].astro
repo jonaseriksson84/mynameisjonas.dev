@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SeriesNav from '../../components/SeriesNav.astro';
 import BookMeta from '../../components/BookMeta.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -103,6 +104,13 @@ if (isInSeries) {
     <div class="prose max-w-none">
       <Content />
     </div>
+
+    {entry.data.series === 'building-with-gas-city' && (
+      <NewsletterSignup
+        heading="Enjoying the series?"
+        description="I'll write more about multi-agent development and building with Gas City. No spam, unsubscribe any time."
+      />
+    )}
 
     <p class="mt-10 pt-6 border-t border-stone-200 dark:border-stone-800 text-sm text-text-muted-light dark:text-text-muted-dark">
       Have thoughts? <a href="https://x.com/jonaseriksson84" target="_blank" rel="noopener noreferrer" class="text-accent hover:text-accent-hover transition-colors">Find me on X</a> to continue the discussion.
