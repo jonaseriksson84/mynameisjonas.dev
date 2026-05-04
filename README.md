@@ -1,43 +1,20 @@
-# Astro Starter Kit: Minimal
+# mynameisjonas.dev
 
-```sh
-pnpm create astro@latest -- --template minimal
-```
+Source for [mynameisjonas.dev](https://mynameisjonas.dev) — my personal site and blog.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Stack
 
-## 🚀 Project Structure
+- [Astro 6](https://astro.build) — mostly static, with one server-rendered route for newsletter signup
+- [Tailwind CSS v4](https://tailwindcss.com)
+- [Cloudflare Workers](https://workers.cloudflare.com) for hosting
+- [Cloudflare D1](https://developers.cloudflare.com/d1/) for newsletter subscribers
+- TypeScript
 
-Inside of your Astro project, you'll see the following folders and files:
+## Layout
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `src/pages/` — routes (home, blog, projects, CV, `/api/subscribe`)
+- `src/content/blog/` — Markdown posts with a Zod-validated frontmatter schema (standalone, series part, or book review)
+- `src/lib/` — domain logic (series grouping, subscription recording, theme)
+- `src/components/` — Astro components
+- `CONTEXT.md` — domain language
+- `docs/adr/` — architecture decisions
