@@ -1,0 +1,399 @@
+---
+import {
+  contactInfo,
+  aboutText,
+  getGroupedJobs,
+  education,
+  techStack,
+} from "../../data/cv";
+
+const groupedJobs = getGroupedJobs();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Jonas Eriksson — CV</title>
+    <style>
+      :root {
+        --accent: #f97316;
+        --text: #1c1917;
+        --muted: #57534e;
+        --rule: #e7e5e4;
+        --pill-bg: #fafaf9;
+        --pill-border: #d6d3d1;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f5f5f4;
+        color: var(--text);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+          Ubuntu, Cantarell, sans-serif;
+        font-size: 10.5pt;
+        line-height: 1.35;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 12mm 14mm;
+        margin: 16px auto;
+        background: white;
+        box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.25);
+      }
+
+      @media print {
+        html,
+        body {
+          background: white;
+        }
+        .page {
+          width: auto;
+          min-height: 0;
+          margin: 0;
+          /* keep internal padding so margins survive even if the user
+             picks "Margins: None" in the print dialog */
+          padding: 12mm 14mm;
+          box-shadow: none;
+        }
+      }
+
+      header.cv-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12pt;
+        padding-bottom: 8pt;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .name {
+        font-size: 22pt;
+        line-height: 1.1;
+        margin: 0;
+      }
+      .name .first {
+        font-weight: 300;
+      }
+      .name .last {
+        font-weight: 700;
+      }
+      .role {
+        margin: 2pt 0 0;
+        color: var(--muted);
+        font-size: 10.5pt;
+      }
+      .accent-rule {
+        width: 28pt;
+        height: 2px;
+        background: var(--accent);
+        border-radius: 2px;
+        margin: 4pt 0 0;
+      }
+
+      .contact {
+        font-size: 9pt;
+        color: var(--muted);
+        line-height: 1.5;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        column-gap: 6pt;
+        align-items: baseline;
+        justify-items: end;
+      }
+      .contact a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .contact .value {
+        justify-self: end;
+        text-align: right;
+      }
+      .contact .label {
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 8pt;
+        letter-spacing: 0.06em;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 52mm 1fr;
+        gap: 9mm;
+        margin-top: 10pt;
+      }
+      main {
+        border-left: 1px solid var(--rule);
+        padding-left: 4.5mm;
+        margin-left: -4.5mm;
+      }
+
+      h2.section {
+        font-size: 9pt;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--text);
+        margin: 0 0 8pt;
+        padding-bottom: 3pt;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .job + .job {
+        margin-top: 11pt;
+      }
+      .edu + .edu {
+        margin-top: 8pt;
+      }
+
+      .job-head,
+      .edu-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8pt;
+      }
+
+      .job-title,
+      .edu-degree {
+        font-size: 10pt;
+        font-weight: 600;
+        margin: 0;
+        line-height: 1.35;
+      }
+      .job-company {
+        margin: 1pt 0 0;
+        font-size: 9.5pt;
+        color: var(--accent);
+        line-height: 1.3;
+      }
+      .job-company .at {
+        color: var(--accent);
+        margin-right: 2pt;
+      }
+      .consultancy-group {
+        margin-top: 11pt;
+        padding-left: 7pt;
+        border-left: 1.5pt solid var(--rule);
+      }
+      .consultancy-group .consultancy-label {
+        font-size: 8pt;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        margin: 0 0 4pt;
+      }
+      .consultancy-group .consultancy-label .via {
+        color: #a8a29e;
+        font-weight: 500;
+      }
+      .consultancy-group .job + .job {
+        margin-top: 8pt;
+      }
+      .period {
+        font-size: 9pt;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      .achievements {
+        list-style: disc;
+        margin: 4pt 0 5pt 14pt;
+        padding: 0;
+        color: var(--muted);
+        font-size: 9.75pt;
+        line-height: 1.45;
+      }
+      .achievements li {
+        margin: 0 0 2pt;
+      }
+      .achievements li:last-child {
+        margin-bottom: 0;
+      }
+
+      .buzzwords {
+        margin: 3pt 0 0;
+        color: #78716c;
+        font-size: 8.75pt;
+        line-height: 1.45;
+        font-style: italic;
+      }
+
+      .edu-institution {
+        color: var(--accent);
+        font-size: 9pt;
+        margin: 1pt 0 0;
+      }
+      .edu-detail {
+        color: var(--muted);
+        font-size: 9pt;
+        margin: 1pt 0 0;
+      }
+
+      aside.side > section + section {
+        margin-top: 9pt;
+      }
+
+      .about p {
+        margin: 0 0 4pt;
+        color: var(--muted);
+        font-size: 9.5pt;
+        line-height: 1.45;
+        text-align: justify;
+        text-wrap: pretty;
+        hyphens: auto;
+        -webkit-hyphens: auto;
+      }
+      .about p:last-child {
+        margin-bottom: 0;
+      }
+
+      .tech-cat {
+        margin-bottom: 5pt;
+      }
+      .tech-cat:last-child {
+        margin-bottom: 0;
+      }
+      .tech-cat-title {
+        font-size: 8.75pt;
+        font-weight: 600;
+        color: var(--text);
+        margin: 0 0 2pt;
+      }
+      .tech-cat-items {
+        font-size: 9pt;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="cv-head">
+        <div>
+          <h1 class="name">
+            <span class="first">Jonas</span> <span class="last">Eriksson</span>
+          </h1>
+          <div class="accent-rule"></div>
+          <p class="role">Fullstack Engineer &amp; Tech Lead</p>
+        </div>
+        <div class="contact">
+          <span class="value"
+            ><a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a
+            ></span
+          >
+          <span class="label">E</span>
+          <span class="value"
+            ><a href={`tel:${contactInfo.phone}`}>{contactInfo.phone}</a></span
+          >
+          <span class="label">P</span>
+          <span class="value">Stockholm, Sweden</span>
+          <span class="label">L</span>
+          <span class="value"
+            ><a href={`https://${contactInfo.website}`}
+              >{contactInfo.website}</a
+            ></span
+          >
+          <span class="label">W</span>
+        </div>
+      </header>
+
+      <div class="grid">
+        <aside class="side">
+          <section class="about">
+            <h2 class="section">About</h2>
+            {aboutText.map((p) => <p>{p}</p>)}
+          </section>
+
+          <section>
+            <h2 class="section">Tech Stack</h2>
+            {
+              techStack.map((cat) => (
+                <div class="tech-cat">
+                  <p class="tech-cat-title">{cat.title}</p>
+                  <p class="tech-cat-items">{cat.items.join(" · ")}</p>
+                </div>
+              ))
+            }
+          </section>
+        </aside>
+
+        <main>
+          <section>
+            <h2 class="section">Experience</h2>
+            {
+              groupedJobs.map((group) => {
+                const isConsultancy = !!group[0].consultancy;
+                const roles = group.map((job) => (
+                  <div class="job">
+                    <div class="job-head">
+                      <h3 class="job-title">{job.title}</h3>
+                      <span class="period">{job.period}</span>
+                    </div>
+                    <p class="job-company">
+                      <span class="at">@</span>
+                      {job.company}
+                    </p>
+                    <ul class="achievements">
+                      {job.achievements.map((a) => (
+                        <li>{a}</li>
+                      ))}
+                    </ul>
+                    <div class="buzzwords">{job.buzzwords.join(" · ")}</div>
+                  </div>
+                ));
+                return isConsultancy ? (
+                  <div class="consultancy-group">
+                    <p class="consultancy-label">
+                      <span class="via">Via</span> {group[0].consultancy}
+                    </p>
+                    {roles}
+                  </div>
+                ) : (
+                  roles
+                );
+              })
+            }
+          </section>
+
+          <section style="margin-top: 10pt;">
+            <h2 class="section">Education</h2>
+            {
+              education.map((entry) => (
+                <div class="edu">
+                  <div class="edu-head">
+                    <h3 class="edu-degree">{entry.degree}</h3>
+                    <span class="period">{entry.period}</span>
+                  </div>
+                  <p class="edu-institution">{entry.institution}</p>
+                  {entry.details.map((d) => (
+                    <p class="edu-detail">{d}</p>
+                  ))}
+                </div>
+              ))
+            }
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
