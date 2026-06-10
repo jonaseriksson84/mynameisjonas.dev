@@ -17,6 +17,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^6.2.2",
+    "rehype-external-links": "^3.0.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^6.0.3",
     "workerd": "^1.20260504.1",
