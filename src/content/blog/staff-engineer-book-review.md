@@ -12,7 +12,7 @@ book:
   isbn: "978-1736417911"
   rating: 3
   goodreadsUrl: "https://www.goodreads.com/book/show/56481725-staff-engineer"
-  amazonUrl: "https://www.amazon.com/Staff-Engineer-Leadership-Beyond-Management/dp/1736417916"
+  storeUrl: "https://www.amazon.com/Staff-Engineer-Leadership-Beyond-Management/dp/1736417916"
 ---
 
 Staff Engineer is a well-structured guide for engineers in traditional, leveled tech organizations who are thinking about the staff track. If that's you, it delivers.

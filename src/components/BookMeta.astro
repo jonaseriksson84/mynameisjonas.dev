@@ -7,10 +7,10 @@ interface Props {
   isbn?: string;
   rating?: number;
   goodreadsUrl?: string;
-  amazonUrl?: string;
+  storeUrl?: string;
 }
 
-const { title, author, cover, pages, isbn, rating, goodreadsUrl, amazonUrl } = Astro.props;
+const { title, author, cover, pages, isbn, rating, goodreadsUrl, storeUrl } = Astro.props;
 
 const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
 ---
@@ -46,9 +46,9 @@ const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
             Goodreads
           </a>
         )}
-        {amazonUrl && (
-          <a href={amazonUrl} target="_blank" rel="noopener noreferrer">
-            Buy on Amazon
+        {storeUrl && (
+          <a href={storeUrl} target="_blank" rel="noopener noreferrer">
+            Buy
           </a>
         )}
       </div>

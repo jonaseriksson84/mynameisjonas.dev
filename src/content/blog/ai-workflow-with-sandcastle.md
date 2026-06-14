@@ -4,7 +4,7 @@ description: "I went from one personal project a year to several a month. Not be
 date: 2026-06-11
 tags: ["ai", "agents", "workflow", "claude-code"]
 cover: /blog/ai-workflow-with-sandcastle/cover.png
-draft: false
+draft: true
 ---
 
 I used to build maybe one personal project a year, whenever the free time, the lust, and a good idea happened to overlap. In the last month I've shipped four to six. Not to make money. Just things I wanted to exist, that occurred to me and then did.

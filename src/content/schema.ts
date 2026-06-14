@@ -8,7 +8,7 @@ const bookSchema = z.object({
   isbn: z.string().optional(),
   rating: z.number().min(1).max(5).optional(),
   goodreadsUrl: z.string().url().optional(),
-  amazonUrl: z.string().url().optional(),
+  storeUrl: z.string().url().optional(),
 });
 
 export type Book = z.infer<typeof bookSchema>;
