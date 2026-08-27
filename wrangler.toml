@@ -1,6 +1,7 @@
 name = "mynameisjonas-dev"
 main = "@astrojs/cloudflare/entrypoints/server"
 compatibility_date = "2026-02-09"
+preview_urls = true
 
 [assets]
 directory = "./dist"
