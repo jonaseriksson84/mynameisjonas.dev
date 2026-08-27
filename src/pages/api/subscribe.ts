@@ -2,9 +2,14 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { env } from 'cloudflare:workers';
-import { recordSubscription } from '../../lib/subscription';
+import { isProductionSiteHost, recordSubscription } from '../../lib/subscription';
 
 export const POST: APIRoute = async ({ request }) => {
+  const host = new URL(request.url).hostname;
+  if (!isProductionSiteHost(host)) {
+    return Response.json({ error: 'Signup is disabled on preview' }, { status: 403 });
+  }
+
   const json = await request.json().catch(() => null) as { email?: unknown } | null;
   const result = await recordSubscription(env.DB, json?.email);
 

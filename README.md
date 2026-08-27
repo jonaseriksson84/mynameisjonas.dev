@@ -18,3 +18,14 @@ Source for [mynameisjonas.dev](https://mynameisjonas.dev) — my personal site a
 - `src/components/` — Astro components
 - `CONTEXT.md` — domain language
 - `docs/adr/` — architecture decisions
+
+## Deploy
+
+Production is the `mynameisjonas-dev` Worker. Local: `pnpm deploy`.
+
+CI is Cloudflare Workers Builds (git connected to this repo):
+
+- `main` → build + `wrangler deploy`
+- other branches → build + `wrangler versions upload` (PR preview URL)
+
+GitHub Actions only runs tests. Newsletter signup is disabled on preview hosts so PR deploys cannot write to the production D1.
