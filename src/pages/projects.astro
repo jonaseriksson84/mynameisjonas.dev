@@ -1,31 +1,68 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const projects = [
+type Project = {
+  title: string;
+  description: string;
+  tech: string[];
+  url?: string;
+  github?: string;
+};
+
+const projects: Project[] = [
+  {
+    title: "Gissa partiet",
+    description:
+      "Pictures of riksdagsledamöter. You guess which party.",
+    tech: ["TypeScript", "Cloudflare Workers"],
+    url: "https://gissapartiet.se",
+    github: "https://github.com/jonaseriksson84/gissapartiet",
+  },
+  {
+    title: "WC26 Jobbiga Bets",
+    description:
+      "A friends World Cup prediction pool in the style of a sticker album, plus a recap of the whole tournament. Frozen now that it's over.",
+    tech: ["SvelteKit", "TypeScript", "Cloudflare Workers"],
+    url: "https://wc26.mynameisjonas.dev",
+    github: "https://github.com/jonaseriksson84/fifa-wc-2026",
+  },
+  {
+    title: "WC26 digest",
+    description:
+      "AI-generated daily digests of played and upcoming games, for a quick overview.",
+    tech: ["TypeScript", "Cloudflare Workers"],
+    url: "https://wc26-digest.mynameisjonas.dev",
+    github: "https://github.com/jonaseriksson84/wc2026-digest",
+  },
+  {
+    title: "ChromaCross",
+    description:
+      "A daily word puzzle where you guess letters to reveal two intersecting words. Each letter has its own color, eight wrong guesses.",
+    tech: ["TypeScript", "React", "Cloudflare Workers"],
+    url: "https://chromacross.app",
+    github: "https://github.com/jonaseriksson84/chromacross",
+  },
   {
     title: "3D Earth",
     description:
-      "Interactive 3D globe visualization with real-time controls for time, clouds, atmosphere, and celestial bodies. Rotate, zoom, and explore Earth with dynamic geographic markers.",
+      "Interactive 3D globe with controls for time, clouds, atmosphere, and celestial bodies. Rotate, zoom, drop markers.",
     tech: ["Three.js", "TypeScript", "Cloudflare Workers"],
     url: "https://3d-earth.je-projects.workers.dev/",
     github: "https://github.com/jonaseriksson84/3d-earth",
   },
   {
-    title: "ChromaCross",
+    title: "betto-balutto",
     description:
-      "A daily word puzzle game where players guess letters to reveal two intersecting words. Each letter is represented by a distinct color, with a limit of eight wrong guesses.",
-    tech: ["TypeScript", "React", "Cloudflare Workers"],
-    url: "https://chromacross.app/",
-    github: "https://github.com/jonaseriksson84/chromacross",
-  },
-  {
-    title: "ralph-cli",
-    description:
-      "Re-usable scaffolding for the Ralph Wiggum technique that lets you build software while you sleep",
-    tech: ["TypeScript", "AI"],
-    github: "https://github.com/jonaseriksson84/ralph-cli",
+      "Bets from a Swedish gambling podcast, pulled and settled automatically by AI. Automatic updates are off now. Frozen in time.",
+    tech: ["TypeScript", "Cloudflare Workers"],
+    url: "https://betto-balutto.mynameisjonas.dev",
+    github: "https://github.com/jonaseriksson84/betto-balutto",
   },
 ];
+
+function hostLabel(url: string) {
+  return new URL(url).host.replace(/^www\./, "");
+}
 ---
 
 <BaseLayout title="Projects — mynameisjonas">
@@ -38,7 +75,7 @@ const projects = [
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
     {
       projects.map((project, i) => (
-        <div
+        <article
           class:list={[
             "project-card bg-white dark:bg-surface-dark rounded-xl p-6 border border-stone-200 dark:border-transparent",
             "animate-fade-in-up",
@@ -46,7 +83,18 @@ const projects = [
           ]}
         >
           <h2 class="text-lg font-semibold text-text-light dark:text-text-dark">
-            {project.title}
+            {project.url ? (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-accent transition-colors duration-200"
+              >
+                {project.title}
+              </a>
+            ) : (
+              project.title
+            )}
           </h2>
           <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-2">
             {project.description}
@@ -59,15 +107,15 @@ const projects = [
             ))}
           </div>
           {(project.url || project.github) && (
-            <div class="flex gap-3 mt-4">
+            <div class="flex items-baseline gap-3 mt-4">
               {project.url && (
                 <a
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+                  class="text-sm font-medium text-accent hover:text-accent-hover transition-colors duration-200"
                 >
-                  Visit
+                  {hostLabel(project.url)}
                 </a>
               )}
               {project.github && (
@@ -75,14 +123,14 @@ const projects = [
                   href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+                  class="text-sm text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors duration-200"
                 >
                   GitHub
                 </a>
               )}
             </div>
           )}
-        </div>
+        </article>
       ))
     }
   </div>
