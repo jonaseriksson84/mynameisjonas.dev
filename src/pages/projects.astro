@@ -1,28 +1,70 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-type Project = {
+interface Project {
   title: string;
   description: string;
   tech: string[];
   url?: string;
   github?: string;
-};
+  /** Shown in place of links when there is nothing public to point at. */
+  note?: string;
+}
 
-const projects: Project[] = [
+const agents: Project[] = [
+  {
+    title: "claude-to-codex",
+    description:
+      "A manager/contractor split for AI coding: Claude Code plans, reviews, and merges; the Codex CLI writes every line of implementation. Each unit of work is a small markdown task packet dispatched to a sandboxed run, verified independently before anything is committed.",
+    tech: ["Node", "Claude Code", "Codex CLI"],
+    note: "Private repo",
+  },
+  {
+    title: "homelab-sre-agent",
+    description:
+      "Alertmanager tells you that something broke. This tells you why — a single Go binary that catches the webhook, gathers Loki logs, Prometheus metrics, and container state around the incident, asks Claude what most likely went wrong, and pushes a plain-language diagnosis to your phone. Read-only end to end.",
+    tech: ["Go", "Claude API", "Prometheus", "Loki"],
+    github: "https://github.com/jonaseriksson84/homelab-sre-agent",
+  },
+  {
+    title: "betto-balutto",
+    description:
+      "Bets from a Swedish gambling podcast, pulled and settled automatically by AI. Automatic updates are off now. Frozen in time.",
+    tech: ["Cloudflare Workers", "D1", "R2", "Deepgram", "Claude"],
+    url: "https://betto-balutto.mynameisjonas.dev",
+    github: "https://github.com/jonaseriksson84/betto-balutto",
+  },
+  {
+    title: "ralph-cli",
+    description:
+      "Re-usable scaffolding for the Ralph Wiggum technique: define your work in a PRD, then let Claude Code grind through it one task per iteration, committing as it goes.",
+    tech: ["TypeScript", "Claude Code"],
+    github: "https://github.com/jonaseriksson84/ralph-cli",
+  },
+];
+
+const apps: Project[] = [
   {
     title: "Gissa partiet",
     description:
       "Pictures of riksdagsledamöter. You guess which party.",
-    tech: ["TypeScript", "Cloudflare Workers"],
+    tech: ["SvelteKit", "Cloudflare Workers", "D1"],
     url: "https://gissapartiet.se",
     github: "https://github.com/jonaseriksson84/gissapartiet",
+  },
+  {
+    title: "Gissa året",
+    description:
+      "A daily Swedish headline game: everyone gets the same five headlines each day and guesses the year each one ran. Years and blurbs stay on the server until you guess, and there's no login, just today's average score.",
+    tech: ["Astro", "Cloudflare Workers", "KV"],
+    url: "https://gissa-aret.se",
+    note: "Private repo",
   },
   {
     title: "WC26 Jobbiga Bets",
     description:
       "A friends World Cup prediction pool in the style of a sticker album, plus a recap of the whole tournament. Frozen now that it's over.",
-    tech: ["SvelteKit", "TypeScript", "Cloudflare Workers"],
+    tech: ["SvelteKit", "Cloudflare Workers", "D1"],
     url: "https://wc26.mynameisjonas.dev",
     github: "https://github.com/jonaseriksson84/fifa-wc-2026",
   },
@@ -30,7 +72,7 @@ const projects: Project[] = [
     title: "WC26 digest",
     description:
       "AI-generated daily digests of played and upcoming games, for a quick overview.",
-    tech: ["TypeScript", "Cloudflare Workers"],
+    tech: ["Astro", "Cloudflare Workers", "KV"],
     url: "https://wc26-digest.mynameisjonas.dev",
     github: "https://github.com/jonaseriksson84/wc2026-digest",
   },
@@ -51,18 +93,39 @@ const projects: Project[] = [
     github: "https://github.com/jonaseriksson84/3d-earth",
   },
   {
-    title: "betto-balutto",
+    title: "WL — Health Dashboard",
     description:
-      "Bets from a Swedish gambling podcast, pulled and settled automatically by AI. Automatic updates are off now. Frozen in time.",
-    tech: ["TypeScript", "Cloudflare Workers"],
-    url: "https://betto-balutto.mynameisjonas.dev",
-    github: "https://github.com/jonaseriksson84/betto-balutto",
+      "A read-only iPhone app showing my HealthKit data on two screens: today's rings and thirty days of trends. No backend, no cache, no analytics — Health is the single source of truth, read live on each launch.",
+    tech: ["Swift", "SwiftUI", "HealthKit"],
+    github: "https://github.com/jonaseriksson84/personal-wl-dashboard",
+  },
+  {
+    title: "bq-notebook",
+    description:
+      "A local library for the BigQuery SQL you keep losing across tabs and docs. Full-text search, tags, template parameters, and table references parsed out of each query on save.",
+    tech: ["TanStack Start", "SQLite"],
+    github: "https://github.com/jonaseriksson84/bq-notebook",
   },
 ];
 
-function hostLabel(url: string) {
-  return new URL(url).host.replace(/^www\./, "");
-}
+const sections = [
+  {
+    label: "Agents & tooling",
+    lede: "Software that builds or watches other software.",
+    items: agents,
+  },
+  {
+    label: "Apps & experiments",
+    lede: "Things I wanted to exist, so I built them.",
+    items: apps,
+  },
+];
+
+// One running stagger across both sections. `delay-0` … `delay-8` are the
+// classes global.css defines, so anything past the eighth card lands together.
+const MAX_DELAY = 8;
+let step = 0;
+const nextDelay = () => `delay-${Math.min(++step, MAX_DELAY)}`;
 ---
 
 <BaseLayout title="Projects — mynameisjonas">
@@ -72,68 +135,74 @@ function hostLabel(url: string) {
     <span class="text-accent">●</span> Projects
   </h1>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-    {
-      projects.map((project, i) => (
-        <article
-          class:list={[
-            "project-card bg-white dark:bg-surface-dark rounded-xl p-6 border border-stone-200 dark:border-transparent",
-            "animate-fade-in-up",
-            `delay-${i + 1}`,
-          ]}
-        >
-          <h2 class="text-lg font-semibold text-text-light dark:text-text-dark">
-            {project.url ? (
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="hover:text-accent transition-colors duration-200"
-              >
-                {project.title}
-              </a>
-            ) : (
-              project.title
-            )}
+  {
+    sections.map((section) => (
+      <section class="mb-12 last:mb-0">
+        <div class:list={["mb-5", "animate-fade-in-up", nextDelay()]}>
+          <h2 class="text-base font-semibold text-text-light dark:text-text-dark">
+            {section.label}
           </h2>
-          <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-2">
-            {project.description}
+          <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1">
+            {section.lede}
           </p>
-          <div class="flex flex-wrap gap-1.5 mt-4">
-            {project.tech.map((t) => (
-              <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300">
-                {t}
-              </span>
-            ))}
-          </div>
-          {(project.url || project.github) && (
-            <div class="flex items-baseline gap-3 mt-4">
-              {project.url && (
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-sm font-medium text-accent hover:text-accent-hover transition-colors duration-200"
-                >
-                  {hostLabel(project.url)}
-                </a>
-              )}
-              {project.github && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-sm text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors duration-200"
-                >
-                  GitHub
-                </a>
-              )}
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {section.items.map((project) => (
+            <div
+              class:list={[
+                "project-card bg-white dark:bg-surface-dark rounded-xl p-6 border border-stone-200 dark:border-transparent",
+                "flex flex-col",
+                "animate-fade-in-up",
+                nextDelay(),
+              ]}
+            >
+              <h3 class="text-lg font-semibold text-text-light dark:text-text-dark">
+                {project.title}
+              </h3>
+              <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-2 flex-1">
+                {project.description}
+              </p>
+              <div class="flex flex-wrap gap-1.5 mt-4">
+                {project.tech.map((t) => (
+                  <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300">
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <div class="flex gap-3 mt-4 items-center">
+                {project.url && (
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+                  >
+                    Visit
+                  </a>
+                )}
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
+                  >
+                    GitHub
+                  </a>
+                )}
+                {project.note && (
+                  <span class="text-xs text-text-muted-light dark:text-text-muted-dark">
+                    {project.note}
+                  </span>
+                )}
+              </div>
             </div>
-          )}
-        </article>
-      ))
-    }
-  </div>
+          ))}
+        </div>
+      </section>
+    ))
+  }
 </BaseLayout>
 
 <style>
