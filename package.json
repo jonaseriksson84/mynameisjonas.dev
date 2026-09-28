@@ -23,16 +23,10 @@
     "workerd": "^1.20260504.1",
     "wrangler": "^4.87.0"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp",
-      "workerd"
-    ]
-  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260504.1",
     "happy-dom": "^20.5.5",
     "vitest": "^4.0.18"
-  }
+  },
+  "packageManager": "pnpm@11.28.2"
 }
