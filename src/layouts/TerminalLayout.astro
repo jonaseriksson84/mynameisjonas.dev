@@ -1,7 +1,5 @@
 ---
-// Dark-only terminal look. Pages move over from BaseLayout one at a time.
 import '../styles/global.css';
-import '../styles/terminal.css';
 import HeadMeta from '../components/HeadMeta.astro';
 import SpeckField from '../components/term/SpeckField.astro';
 import AccentPicker from '../components/term/AccentPicker.astro';
@@ -34,7 +32,7 @@ const elsewhere = [
 ];
 ---
 
-<html lang="en" class:list={["dark term", { "term-fullscreen": fullscreen }]}>
+<html lang="en" class:list={{ fullscreen }}>
   <head>
     <HeadMeta title={title} description={description} image={image} type={type} />
     <script is:inline define:vars={{ ACCENT_KEY }}>

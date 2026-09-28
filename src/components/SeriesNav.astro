@@ -11,37 +11,19 @@ const data = entry.data;
 const series = data.type === 'seriesPart' ? await getSeries(data.series) : null;
 ---
 {series && (
-  <nav class="mb-10 rounded-lg border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/50 p-4">
-    <a
-      href={series.overviewUrl}
-      class="text-xs font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors mb-3 block"
-    >
-      {series.title}
-    </a>
-    <div class="mb-3 pb-3 border-b border-stone-200 dark:border-stone-800">
-      <a href={series.overviewUrl} class="text-xs text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors">
-        Series overview &rarr;
-      </a>
-    </div>
-    <ol class="space-y-1.5">
+  <nav class="series-nav">
+    <a href={series.overviewUrl} class="series-nav-title">{series.title}</a>
+    <a href={series.overviewUrl} class="series-nav-overview">series overview &rarr;</a>
+    <ol>
       {series.parts.map((post) => {
         const isCurrent = post.id === entry.id;
         return (
-          <li class="flex items-baseline gap-2">
-            <span class="text-xs text-text-muted-light dark:text-text-muted-dark w-4 shrink-0 text-right">
-              {post.data.part}
-            </span>
+          <li>
+            <span class="num">{String(post.data.part).padStart(2, '0')}</span>
             {isCurrent ? (
-              <span class="text-sm font-semibold text-accent">
-                {post.data.title}
-              </span>
+              <span class="current" aria-current="page">{post.data.title}</span>
             ) : (
-              <a
-                href={`/blog/${post.id}`}
-                class="text-sm text-text-muted-light dark:text-text-muted-dark hover:text-accent transition-colors"
-              >
-                {post.data.title}
-              </a>
+              <a href={`/blog/${post.id}`}>{post.data.title}</a>
             )}
           </li>
         );
@@ -49,3 +31,26 @@ const series = data.type === 'seriesPart' ? await getSeries(data.series) : null;
     </ol>
   </nav>
 )}
+
+<style>
+  .series-nav {
+    margin-bottom: 40px; padding: 16px 18px;
+    border: 1px solid var(--line); border-radius: 2px; background: var(--panel);
+    font-size: 13px;
+  }
+
+  .series-nav-title { display: block; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+
+  .series-nav-overview {
+    display: block; margin-top: 6px; padding-bottom: 12px;
+    border-bottom: 1px dashed var(--line); font-size: 12px; color: var(--muted);
+  }
+
+  .series-nav a:hover { color: var(--accent); }
+
+  ol { list-style: none; margin: 12px 0 0; padding: 0; }
+  li { display: flex; gap: 12px; padding: 2px 0; }
+  .num { width: 2ch; flex-shrink: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
+  li a { color: var(--muted); transition: color 150ms ease; }
+  .current { color: var(--accent); font-weight: 500; }
+</style>

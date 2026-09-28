@@ -55,7 +55,7 @@ const { prev: prevPost, next: nextPost } = series
       <img
         src={data.cover}
         alt={data.title}
-        class="post-cover w-full rounded-xl mb-8 border border-stone-200 dark:border-stone-800"
+        class="post-cover"
       />
     )}
 
@@ -68,13 +68,13 @@ const { prev: prevPost, next: nextPost } = series
     )}
 
     {bookData?.book.rating && (
-      <div class="flex items-baseline gap-2 mb-8 -mt-2">
-        <span class="text-accent text-xl tracking-wide">{'★'.repeat(bookData.book.rating)}{'☆'.repeat(5 - bookData.book.rating)}</span>
-        <span class="text-sm text-text-muted-light dark:text-text-muted-dark">My rating</span>
+      <div class="post-rating">
+        <span class="stars">{'★'.repeat(bookData.book.rating)}{'☆'.repeat(5 - bookData.book.rating)}</span>
+        <span>my rating</span>
       </div>
     )}
 
-    <div class="prose max-w-none">
+    <div class="prose">
       <Content />
     </div>
 
@@ -85,27 +85,27 @@ const { prev: prevPost, next: nextPost } = series
       />
     )}
 
-    <p class="mt-10 pt-6 border-t border-stone-200 dark:border-stone-800 text-sm text-text-muted-light dark:text-text-muted-dark">
+    <p class="post-outro">
       Have thoughts? <a href="https://x.com/jonaseriksson84" target="_blank" rel="noopener noreferrer" class="post-link">Find me on X</a> to continue the discussion.
     </p>
 
     {seriesData && (prevPost || nextPost) && (
-      <nav class="mt-12 pt-6 border-t border-stone-200 dark:border-stone-800 flex justify-between gap-4">
-        <div class="flex-1">
+      <nav class="post-pager">
+        <div>
           {prevPost && (
-            <a href={`/blog/${prevPost.id}`} class="group flex flex-col gap-0.5">
-              <span class="text-xs text-text-muted-light dark:text-text-muted-dark">&larr; Previous</span>
-              <span class="text-sm font-medium text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
+            <a href={`/blog/${prevPost.id}`}>
+              <span class="dir">&larr; prev</span>
+              <span class="title">
                 {prevPost.data.title}
               </span>
             </a>
           )}
         </div>
-        <div class="flex-1 text-right">
+        <div class="next">
           {nextPost && (
-            <a href={`/blog/${nextPost.id}`} class="group flex flex-col gap-0.5 items-end">
-              <span class="text-xs text-text-muted-light dark:text-text-muted-dark">Next &rarr;</span>
-              <span class="text-sm font-medium text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
+            <a href={`/blog/${nextPost.id}`}>
+              <span class="dir">next &rarr;</span>
+              <span class="title">
                 {nextPost.data.title}
               </span>
             </a>
@@ -193,6 +193,20 @@ const { prev: prevPost, next: nextPost } = series
 </script>
 
 <style is:global>
+  .post-cover { width: 100%; margin-bottom: 32px; border: 1px solid var(--line); border-radius: 2px; }
+
+  .post-rating { display: flex; align-items: baseline; gap: 10px; margin: -8px 0 32px; font-size: 13px; color: var(--muted); }
+  .post-rating .stars { font-size: 20px; letter-spacing: 0.05em; color: var(--accent); }
+
+  .post-outro { margin-top: 40px; padding-top: 24px; border-top: 1px dashed var(--line); font-size: 13px; color: var(--muted); }
+
+  .post-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; padding-top: 24px; border-top: 1px dashed var(--line); }
+  .post-pager a { display: flex; flex-direction: column; gap: 4px; }
+  .post-pager .next a { align-items: flex-end; text-align: right; }
+  .post-pager .dir { font-size: 12px; color: var(--muted); }
+  .post-pager .title { font-size: 14px; font-weight: 500; transition: color 150ms ease; }
+  .post-pager a:hover .title { color: var(--accent); }
+
   /* Wrapper restores the prose margins that pre would normally own */
   .copy-code-wrapper {
     position: relative;

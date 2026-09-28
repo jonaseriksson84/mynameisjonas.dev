@@ -10,32 +10,27 @@ const {
 } = Astro.props;
 ---
 
-<div class="border border-stone-200 dark:border-stone-800 rounded-lg p-6 my-8">
-  <h2 class="text-lg font-semibold text-stone-900 dark:text-stone-100 mt-0">{heading}</h2>
-  <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1 mb-4">{description}</p>
+<div class="newsletter">
+  <h2>{heading}</h2>
+  <p class="newsletter-desc">{description}</p>
 
-  <form id="newsletter-form" class="flex flex-col sm:flex-row gap-2">
-    <input
-      type="email"
-      name="email"
-      placeholder="your@email.com"
-      required
-      class="flex-1 px-3 py-2 text-sm rounded-md border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark focus:outline-none focus:ring-2 focus:ring-accent"
-    />
-    <button
-      type="submit"
-      class="px-4 py-2 text-sm font-medium rounded-md bg-accent text-stone-950 hover:opacity-90 transition-opacity whitespace-nowrap"
-    >
-      Subscribe
-    </button>
+  <form id="newsletter-form">
+    <input type="email" name="email" placeholder="your@email.com" required />
+    <button type="submit">Subscribe</button>
   </form>
 
-  <p id="newsletter-message" class="hidden text-sm mt-3"></p>
+  <p id="newsletter-message" hidden></p>
 </div>
 
 <script>
   const form = document.getElementById('newsletter-form') as HTMLFormElement;
   const message = document.getElementById('newsletter-message') as HTMLParagraphElement;
+
+  const showMessage = (text: string, isError: boolean) => {
+    message.textContent = text;
+    message.classList.toggle('is-error', isError);
+    message.hidden = false;
+  };
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -53,23 +48,47 @@ const {
       });
 
       if (res.ok) {
-        form.classList.add('hidden');
-        message.textContent = "You're on the list. Talk soon.";
-        message.classList.remove('hidden', 'text-red-500');
-        message.classList.add('text-text-muted-light', 'dark:text-text-muted-dark');
+        form.hidden = true;
+        showMessage("You're on the list. Talk soon.", false);
       } else {
-        message.textContent = 'Something went wrong. Please try again.';
-        message.classList.remove('hidden');
-        message.classList.add('text-red-500');
-        button.disabled = false;
-        button.textContent = 'Subscribe';
+        fail();
       }
     } catch {
-      message.textContent = 'Something went wrong. Please try again.';
-      message.classList.remove('hidden');
-      message.classList.add('text-red-500');
+      fail();
+    }
+
+    function fail() {
+      showMessage('Something went wrong. Please try again.', true);
       button.disabled = false;
       button.textContent = 'Subscribe';
     }
   });
 </script>
+
+<style>
+  .newsletter { margin: 32px 0; padding: 24px; border: 1px solid var(--line); border-radius: 2px; background: var(--panel); }
+  h2 { font-size: 16px; font-weight: 500; color: var(--fg); }
+  .newsletter-desc { margin: 6px 0 16px; font-family: var(--font-sans); font-size: 14px; line-height: 1.6; color: var(--muted); }
+
+  form { display: flex; flex-wrap: wrap; gap: 8px; }
+  form[hidden] { display: none; }
+
+  input {
+    flex: 1 1 220px; padding: 8px 12px;
+    font: inherit; font-size: 14px; color: var(--fg);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 2px;
+  }
+  input::placeholder { color: var(--muted); }
+  input:focus { outline: none; border-color: var(--accent); }
+
+  button {
+    padding: 8px 16px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer;
+    color: var(--bg); background: var(--accent); border: 0; border-radius: 2px;
+    transition: opacity 150ms ease;
+  }
+  button:hover { opacity: 0.9; }
+  button:disabled { opacity: 0.6; cursor: default; }
+
+  #newsletter-message { font-size: 14px; color: var(--muted); }
+  #newsletter-message.is-error { color: #ff5a4a; }
+</style>

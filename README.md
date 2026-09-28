@@ -14,7 +14,7 @@ Source for [mynameisjonas.dev](https://mynameisjonas.dev) — my personal site a
 
 - `src/pages/` — routes (home, blog, projects, CV, `/api/subscribe`)
 - `src/content/blog/` — Markdown posts with a Zod-validated frontmatter schema (standalone, series part, or book review)
-- `src/lib/` — domain logic (series grouping, subscription recording, theme)
+- `src/lib/` — domain logic (series grouping, subscription recording, accent colours)
 - `src/components/` — Astro components
 - `CONTEXT.md` — domain language
 - `docs/adr/` — architecture decisions
