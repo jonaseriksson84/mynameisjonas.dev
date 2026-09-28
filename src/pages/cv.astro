@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import TerminalLayout from "../layouts/TerminalLayout.astro";
 import CvHeader from "../components/cv/CvHeader.astro";
 import CvContact from "../components/cv/CvContact.astro";
 import CvAbout from "../components/cv/CvAbout.astro";
@@ -8,23 +8,72 @@ import CvExperience from "../components/cv/CvExperience.astro";
 import CvEducation from "../components/cv/CvEducation.astro";
 ---
 
-<BaseLayout title="CV — mynameisjonas">
-  <div class="space-y-10">
-    <div class="animate-fade-in-up delay-0 space-y-3">
+<TerminalLayout title="CV — mynameisjonas">
+  <p class="term-prompt">~ $ cat cv.md</p>
+  <div class="cv">
+    <div>
       <CvHeader />
       <CvContact />
     </div>
-    <div class="animate-fade-in-up delay-2">
-      <CvAbout />
-    </div>
-    <div class="animate-fade-in-up delay-3">
-      <CvTechStack />
-    </div>
-    <div class="animate-fade-in-up delay-1">
-      <CvExperience />
-    </div>
-    <div class="animate-fade-in-up delay-4">
-      <CvEducation />
-    </div>
+    <CvAbout />
+    <CvTechStack />
+    <CvExperience />
+    <CvEducation />
   </div>
-</BaseLayout>
+</TerminalLayout>
+
+<style is:global>
+  .cv { display: flex; flex-direction: column; gap: 48px; margin-top: 24px; }
+
+  .cv-name { font-weight: 500; font-size: clamp(28px, 5vw, 44px); line-height: 1.1; letter-spacing: -0.02em; }
+  .cv-role { margin-top: 8px; font-size: 14px; color: var(--muted); }
+
+  .cv-contact { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 24px; font-size: 13px; color: var(--muted); }
+  .cv-contact a:hover { color: var(--accent); }
+
+  .cv-heading {
+    margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 1px dashed var(--line);
+    font-size: 13px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--fg);
+  }
+  .cv-heading span { color: var(--accent); text-transform: none; }
+
+  .cv-fold summary { cursor: pointer; list-style: none; user-select: none; }
+  .cv-fold summary::-webkit-details-marker { display: none; }
+  .cv-fold summary::after { content: ' +'; color: var(--muted); }
+  .cv-fold[open] summary::after { content: ' −'; }
+  .cv-fold summary:hover { color: var(--accent); }
+
+  .cv-about p { font-family: var(--font-sans); font-size: 16px; line-height: 1.7; color: var(--body); text-wrap: pretty; }
+  .cv-about p + p { margin-top: 12px; }
+
+  .cv-stack > div { display: grid; grid-template-columns: 22ch 1fr; gap: 4px 16px; padding: 8px 0; font-size: 13px; }
+  .cv-stack > div + div { border-top: 1px solid var(--line); }
+  .cv-stack dt { color: var(--muted); }
+  .cv-stack dd { color: var(--fg); }
+
+  .cv-jobs { display: flex; flex-direction: column; gap: 32px; }
+
+  .cv-job-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; }
+  .cv-job h3 { font-size: 14px; font-weight: 500; letter-spacing: 0.02em; color: var(--fg); }
+  .cv-job .at { color: var(--accent); white-space: nowrap; }
+  .cv-period { font-size: 13px; color: var(--muted); white-space: nowrap; }
+
+  .cv-points { list-style: none; margin: 10px 0 0; padding: 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--body); }
+  .cv-points li { position: relative; padding-left: 18px; }
+  .cv-points li + li { margin-top: 4px; }
+  .cv-points li::before { content: '–'; position: absolute; left: 0; color: var(--muted); }
+
+  .cv-tags { margin-top: 10px; font-size: 12px; line-height: 1.6; color: var(--muted); }
+
+  .cv-consultancy {
+    position: relative; display: flex; flex-direction: column; gap: 32px;
+    padding: 28px 20px 20px; border: 1px dashed var(--line);
+  }
+  .cv-via { position: absolute; top: -9px; left: 16px; padding: 0 6px; background: var(--bg); font-size: 12px; color: var(--accent); }
+
+  @media (max-width: 560px) {
+    .cv-stack > div { grid-template-columns: 1fr; }
+    .cv-consultancy { padding: 24px 14px 14px; }
+  }
+</style>

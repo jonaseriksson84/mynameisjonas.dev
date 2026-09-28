@@ -3,26 +3,10 @@ import { aboutText } from '../../data/cv';
 ---
 
 <section>
-  <details class="group">
-    <summary class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-4 cursor-pointer list-none flex items-center gap-2 select-none hover:text-text-light dark:hover:text-text-dark transition-colors">
-      <span class="text-accent">●</span>
-      About
-      <svg class="w-4 h-4 transition-transform duration-200 group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
-    </summary>
-    <div class="space-y-3 overflow-hidden pt-2 border-t border-stone-200/80 dark:border-stone-700/50">
-      {aboutText.map((paragraph) => (
-        <p class="text-base text-text-muted-light dark:text-text-muted-dark text-pretty">
-          {paragraph}
-        </p>
-      ))}
+  <details class="cv-fold">
+    <summary class="cv-heading"><span aria-hidden="true">$ cat </span>about</summary>
+    <div class="cv-about">
+      {aboutText.map((paragraph) => <p>{paragraph}</p>)}
     </div>
   </details>
 </section>
-
-<style>
-  details summary::-webkit-details-marker {
-    display: none;
-  }
-</style>
