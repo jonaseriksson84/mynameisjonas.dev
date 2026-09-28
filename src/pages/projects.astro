@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import TerminalLayout from "../layouts/TerminalLayout.astro";
 
 interface Project {
   title: string;
@@ -111,112 +111,88 @@ const apps: Project[] = [
 const sections = [
   {
     label: "Agents & tooling",
+    dir: "agents/",
     lede: "Software that builds or watches other software.",
     items: agents,
   },
   {
     label: "Apps & experiments",
+    dir: "apps/",
     lede: "Things I wanted to exist, so I built them.",
     items: apps,
   },
 ];
-
-// One running stagger across both sections. `delay-0` … `delay-8` are the
-// classes global.css defines, so anything past the eighth card lands together.
-const MAX_DELAY = 8;
-let step = 0;
-const nextDelay = () => `delay-${Math.min(++step, MAX_DELAY)}`;
 ---
 
-<BaseLayout title="Projects — mynameisjonas">
-  <h1
-    class="text-sm font-semibold uppercase tracking-wider text-text-muted-light dark:text-text-muted-dark mb-8 animate-fade-in-up delay-0"
-  >
-    <span class="text-accent">●</span> Projects
-  </h1>
+<TerminalLayout title="Projects — mynameisjonas">
+  <p class="term-prompt">~ $ ls projects/</p>
+  <h1 class="projects-title">Projects</h1>
 
-  {
-    sections.map((section) => (
-      <section class="mb-12 last:mb-0">
-        <div class:list={["mb-5", "animate-fade-in-up", nextDelay()]}>
-          <h2 class="text-base font-semibold text-text-light dark:text-text-dark">
-            {section.label}
-          </h2>
-          <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-1">
-            {section.lede}
-          </p>
-        </div>
+  {sections.map((section) => (
+    <section class="projects-section">
+      <h2 class="projects-heading"><span aria-hidden="true">$ ls {section.dir}</span><span class="sr-only">{section.label}</span></h2>
+      <p class="projects-lede">{section.lede}</p>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {section.items.map((project) => (
-            <div
-              class:list={[
-                "project-card bg-white dark:bg-surface-dark rounded-xl p-6 border border-stone-200 dark:border-transparent",
-                "flex flex-col",
-                "animate-fade-in-up",
-                nextDelay(),
-              ]}
-            >
-              <h3 class="text-lg font-semibold text-text-light dark:text-text-dark">
-                {project.title}
-              </h3>
-              <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-2 flex-1">
-                {project.description}
-              </p>
-              <div class="flex flex-wrap gap-1.5 mt-4">
-                {project.tech.map((t) => (
-                  <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300">
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <div class="flex gap-3 mt-4 items-center">
-                {project.url && (
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
-                  >
-                    Visit
-                  </a>
-                )}
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-sm text-accent hover:text-accent-hover transition-colors duration-200"
-                  >
-                    GitHub
-                  </a>
-                )}
-                {project.note && (
-                  <span class="text-xs text-text-muted-light dark:text-text-muted-dark">
-                    {project.note}
-                  </span>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    ))
-  }
-</BaseLayout>
+      <div class="projects-grid">
+        {section.items.map((project) => (
+          <article class="project">
+            <h3>{project.title}</h3>
+            <p class="project-desc">{project.description}</p>
+            <p class="project-tech">{project.tech.join(" · ")}</p>
+            <p class="project-links">
+              {project.url && <a href={project.url} target="_blank" rel="noopener noreferrer">visit</a>}
+              {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer">github</a>}
+              {project.note && <span>{project.note.toLowerCase()}</span>}
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+  ))}
+</TerminalLayout>
 
 <style>
-  .project-card {
-    transition:
-      transform 0.2s ease,
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
+  .projects-title {
+    margin: 20px 0 8px;
+    font-weight: 500; font-size: clamp(28px, 5vw, 44px);
+    line-height: 1.1; letter-spacing: -0.02em;
   }
-  .project-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-accent);
-    box-shadow:
-      0 10px 15px -3px rgb(0 0 0 / 0.1),
-      0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  .projects-section { margin-top: 48px; }
+
+  .projects-heading {
+    padding-bottom: 10px; border-bottom: 1px dashed var(--line);
+    font-size: 13px; font-weight: 500; color: var(--accent);
   }
+
+  .projects-lede { margin-top: 12px; font-family: var(--font-sans); font-size: 15px; color: var(--muted); }
+
+  .projects-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 20px; }
+
+  @media (min-width: 640px) {
+    .projects-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .project {
+    display: flex; flex-direction: column;
+    padding: 20px; border: 1px solid var(--line); border-radius: 2px;
+    background: var(--bg);
+    transition: border-color 200ms ease;
+  }
+
+  .project:hover { border-color: var(--accent); }
+
+  .project h3 { font-size: 16px; font-weight: 500; color: var(--fg); }
+
+  .project-desc {
+    flex: 1; margin-top: 10px;
+    font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--body);
+  }
+
+  .project-tech { margin-top: 14px; font-size: 12px; line-height: 1.6; color: var(--muted); }
+
+  .project-links { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 12px; font-size: 13px; color: var(--muted); }
+  .project-links a { color: var(--fg); }
+  .project-links a::before { content: '> '; color: var(--muted); }
+  .project-links a:hover { color: var(--accent); }
 </style>
