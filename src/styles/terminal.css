@@ -1,0 +1,187 @@
+/* ── Terminal theme (TerminalLayout) ────────────────────────────────────────
+   Mono frame, readable body. Tailwind colour tokens are remapped here so
+   existing utility classes (text-accent, dark:border-stone-800, …) pick up
+   the new palette without rewriting every component. */
+
+html.term {
+  --bg: #050505;
+  --fg: #e9e9e6;
+  --body: #cfcfcb; /* long-form text: a step down from --fg to cut glare */
+  --muted: #8a8a86;
+  --line: #262624;
+  --panel: #0c0c0b;
+  --accent: #f5e70a;
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent);
+  --color-bg-dark: var(--bg);
+  --color-surface-dark: var(--panel);
+  --color-text-dark: var(--fg);
+  --color-text-muted-dark: var(--muted);
+  --color-stone-800: var(--line);
+  --color-stone-900: var(--panel);
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+
+  background-color: var(--bg);
+  color-scheme: dark;
+}
+
+html.term body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+}
+
+html.term ::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ── Frame ─────────────────────────────────────────────────────────────── */
+
+.term-nav {
+  position: sticky; top: 0; z-index: 40;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px clamp(16px, 5vw, 64px);
+  font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.term-nav .links { display: flex; gap: 24px; }
+
+.term-nav a:hover,
+.term-nav a[aria-current='page'] {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.term-main,
+.term-footer {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 720px;
+  margin: 0 auto;
+  padding-left: 16px; padding-right: 16px;
+}
+
+.term-main { padding-top: 40px; padding-bottom: 64px; }
+
+.term-footer {
+  display: flex; flex-direction: column; gap: 16px;
+  padding-top: 24px; padding-bottom: 72px; /* clears the floating accent picker */
+  border-top: 1px dashed var(--line);
+  font-size: 13px; color: var(--muted);
+}
+
+.term-footer .elsewhere { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.term-footer .elsewhere a::before { content: '> '; }
+.term-footer .elsewhere a:hover { color: var(--accent); }
+.term-footer .copy { font-size: 12px; }
+
+.term-prompt { font-size: 13px; color: var(--muted); }
+
+.term-prompt a {
+  color: var(--fg);
+  text-decoration: underline dashed var(--accent);
+  text-underline-offset: 4px;
+}
+
+.term-prompt a:hover { color: var(--accent); }
+
+/* ── Prose: long-form reading ──────────────────────────────────────────── */
+
+html.dark.term .prose {
+  --tw-prose-body: var(--body);
+  --tw-prose-headings: var(--fg);
+  --tw-prose-lead: var(--muted);
+  --tw-prose-links: var(--fg);
+  --tw-prose-bold: var(--fg);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-bullets: var(--muted);
+  --tw-prose-hr: var(--line);
+  --tw-prose-quotes: var(--body);
+  --tw-prose-quote-borders: var(--accent);
+  --tw-prose-captions: var(--muted);
+  --tw-prose-code: var(--fg);
+  --tw-prose-pre-code: #d6d6d2;
+  --tw-prose-pre-bg: var(--panel);
+  --tw-prose-th-borders: var(--line);
+  --tw-prose-td-borders: var(--line);
+
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+html.term .prose :is(h2, h3, h4) {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+html.term .prose h2::before { content: '## '; color: var(--accent); }
+html.term .prose h3::before { content: '### '; color: var(--accent); }
+
+/* Accent marks links, but text stays --fg: a dark accent pick must never
+   make a link unreadable. */
+html.term .prose a {
+  font-weight: inherit;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 150ms ease;
+}
+
+html.term .prose a:hover { color: var(--accent); }
+
+html.term .prose hr { border-top-style: dashed; }
+
+html.term .prose blockquote { font-style: normal; }
+
+html.term .prose code { font-family: var(--font-mono); }
+
+html.dark.term .prose :not(pre) > code {
+  background-color: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--fg);
+}
+
+/* Shiki paints its own background inline. */
+html.term .prose pre {
+  background-color: var(--panel) !important;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-size: 0.8em;
+}
+
+html.dark.term .prose :is(details, .prose-intro) {
+  background-color: var(--panel);
+  border-color: var(--line);
+  border-radius: 2px;
+}
+
+html.term .prose-intro { border-left-color: var(--accent); }
+
+html.dark.term .prose img {
+  border-color: var(--line);
+  border-radius: 2px;
+}
+
+html.term .prose-intro { font-size: 1em; }
+
+/* Accent picker floats bottom-left on every page. The backing keeps it
+   legible when page text scrolls underneath on narrow screens. */
+.term-accent {
+  position: fixed; left: clamp(8px, 5vw - 8px, 56px); bottom: 12px; z-index: 50;
+  padding: 6px 8px;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(6px);
+}

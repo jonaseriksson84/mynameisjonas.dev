@@ -1,0 +1,85 @@
+---
+// Dark-only terminal look. Pages move over from BaseLayout one at a time.
+import '../styles/global.css';
+import '../styles/terminal.css';
+import HeadMeta from '../components/HeadMeta.astro';
+import SpeckField from '../components/term/SpeckField.astro';
+import AccentPicker from '../components/term/AccentPicker.astro';
+import { isNavLinkActive } from '../lib/navigation';
+import { ACCENT_KEY } from '../lib/accents';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+
+const { title, description, image, type } = Astro.props;
+const pathname = Astro.url.pathname;
+
+const navLinks = [
+  { label: 'Blog', href: '/blog' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'CV', href: '/cv' },
+];
+
+const elsewhere = [
+  { label: 'github', href: 'https://github.com/jonaseriksson84' },
+  { label: 'x', href: 'https://x.com/jonaseriksson84' },
+  { label: 'linkedin', href: 'https://www.linkedin.com/in/jonas-eriksson-81821230/' },
+  { label: 'email', href: 'mailto:jonaseriksson84@gmail.com' },
+];
+---
+
+<html lang="en" class="dark term">
+  <head>
+    <HeadMeta title={title} description={description} image={image} type={type} />
+    <script is:inline define:vars={{ ACCENT_KEY }}>
+      // Apply a remembered accent before first paint to avoid a color flash.
+      try {
+        const saved = localStorage.getItem(ACCENT_KEY);
+        if (saved && /^#[0-9a-f]{6}$/i.test(saved)) document.documentElement.style.setProperty('--accent', saved);
+      } catch {}
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <SpeckField />
+    <nav class="term-nav">
+      <a href="/">mynameisjonas</a>
+      <div class="links">
+        {navLinks.map((link) => (
+          <a href={link.href} aria-current={isNavLinkActive(pathname, link.href) ? 'page' : undefined}>
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </nav>
+    <main class="term-main" data-reading>
+      <slot />
+    </main>
+    <footer class="term-footer" data-reading>
+      <div class="elsewhere">
+        {elsewhere.map((link) => (
+          <a
+            href={link.href}
+            target={link.href.startsWith('http') ? '_blank' : undefined}
+            rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+      <p class="copy">&copy; {new Date().getFullYear()} Jonas Eriksson</p>
+    </footer>
+    <div class="term-accent">
+      <AccentPicker />
+    </div>
+  </body>
+</html>

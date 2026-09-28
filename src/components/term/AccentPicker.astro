@@ -1,0 +1,61 @@
+---
+import { ACCENTS } from '../../lib/accents';
+---
+
+<div class="accents" role="group" aria-label="Accent color">
+  {ACCENTS.map(([name, hex]) => (
+    <button type="button" data-name={name} data-hex={hex} title={name} aria-label={name} aria-pressed="false" style={`--swatch:${hex}`} />
+  ))}
+  <label title="custom"><input type="color" data-accent-custom aria-label="Custom accent" /></label>
+  <span class="label">$ accent <output data-accent-name></output></span>
+</div>
+
+<style>
+  .accents {
+    display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
+    font-size: 12px; color: var(--muted);
+    opacity: 0.55; transition: opacity 200ms ease;
+  }
+  .accents:hover, .accents:focus-within { opacity: 1; }
+  .label { margin-left: 8px; }
+  .label output { color: var(--accent); }
+  button, label {
+    width: 9px; height: 9px; padding: 0; border: 0; cursor: pointer;
+    background: var(--swatch); transition: transform 150ms ease;
+  }
+  button:hover, label:hover { transform: scale(1.35); }
+  button[aria-pressed='true'] { box-shadow: 0 0 0 1px var(--bg), 0 0 0 2px var(--fg); }
+  label { position: relative; background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red); }
+  input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+</style>
+
+<script>
+  import { ACCENT_KEY, DEFAULT_ACCENT, isHex } from '../../lib/accents';
+
+  for (const group of document.querySelectorAll<HTMLElement>('.accents')) {
+    const swatches = [...group.querySelectorAll<HTMLButtonElement>('[data-hex]')];
+    const nameOut = group.querySelector<HTMLOutputElement>('[data-accent-name]')!;
+    const custom = group.querySelector<HTMLInputElement>('[data-accent-custom]')!;
+
+    const setAccent = (hex: string, remember = true) => {
+      document.documentElement.style.setProperty('--accent', hex);
+      const match = swatches.find((b) => b.dataset.hex === hex);
+      swatches.forEach((b) => b.setAttribute('aria-pressed', String(b === match)));
+      nameOut.textContent = match ? match.dataset.name! : hex;
+      custom.value = hex;
+      if (remember) {
+        try { localStorage.setItem(ACCENT_KEY, hex); } catch {}
+      }
+    };
+
+    swatches.forEach((b) => b.addEventListener('click', () => setAccent(b.dataset.hex!)));
+    custom.addEventListener('input', () => setAccent(custom.value));
+
+    // ?accent=<name|#hex> previews a color without overwriting the saved one.
+    const param = new URLSearchParams(location.search).get('accent');
+    const fromParam = swatches.find((b) => b.dataset.name === param)?.dataset.hex ?? (isHex(param) ? param : null);
+    let saved: string | null = null;
+    try { saved = localStorage.getItem(ACCENT_KEY); } catch {}
+    setAccent(fromParam ?? (isHex(saved) ? saved : DEFAULT_ACCENT), false);
+  }
+</script>

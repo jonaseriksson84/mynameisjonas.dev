@@ -71,8 +71,8 @@ const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
   }
 
   :global(html.dark) .book-meta-inner {
-    background-color: #1c1917;
-    border-color: #44403c;
+    background-color: var(--panel);
+    border-color: var(--line);
   }
 
   .book-cover-wrap {
@@ -97,13 +97,13 @@ const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
   .book-title {
     font-size: 0.9375rem;
     font-weight: 600;
-    color: #1c1917;
+    color: var(--panel);
     line-height: 1.3;
     margin: 0;
   }
 
   :global(html.dark) .book-title {
-    color: #fafaf9;
+    color: var(--fg);
   }
 
   .book-author {
@@ -113,7 +113,7 @@ const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
   }
 
   :global(html.dark) .book-author {
-    color: #a8a29e;
+    color: var(--muted);
   }
 
   .book-rating {
@@ -140,7 +140,7 @@ const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
   }
 
   :global(html.dark) .book-specs dt {
-    color: #78716c;
+    color: var(--muted);
   }
 
   .book-specs dd {
@@ -150,7 +150,7 @@ const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
   }
 
   :global(html.dark) .book-specs dd {
-    color: #a8a29e;
+    color: var(--muted);
   }
 
   .book-links {
@@ -167,12 +167,12 @@ const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
     text-decoration: none;
     padding: 0.25rem 0.625rem;
     border: 1px solid var(--color-accent);
-    border-radius: 9999px;
+    border-radius: 2px;
     transition: background-color 0.15s ease, color 0.15s ease;
   }
 
   .book-links a:hover {
     background-color: var(--color-accent);
-    color: #fff;
+    color: var(--bg);
   }
 </style>
