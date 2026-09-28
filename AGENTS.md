@@ -2,7 +2,9 @@
 
 ## Common commands
 
-- Deploy: `pnpm run deploy` (not `pnpm deploy` — pnpm intercepts that as a workspace command)
+- Deploy: push to `main`. Cloudflare Workers Builds deploys it; other branches get a preview URL. See `docs/adr/0002-workers-builds-previews.md`.
+- Manual deploy (rarely needed): `pnpm run deploy` (not `pnpm deploy` — pnpm intercepts that as a workspace command)
+- Test: `pnpm test`
 
 ## Agent skills
 
