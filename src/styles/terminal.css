@@ -205,3 +205,19 @@ html.term .prose-intro { font-size: 1em; }
 
 .post-link { color: var(--fg); text-decoration: underline var(--accent); text-underline-offset: 3px; }
 .post-link:hover { color: var(--accent); }
+
+/* ── Full-screen pages (home hero) ─────────────────────────────────────── */
+
+html.term-fullscreen,
+html.term-fullscreen body { height: 100%; overflow: hidden; }
+
+/* Faint static dot grid, like a screen at rest. */
+html.term-fullscreen body {
+  background-image: radial-gradient(circle, #1c1c1a 1px, transparent 1.2px);
+  background-size: 8px 8px;
+}
+
+html.term-fullscreen .term-nav {
+  position: fixed; left: 0; right: 0; z-index: 2;
+  background: none; backdrop-filter: none;
+}

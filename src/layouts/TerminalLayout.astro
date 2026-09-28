@@ -13,9 +13,11 @@ interface Props {
   description?: string;
   image?: string;
   type?: 'website' | 'article';
+  /** Full-viewport page (home hero): no scrolling column, footer or margin specks. */
+  fullscreen?: boolean;
 }
 
-const { title, description, image, type } = Astro.props;
+const { title, description, image, type, fullscreen = false } = Astro.props;
 const pathname = Astro.url.pathname;
 
 const navLinks = [
@@ -32,7 +34,7 @@ const elsewhere = [
 ];
 ---
 
-<html lang="en" class="dark term">
+<html lang="en" class:list={["dark term", { "term-fullscreen": fullscreen }]}>
   <head>
     <HeadMeta title={title} description={description} image={image} type={type} />
     <script is:inline define:vars={{ ACCENT_KEY }}>
@@ -50,7 +52,7 @@ const elsewhere = [
     />
   </head>
   <body>
-    <SpeckField />
+    {!fullscreen && <SpeckField />}
     <nav class="term-nav">
       <a href="/">mynameisjonas</a>
       <div class="links">
@@ -61,25 +63,31 @@ const elsewhere = [
         ))}
       </div>
     </nav>
-    <main class="term-main" data-reading>
+    {fullscreen ? (
       <slot />
-    </main>
-    <footer class="term-footer" data-reading>
-      <div class="elsewhere">
-        {elsewhere.map((link) => (
-          <a
-            href={link.href}
-            target={link.href.startsWith('http') ? '_blank' : undefined}
-            rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-          >
-            {link.label}
-          </a>
-        ))}
-      </div>
-      <p class="copy">&copy; {new Date().getFullYear()} Jonas Eriksson</p>
-    </footer>
-    <div class="term-accent">
-      <AccentPicker />
-    </div>
+    ) : (
+      <>
+        <main class="term-main" data-reading>
+          <slot />
+        </main>
+        <footer class="term-footer" data-reading>
+          <div class="elsewhere">
+            {elsewhere.map((link) => (
+              <a
+                href={link.href}
+                target={link.href.startsWith('http') ? '_blank' : undefined}
+                rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <p class="copy">&copy; {new Date().getFullYear()} Jonas Eriksson</p>
+        </footer>
+        <div class="term-accent">
+          <AccentPicker />
+        </div>
+      </>
+    )}
   </body>
 </html>
