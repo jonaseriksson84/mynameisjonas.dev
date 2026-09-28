@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TerminalLayout from '../../../layouts/TerminalLayout.astro';
 import { getSeries } from '../../../lib/series';
 
 const series = await getSeries('gas-city');
@@ -9,44 +9,25 @@ if (!series) {
 const firstPart = series.parts[0];
 ---
 
-<BaseLayout
+<TerminalLayout
   title={`${series.title} — mynameisjonas`}
   description={series.description}
   image={series.cover}
   type="article"
 >
-  <article class="animate-fade-in-up delay-0">
-    <a href="/blog" class="text-sm text-accent hover:text-accent-hover transition-colors">&larr; Back to blog</a>
+  <article>
+    <p class="term-prompt"><a href="/blog">~/blog</a> $ cd gas-city/</p>
 
-    {series.cover && (
-      <img
-        src={series.cover}
-        alt={series.title}
-        class="w-full rounded-xl mt-6 mb-6 border border-stone-200 dark:border-stone-800"
-      />
-    )}
-
-    <header class="mb-8">
-      <p class="text-xs font-semibold uppercase tracking-wider text-accent mb-2">
-        Series &middot; {series.parts.length} parts
+    <header class="post-header">
+      <p class="post-series">[series &middot; {series.parts.length} parts]</p>
+      <h1 class="post-title">{series.title}</h1>
+      <p class="post-meta">
+        <time datetime={firstPart.data.date.toISOString()}>{firstPart.data.date.toISOString().slice(0, 10)}</time>
+        {firstPart.data.tags.map((tag) => <span>#{tag}</span>)}
       </p>
-      <h1 class="text-3xl font-bold text-text-light dark:text-text-dark">
-        {series.title}
-      </h1>
-      <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2">
-        <time
-          class="text-xs text-text-muted-light dark:text-text-muted-dark"
-          datetime={firstPart.data.date.toISOString()}
-        >
-          {firstPart.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-        </time>
-        {firstPart.data.tags.map((tag) => (
-          <span class="inline-block px-2 py-0.5 text-xs rounded-full bg-bg-light dark:bg-bg-dark border border-text-muted-light/20 dark:border-text-muted-dark/20 text-text-muted-light dark:text-text-muted-dark">
-            {tag}
-          </span>
-        ))}
-      </div>
     </header>
+
+    {series.cover && <img src={series.cover} alt={series.title} class="series-cover" />}
 
     <div class="prose max-w-none">
       <div class="prose-intro">
@@ -64,24 +45,37 @@ const firstPart = series.parts[0];
       <p>The stack is deliberately self-contained: no build step, no bundler, no JSX transpilation, no Tailwind toolchain. Bun runs <code>.ts</code> files directly, <code>bun:sqlite</code> is built in, <code>hono/html</code> is server-rendered, HTMX adds interactivity without leaving the server. Less to configure means less for the agents to get wrong.</p>
     </div>
 
-    <ol class="mt-10 space-y-3 border-l-2 border-accent/30 pl-5">
+    <ol class="series-parts">
       {series.parts.map((post) => (
         <li>
-          <a href={`/blog/${post.id}`} class="group flex items-start gap-3 py-1">
-            <span class="text-xs font-mono text-text-muted-light dark:text-text-muted-dark w-6 shrink-0 tabular-nums mt-1">
-              {String(post.data.part).padStart(2, '0')}
-            </span>
+          <a href={`/blog/${post.id}`}>
+            <span class="num">{String(post.data.part).padStart(2, '0')}</span>
             <div>
-              <span class="text-base font-medium text-text-light dark:text-text-dark group-hover:text-accent transition-colors">
-                {post.data.title.replace(/^Part \d+:\s*/i, '')}
-              </span>
-              <p class="text-sm text-text-muted-light dark:text-text-muted-dark mt-0.5">
-                {post.data.description}
-              </p>
+              <span class="part-title">{post.data.title.replace(/^Part \d+:\s*/i, '')}</span>
+              <p class="part-desc">{post.data.description}</p>
             </div>
           </a>
         </li>
       ))}
     </ol>
   </article>
-</BaseLayout>
+</TerminalLayout>
+
+<style>
+  .series-cover {
+    width: 100%; margin-bottom: 40px;
+    border: 1px solid var(--line); border-radius: 2px;
+  }
+
+  .series-parts {
+    list-style: none; margin: 48px 0 0; padding: 0 0 0 20px;
+    border-left: 1px solid var(--line);
+  }
+
+  .series-parts li + li { margin-top: 16px; }
+  .series-parts a { display: flex; gap: 14px; }
+  .num { width: 2ch; flex-shrink: 0; padding-top: 2px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .part-title { font-size: 17px; font-weight: 500; transition: color 150ms ease; }
+  .series-parts a:hover .part-title { color: var(--accent); }
+  .part-desc { margin-top: 4px; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--muted); }
+</style>

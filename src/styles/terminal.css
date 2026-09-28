@@ -185,3 +185,23 @@ html.term .prose-intro { font-size: 1em; }
   background: color-mix(in srgb, var(--bg) 85%, transparent);
   backdrop-filter: blur(6px);
 }
+
+/* ── Post header (blog posts, series overview) ─────────────────────── */
+
+.post-header { margin: 20px 0 40px; }
+
+.post-series { color: var(--accent); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 12px; }
+.post-series a { color: var(--accent); }
+.post-series a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+.post-title {
+  font-weight: 500; font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance;
+}
+
+.post-author { margin-top: 8px; color: var(--muted); }
+
+.post-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 16px; font-size: 13px; color: var(--muted); }
+
+.post-link { color: var(--fg); text-decoration: underline var(--accent); text-underline-offset: 3px; }
+.post-link:hover { color: var(--accent); }

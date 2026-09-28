@@ -193,24 +193,6 @@ const { prev: prevPost, next: nextPost } = series
 </script>
 
 <style is:global>
-  .post-header { margin: 20px 0 40px; }
-
-  .post-series { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 12px; }
-  .post-series a { color: var(--accent); }
-  .post-series a:hover { text-decoration: underline; text-underline-offset: 4px; }
-
-  .post-title {
-    font-weight: 500; font-size: clamp(28px, 5vw, 44px);
-    line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance;
-  }
-
-  .post-author { margin-top: 8px; color: var(--muted); }
-
-  .post-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 16px; font-size: 13px; color: var(--muted); }
-
-  .post-link { color: var(--fg); text-decoration: underline var(--accent); text-underline-offset: 3px; }
-  .post-link:hover { color: var(--accent); }
-
   /* Wrapper restores the prose margins that pre would normally own */
   .copy-code-wrapper {
     position: relative;
