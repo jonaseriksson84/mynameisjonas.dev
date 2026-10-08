@@ -1,0 +1,53 @@
+---
+import TerminalLayout from "../layouts/TerminalLayout.astro";
+---
+
+<TerminalLayout
+  title="history-shorts"
+  description="What the history-shorts app does with a YouTube account, and its privacy policy."
+>
+  <p class="term-prompt">~ $ cat history-shorts/README</p>
+  <div class="prose">
+    <h1>history-shorts</h1>
+    <p>
+      history-shorts is a set of scripts I run on my own computer to make the animated history maps on the YouTube
+      channel <a href="https://www.youtube.com/@MapsThatMove">@MapsThatMove</a>. It is not a service, and I am its
+      only user.
+    </p>
+
+    <h2>What it does with a Google account</h2>
+    <p>The scripts ask for my consent to do two things on my own YouTube channel:</p>
+    <ul>
+      <li>upload a finished video as private, with its title, description, thumbnail and playlist;</li>
+      <li>read that channel's view counts and analytics, to see how each video did.</li>
+    </ul>
+
+    <h2 id="privacy">Privacy policy</h2>
+    <p>
+      The app collects no personal data from anyone. It has no server, no database and no visitors: it only talks to
+      YouTube's API from my computer, as me.
+    </p>
+    <ul>
+      <li>
+        <strong>What it reads:</strong> the videos, playlists and analytics of the one channel that gave consent.
+        Analytics are totals, such as views and watch time, and name no viewer.
+      </li>
+      <li>
+        <strong>Where it is kept:</strong> the consent token and the figures stay in files on my computer. Nothing is
+        sent anywhere but to YouTube.
+      </li>
+      <li><strong>Who it is shared with:</strong> nobody. Nothing is sold, and nothing is used for advertising.</li>
+      <li>
+        <strong>How to end it:</strong> consent can be withdrawn at any time under
+        <a href="https://myaccount.google.com/connections">Google Account, third-party connections</a>; the stored
+        token then stops working, and deleting the files removes the rest.
+      </li>
+    </ul>
+    <p>
+      The app's use of information received from Google APIs follows the
+      <a href="https://developers.google.com/terms/api-services-user-data-policy"
+        >Google API Services User Data Policy</a
+      >. Questions go to the email address at the bottom of this page.
+    </p>
+  </div>
+</TerminalLayout>
