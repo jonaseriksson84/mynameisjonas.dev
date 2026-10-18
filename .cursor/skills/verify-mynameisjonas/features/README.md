@@ -51,3 +51,7 @@ Keep implementation details out of the map. Name only user paths, stable handles
 - [Blog post](./post-page.md) covers Gas City part 0, its cover, the next part, and the signup form left unsent.
 - [CV](./cv.md) covers the CV heading and experience section.
 - [Newsletter signup](./newsletter.md) covers the local failure shape and the empty subscribers table.
+- [RSS](./rss.md) covers the feed of published posts.
+- [Sitemap](./sitemap.md) covers the sitemap index and the pages it lists.
+- [Robots](./robots.md) covers `robots.txt` and its sitemap URL.
+- [Not found](./not-found.md) covers an unknown path and the 404 page.
