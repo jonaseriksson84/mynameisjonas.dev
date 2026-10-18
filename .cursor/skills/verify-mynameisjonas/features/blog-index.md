@@ -6,7 +6,7 @@ The blog index lists book reviews and the Gas City series, with each series part
 
 - `blog-index.heading` shows the heading "Blog".
 - `blog-index.series` shows the link "Building with Gas City" and the part link "00 Installation and setup".
-- `blog-index.cover` transfers `/blog/gas-city/cover-00.png` on a cold load.
+- `blog-index.cover` transfers an optimized cover from `/_astro/` on a cold load. It does not transfer `/blog/gas-city/cover-00.png`.
 - `blog-index.reviews` shows the book-review headings on the same page.
 
 ## How to get to it (user POV)
@@ -21,7 +21,7 @@ Preconditions: `doctor` exited 0 for this run. The build contains the Gas City s
 
 - Open the index the way the nav does.
   - Command: `./.cursor/skills/verify-mynameisjonas/verify-mynameisjonas.mjs open /blog`
-  - Result: status ends at 200, the final path is `/blog/`, and the transfer list includes `/blog/gas-city/cover-00.png` with a content-length.
+  - Result: status ends at 200, the final path is `/blog/`, and the transfer list includes an image under `/_astro/` with a content-length. It does not include `/blog/gas-city/cover-00.png`.
 - Read the title.
   - Command: `./.cursor/skills/verify-mynameisjonas/verify-mynameisjonas.mjs expect-heading Blog`
   - Result: the heading "Blog" is visible.
@@ -42,6 +42,6 @@ Preconditions: `doctor` exited 0 for this run. The build contains the Gas City s
 
 - `/blog` returns 307 to `/blog/`. Assert the final path `/blog/`.
 - The accessible name "Building with Gas City" is on two links (the banner and the title). `expect-role link` requires one match, so the series handle in this recipe is the heading plus the unique part link "00 Installation and setup".
-- The series banner is the multi-megabyte part 0 PNG. A large content-length is the current baseline, not a failed load.
+- The series banner is a short greyscale crop of the part 0 cover, built under `/_astro/`. A multi-megabyte `cover-00.png` means the old public file is being served again.
 - An empty index that says "No posts yet" means the build has no posts. Report that failure.
 - This recipe opens `/blog` directly. The hero link "> blog" and the post breadcrumb "~/blog" are separate entry points.

@@ -6,7 +6,7 @@ tags: ["gas-city", "tutorial", "multi-agent"]
 series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 5
-cover: /blog/gas-city/cover-05.png
+cover: ../../../assets/blog/gas-city/cover-05.png
 ---
 
 Up to now you have driven everything by hand. In this chapter we let the system run on its own schedule.

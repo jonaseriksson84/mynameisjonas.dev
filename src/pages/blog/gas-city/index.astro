@@ -1,5 +1,6 @@
 ---
 import TerminalLayout from '../../../layouts/TerminalLayout.astro';
+import Cover from '../../../components/Cover.astro';
 import { getSeries } from '../../../lib/series';
 
 const series = await getSeries('gas-city');
@@ -27,7 +28,7 @@ const firstPart = series.parts[0];
       </p>
     </header>
 
-    {series.cover && <img src={series.cover} alt={series.title} class="series-cover" />}
+    {series.cover && <Cover src={series.cover} alt={series.title} kind="hero" class="series-cover" />}
 
     <div class="prose max-w-none">
       <div class="prose-intro">
@@ -62,8 +63,8 @@ const firstPart = series.parts[0];
 </TerminalLayout>
 
 <style>
-  .series-cover {
-    width: 100%; margin-bottom: 40px;
+  :global(.series-cover) {
+    width: 100%; height: auto; display: block; margin-bottom: 40px;
     border: 1px solid var(--line); border-radius: 2px;
   }
 

@@ -9,7 +9,7 @@ import rehypeExternalLinks from 'rehype-external-links';
 export default defineConfig({
   site: 'https://mynameisjonas.dev',
   output: 'static',
-  adapter: cloudflare(),
+  adapter: cloudflare({ imageService: 'compile' }),
   integrations: [
     sitemap({
       filter: (page) => {

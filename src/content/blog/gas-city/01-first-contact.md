@@ -6,7 +6,7 @@ tags: ["gas-city", "tutorial", "multi-agent"]
 series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 1
-cover: /blog/gas-city/cover-01.png
+cover: ../../../assets/blog/gas-city/cover-01.png
 ---
 
 In Part 0 you initialized a city. In this chapter we wake the mayor up and have the first conversation with it.

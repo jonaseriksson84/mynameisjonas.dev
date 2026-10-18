@@ -3,7 +3,7 @@ title: "Staff Engineer: Leadership Beyond the Management Track"
 description: "A well-structured guide for engineers in traditional, leveled orgs thinking about the staff track. Focused enough that the focus itself is both the strength and the constraint."
 date: 2026-04-17
 tags: ["books", "career", "engineering"]
-cover: /blog/staff-engineer-cover.jpg
+cover: ../../assets/blog/staff-engineer-cover.jpg
 book:
   title: "Staff Engineer: Leadership Beyond the Management Track"
   author: "Will Larson"

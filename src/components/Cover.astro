@@ -1,0 +1,86 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  kind: 'hero' | 'banner' | 'thumb' | 'book';
+  class?: string;
+}
+
+const { src, alt, kind, class: className } = Astro.props;
+const column = '(max-width: 720px) calc(100vw - 32px), 688px';
+const frame = kind === 'hero' || kind === 'banner'
+  ? 'cover-frame cover-frame-full'
+  : kind === 'thumb'
+    ? 'cover-frame cover-frame-thumb'
+    : 'cover-frame';
+---
+
+{kind === 'banner' && (
+  <Picture
+    src={src}
+    alt={alt}
+    class={className}
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    width={688}
+    height={160}
+    fit="cover"
+    widths={[480, 688, 1376]}
+    sizes={column}
+    loading="eager"
+    fetchpriority="high"
+    pictureAttributes={{ class: frame }}
+  />
+)}
+{kind === 'hero' && (
+  <Picture
+    src={src}
+    alt={alt}
+    class={className}
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    width={688}
+    widths={[480, 688, 1376]}
+    sizes={column}
+    loading="eager"
+    fetchpriority="high"
+    pictureAttributes={{ class: frame }}
+  />
+)}
+{kind === 'thumb' && (
+  <Picture
+    src={src}
+    alt={alt}
+    class={className}
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    width={128}
+    widths={[128]}
+    sizes="64px"
+    loading="lazy"
+    pictureAttributes={{ class: frame }}
+  />
+)}
+{kind === 'book' && (
+  <Picture
+    src={src}
+    alt={alt}
+    class={className}
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    width={180}
+    widths={[180]}
+    sizes="90px"
+    loading="lazy"
+    pictureAttributes={{ class: frame }}
+  />
+)}
+
+<style>
+  :global(.cover-frame) { display: block; }
+  :global(.cover-frame-full) { width: 100%; }
+  :global(.cover-frame-thumb) { width: 64px; flex-shrink: 0; }
+</style>

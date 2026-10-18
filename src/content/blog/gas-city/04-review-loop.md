@@ -6,7 +6,7 @@ tags: ["gas-city", "tutorial", "multi-agent"]
 series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 4
-cover: /blog/gas-city/cover-04.png
+cover: ../../../assets/blog/gas-city/cover-04.png
 ---
 
 You have shipped a feature through three specialists. What you do not yet have is a second pair of eyes on any of it. That is the gap this chapter fills.
