@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, rmSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
 import { afterEach, expect, it } from "vitest";
 
@@ -17,6 +17,20 @@ const publishedPage = resolve(
 
 function removeFixture() {
   rmSync(fixtureDir, { recursive: true, force: true });
+}
+
+function publishedSourceCount(dir: string): number {
+  let count = 0;
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const path = resolve(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (entry.name === "_draft-fixture") continue;
+      count += publishedSourceCount(path);
+    } else if (entry.name.endsWith(".md") && !/^draft:\s*true\s*$/m.test(readFileSync(path, "utf8"))) {
+      count += 1;
+    }
+  }
+  return count;
 }
 
 afterEach(removeFixture);
@@ -41,4 +55,8 @@ it("does not publish a draft post", () => {
   expect(existsSync(draftPage), `draft page IS generated at ${draftPage}`).toBe(
     false,
   );
+  const rss = readFileSync(resolve(rootDir, "dist/client/rss.xml"), "utf8");
+  const items = rss.match(/<item>/g)?.length ?? 0;
+  expect(rss, "draft was included in the feed").not.toContain("Hidden draft");
+  expect(items).toBe(publishedSourceCount(resolve(rootDir, "src/content/blog")));
 }, 180_000);
