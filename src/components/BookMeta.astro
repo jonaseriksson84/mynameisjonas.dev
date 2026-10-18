@@ -5,14 +5,11 @@ interface Props {
   cover: string;
   pages?: number;
   isbn?: string;
-  rating?: number;
   goodreadsUrl?: string;
   storeUrl?: string;
 }
 
-const { title, author, cover, pages, isbn, rating, goodreadsUrl, storeUrl } = Astro.props;
-
-const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
+const { title, author, cover, pages, isbn, goodreadsUrl, storeUrl } = Astro.props;
 ---
 
 <div class="book-meta not-prose">
@@ -103,14 +100,6 @@ const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
     font-size: 0.8125rem;
     color: var(--muted);
     margin: 0;
-  }
-
-
-  .book-rating {
-    font-size: 0.875rem;
-    color: var(--accent);
-    letter-spacing: 0.05em;
-    margin: 0.25rem 0 0;
   }
 
   .book-specs {
