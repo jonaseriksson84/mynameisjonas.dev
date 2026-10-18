@@ -1,6 +1,6 @@
 import type { CollectionEntry } from 'astro:content';
-import { getCollection } from 'astro:content';
 import type { SeriesPost } from '../content/schema';
+import { getPublishedPosts } from './posts';
 
 export type SeriesEntry = CollectionEntry<'blog'> & { data: SeriesPost };
 
@@ -31,10 +31,8 @@ function buildSeries(name: string, parts: SeriesEntry[]): Series {
 }
 
 async function getPublishedSeriesParts(): Promise<SeriesEntry[]> {
-  const all = await getCollection('blog');
-  return all.filter((p): p is SeriesEntry =>
-    p.data.type === 'seriesPart' && !p.data.draft
-  );
+  const posts = await getPublishedPosts();
+  return posts.filter((p): p is SeriesEntry => p.data.type === 'seriesPart');
 }
 
 export async function getAllSeries(): Promise<Series[]> {

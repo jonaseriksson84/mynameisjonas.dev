@@ -1,5 +1,7 @@
 # build output
 dist/
+# copied by tests/draft-pages.test.ts for the duration of the build
+src/content/blog/_draft-fixture/
 # generated types
 .astro/
 

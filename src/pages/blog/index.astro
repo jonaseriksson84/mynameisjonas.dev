@@ -1,9 +1,9 @@
 ---
 import TerminalLayout from '../../layouts/TerminalLayout.astro';
-import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../../lib/posts';
 import { getAllSeries } from '../../lib/series';
 
-const allPosts = (await getCollection('blog')).filter((p) => !p.data.draft);
+const allPosts = await getPublishedPosts();
 const standalonePosts = allPosts.filter((p) => p.data.type !== 'seriesPart');
 const allSeries = await getAllSeries();
 
