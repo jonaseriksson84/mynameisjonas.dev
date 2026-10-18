@@ -1,8 +1,64 @@
 ---
 import TerminalLayout from '../layouts/TerminalLayout.astro';
+import { COMMANDS } from '../lib/not-found';
+
+const fallback = 'this-page';
 ---
 
 <TerminalLayout title="Page not found — mynameisjonas">
-  <h1 class="post-title">Page not found</h1>
-  <p><a href="/">home</a> <a href="/blog">blog</a></p>
+  <div data-not-found>
+    <p class="term-prompt">~ $ cd <span data-missing-path>{fallback}</span></p>
+    <h1 class="post-title">Page not found</h1>
+    <p class="err">cd: no such file or directory: <span data-missing-path>{fallback}</span></p>
+    <canvas class="ghost" data-ghost aria-hidden="true"></canvas>
+    <ul class="cmds">
+      {COMMANDS.map((command) => (
+        <li>
+          <a href={command.href} data-run={command.run}>
+            <span class="run" aria-hidden="true"><span class="ps1">~ $ </span>{command.run}</span>
+            <span class="note"><span aria-hidden="true"># </span>{command.name}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="keys" data-keys-hint aria-hidden="true" hidden># ↑ ↓ or type, enter to run</p>
+  </div>
 </TerminalLayout>
+
+<style>
+  .term-prompt, .err { overflow-wrap: anywhere; }
+  .err { margin-top: 16px; font-size: 14px; color: var(--body); }
+  .ghost { display: block; width: 100%; height: clamp(96px, 20vw, 152px); margin: 28px 0 20px; }
+  .cmds { list-style: none; margin: 0; padding: 12px 0 0; border-top: 1px dashed var(--line); font-size: 14px; }
+  .cmds a {
+    display: grid;
+    grid-template-columns: 16ch 1fr;
+    align-items: center;
+    min-height: 44px;
+    padding: 11px 0;
+  }
+  .ps1, .note { color: var(--muted); }
+  .cmds a:is(:hover, :focus-visible) .run { color: var(--accent); }
+  .cmds a:focus-visible { outline: none; }
+  .cmds a:is(:hover, :focus-visible) .run::after {
+    content: '';
+    display: inline-block;
+    width: 0.5em;
+    height: 0.8em;
+    margin-left: 0.08em;
+    vertical-align: -0.02em;
+    background: var(--accent);
+    animation: blink 1.1s steps(1) infinite;
+  }
+  .keys { margin-top: 16px; font-size: 12px; color: var(--muted); }
+  @media not (hover: hover) {
+    [data-keys-hint] { display: none; }
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+</style>
+
+<script>
+  import { mountNotFound } from '../lib/not-found';
+
+  mountNotFound(document.querySelector<HTMLElement>('[data-not-found]')!, location.pathname);
+</script>
