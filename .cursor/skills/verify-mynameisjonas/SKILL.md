@@ -55,7 +55,7 @@ Follow one file in `features/`. Commands:
 
 Do not click links whose URL host is not `127.0.0.1`. The browser aborts `mynameisjonas.dev` and `www.mynameisjonas.dev`. Footer and home-hero links pick up a CSS `> ` prefix in their accessible name (`> blog`, `> github`). Nav links do not (`Blog`, `CV`). Prose `h2` names include a leading `## `.
 
-Other routes that respond: `/projects`, `/history-shorts`, `/cv/print`, `/blog/gas-city`. `fetch` can read a built file, including a missing one such as `/rss.xml`.
+Other routes that respond: `/projects`, `/history-shorts`, `/cv/print`, `/blog/gas-city`, `/rss.xml`, `/sitemap-index.xml`, `/robots.txt`. `fetch` of an unknown path returns 404 and the not-found page.
 
 Newsletter proof uses `verify-local@example.com` against the local base URL, then `subscribers`. The visible failure string is `Something went wrong. Please try again.` The 403 body is `Signup is disabled on preview`.
 

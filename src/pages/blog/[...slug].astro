@@ -4,11 +4,12 @@ import Cover from '../../components/Cover.astro';
 import SeriesNav from '../../components/SeriesNav.astro';
 import BookMeta from '../../components/BookMeta.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
+import { getPublishedPosts } from '../../lib/posts';
 import { getSeries, getSeriesNavigation, getSeriesOverviewUrl } from '../../lib/series';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getPublishedPosts();
   return posts.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
