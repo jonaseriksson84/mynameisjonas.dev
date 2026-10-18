@@ -8,7 +8,7 @@ import rehypeExternalLinks from 'rehype-external-links';
 export default defineConfig({
   site: 'https://mynameisjonas.dev',
   output: 'static',
-  adapter: cloudflare(),
+  adapter: cloudflare({ imageService: 'compile' }),
   markdown: {
     rehypePlugins: [
       // Open external links in a new tab; internal (relative) links are left alone.

@@ -3,11 +3,11 @@ title: "Process Over Magic: Beyond Vibe Coding"
 description: "Short, sane, and already dated. A book that argues for owning your code and your thinking, but whose examples have aged out from under it."
 date: 2026-06-14
 tags: ["books", "ai", "engineering"]
-cover: /blog/process-over-magic-cover.jpg
+cover: ../../assets/blog/process-over-magic-cover.jpg
 book:
   title: "Process Over Magic: Beyond Vibe Coding"
   author: "Uberto Barbini"
-  cover: "/blog/process-over-magic-cover.jpg"
+  cover: "../../assets/blog/process-over-magic-cover.jpg"
   pages: 110
   isbn: "9798888652008"
   rating: 2

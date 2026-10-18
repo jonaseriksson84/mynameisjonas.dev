@@ -6,7 +6,7 @@ tags: ["gas-city", "tutorial", "multi-agent"]
 series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 3
-cover: /blog/gas-city/cover-03.png
+cover: ../../../assets/blog/gas-city/cover-03.png
 ---
 
 In Part 2 you slung a single bead at one specialist. In this chapter we register two more (DBA and frontend) and let the mayor decompose a real feature into a small dependency chain. The mayor wires the chain, pre-routes every bead at once, and the specialists run hands-off as their work becomes ready.

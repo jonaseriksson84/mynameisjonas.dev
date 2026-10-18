@@ -1,5 +1,6 @@
 ---
 import TerminalLayout from '../../layouts/TerminalLayout.astro';
+import Cover from '../../components/Cover.astro';
 import SeriesNav from '../../components/SeriesNav.astro';
 import BookMeta from '../../components/BookMeta.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
@@ -52,11 +53,7 @@ const { prev: prevPost, next: nextPost } = series
     </header>
 
     {data.cover && !bookData && (
-      <img
-        src={data.cover}
-        alt={data.title}
-        class="post-cover"
-      />
+      <Cover src={data.cover} alt={data.title} kind="hero" class="post-cover" />
     )}
 
     {seriesData && (
@@ -193,7 +190,7 @@ const { prev: prevPost, next: nextPost } = series
 </script>
 
 <style is:global>
-  .post-cover { width: 100%; margin-bottom: 32px; border: 1px solid var(--line); border-radius: 2px; }
+  .post-cover { width: 100%; height: auto; display: block; margin-bottom: 32px; border: 1px solid var(--line); border-radius: 2px; }
 
   .post-rating { display: flex; align-items: baseline; gap: 10px; margin: -8px 0 32px; font-size: 13px; color: var(--muted); }
   .post-rating .stars { font-size: 20px; letter-spacing: 0.05em; color: var(--accent); }

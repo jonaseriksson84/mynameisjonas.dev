@@ -6,7 +6,7 @@ tags: ["gas-city", "tutorial", "multi-agent"]
 series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 6
-cover: /blog/gas-city/cover-06.png
+cover: ../../../assets/blog/gas-city/cover-06.png
 ---
 
 You have all seven primitives live. The mayor is awake, four specialists sit dormant ready to spawn, three orders tick on schedule, one custom formula produces a real artifact every morning. There is nothing left for this tutorial to teach about Gas City as a primitive set.

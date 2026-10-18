@@ -1,3 +1,4 @@
+import type { ImageMetadata } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 import type { SeriesPost } from '../content/schema';
@@ -8,7 +9,7 @@ export type Series = {
   name: string;
   title: string;
   description?: string;
-  cover?: string;
+  cover?: ImageMetadata;
   parts: SeriesEntry[];
   overviewUrl: string;
 };

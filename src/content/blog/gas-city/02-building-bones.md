@@ -6,7 +6,7 @@ tags: ["gas-city", "tutorial", "multi-agent"]
 series: "gas-city"
 seriesTitle: "Building with Gas City"
 part: 2
-cover: /blog/gas-city/cover-02.png
+cover: ../../../assets/blog/gas-city/cover-02.png
 ---
 
 In Part 1 you woke a mayor with no specialists. In this chapter we register a **backend** specialist, hand the mayor a feature, watch it route the work, and end up with a working app skeleton committed to the rig.

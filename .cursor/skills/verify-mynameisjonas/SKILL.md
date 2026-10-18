@@ -78,7 +78,7 @@ Artifacts stay under `/tmp/verify-mynameisjonas/<id>/evidence/`.
 - `subscribers.json` — rows from the local D1. Empty is the expected proof.
 - `failures/*.aria.yaml` — snapshot from a missed role or heading.
 
-`transferBytes` is the Chrome DevTools encoded length (headers included). `content-length` is the asset body. The Gas City cover `/blog/gas-city/cover-00.png` is the large PNG on both `/blog` and part 0. Google Fonts load from `fonts.googleapis.com` and `fonts.gstatic.com` and count in the total.
+`transferBytes` is the Chrome DevTools encoded length (headers included). `content-length` is the asset body. The Gas City cover on `/blog` and part 0 is a built file under `/_astro/` (AVIF or WebP). `/blog/gas-city/cover-00.png` is not served. Google Fonts load from `fonts.googleapis.com` and `fonts.gstatic.com` and count in the total.
 
 ## Cleanup
 

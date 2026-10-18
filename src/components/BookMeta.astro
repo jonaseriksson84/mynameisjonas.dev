@@ -1,8 +1,11 @@
 ---
+import Cover from './Cover.astro';
+import type { ImageMetadata } from 'astro';
+
 interface Props {
   title: string;
   author: string;
-  cover: string;
+  cover: string | ImageMetadata;
   pages?: number;
   isbn?: string;
   rating?: number;
@@ -18,7 +21,11 @@ const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
 <div class="book-meta not-prose">
   <div class="book-meta-inner">
     <div class="book-cover-wrap">
-      <img src={cover} alt={`Cover of ${title}`} class="book-cover" />
+      {typeof cover === 'string' ? (
+        <img src={cover} alt={`Cover of ${title}`} class="book-cover" />
+      ) : (
+        <Cover src={cover} alt={`Cover of ${title}`} kind="book" class="book-cover" />
+      )}
     </div>
 
     <div class="book-info">
@@ -73,9 +80,15 @@ const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : null;
 
   .book-cover-wrap {
     flex-shrink: 0;
+    width: 90px;
   }
 
-  .book-cover {
+  .book-cover-wrap :global(picture) {
+    display: block;
+    width: 90px;
+  }
+
+  :global(.book-cover) {
     width: 90px;
     height: auto;
     display: block;

@@ -5,7 +5,7 @@ Gas City part 0 is the post "Part 0: Installation and setup". The page shows tha
 ## Sub-features
 
 - `post-page.heading` shows the heading "Part 0: Installation and setup".
-- `post-page.cover` transfers `/blog/gas-city/cover-00.png` on a cold load of this document.
+- `post-page.cover` transfers an optimized cover from `/_astro/` on a cold load of this document. It does not transfer `/blog/gas-city/cover-00.png`.
 - `post-page.next` shows the link "next → Part 1: Starting the mayor and sending mail".
 - `post-page.signup-present` shows the heading "Enjoying the series?" and the button "Subscribe".
 - `post-page.transfers` records per-request transfer bytes for the document.
@@ -21,13 +21,13 @@ Preconditions: `doctor` exited 0 for this run. Gas City part 0 is in the build. 
 
 - Open the blog index.
   - Command: `./.cursor/skills/verify-mynameisjonas/verify-mynameisjonas.mjs open /blog`
-  - Result: the final path is `/blog/`, heading "Blog" will match, and the transfer list includes `/blog/gas-city/cover-00.png`.
+  - Result: the final path is `/blog/`, heading "Blog" will match, and the transfer list includes an image under `/_astro/`.
 - Confirm the index heading.
   - Command: `./.cursor/skills/verify-mynameisjonas/verify-mynameisjonas.mjs expect-heading Blog`
   - Result: the heading "Blog" is visible.
 - Open part 0 from the series list.
   - Command: `./.cursor/skills/verify-mynameisjonas/verify-mynameisjonas.mjs click link "00 Installation and setup"`
-  - Result: the final URL path is `/blog/gas-city/00-setup/` and the click's transfer list includes `/blog/gas-city/cover-00.png` with a content-length. The browser cache is disabled, so this repeats the image bytes.
+  - Result: the final URL path is `/blog/gas-city/00-setup/` and the click's transfer list includes an image under `/_astro/` with a content-length. The browser cache is disabled, so this repeats the image bytes. `/blog/gas-city/cover-00.png` is absent.
 - Confirm the path and title.
   - Command: `./.cursor/skills/verify-mynameisjonas/verify-mynameisjonas.mjs expect-path /blog/gas-city/00-setup/`
   - Result: the path is exactly that string.
@@ -56,6 +56,6 @@ Preconditions: `doctor` exited 0 for this run. Gas City part 0 is in the build. 
 - `/blog/gas-city/00-setup` returns 307 to `/blog/gas-city/00-setup/`. Assert the slashed path.
 - Prose section headings include a `## ` prefix in the accessible name. The page title and "Enjoying the series?" do not.
 - "Find me on X" leaves the site. Do not click it.
-- The cover PNG is several megabytes. Record its content-length and transfer bytes. A large number is the baseline.
+- The cover is an AVIF or WebP file under `/_astro/`. Record its content-length and transfer bytes. A multi-megabyte body means the unoptimized PNG is back.
 - This recipe does not submit the form. The newsletter feature is the one that does, and only against the local host.
 - Opening the post URL directly is a separate entry point. Do not report it as verified by this click path.
